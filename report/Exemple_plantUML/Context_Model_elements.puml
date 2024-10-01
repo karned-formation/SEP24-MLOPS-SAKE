@@ -1,0 +1,15 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml 
+LAYOUT_WITH_LEGEND() 
+title Basic elements for Context Model
+Boundary(boundary, "boundary") 
+Enterprise_Boundary(enterprise_boundary, "enterprise_boundary")
+System_Boundary(system_boundary, "system_boundary")
+Person(person, "person") 
+Person_Ext(person_Ext, "person_Ext") 
+System(system, "system") 
+SystemDb(Db, "BD") 
+SystemQueue(systemQueue, "systemQueue") 
+System_Ext(system_Ext, "system_Ext") 
+SystemDb_Ext(Db_Ext, "BD_Ext") 
+@enduml

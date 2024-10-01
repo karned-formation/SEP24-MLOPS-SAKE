@@ -1,0 +1,12 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml 
+LAYOUT_WITH_LEGEND() 
+title System Context diagram for Online Theatre Booking System 
+Person(customer, "Theatre Patron", "A customer looking to book theatre tickets.") 
+System(bookingSystem, "Booking System", "Allows customers to browse shows and book tickets.") 
+System_Ext(paymentGateway, "Payment Gateway", "Handles payment transactions.") 
+System_Ext(theatreManagementSystem, "Theatre Management System", "Manages show schedules and seating.") 
+Rel(customer, bookingSystem, "Uses to book tickets") 
+Rel(bookingSystem, paymentGateway, "Uses for payment processing") 
+Rel(bookingSystem, theatreManagementSystem, "Sends booking information to") 
+@enduml

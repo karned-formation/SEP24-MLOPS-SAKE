@@ -1,0 +1,16 @@
+@startuml 
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml 
+LAYOUT_WITH_LEGEND() 
+title Component diagram for Backend Server of Online Theatre Booking System
+
+Container(backendApp, "Backend Server", "Java, Spring Boot")
+Component(bookingService, "Booking Service", "Spring Component", "Handles all booking requests and processes them") 
+Component(paymentService, "Payment Service", "Spring Component", "Manages payment transactions") 
+Component(theatreManagementService, "Theatre Management Service", "Spring Component", "Interacts with the Theatre Management System for show details and seating") 
+
+Rel(backendApp, bookingService, "Uses") 
+Rel(backendApp, paymentService, "Uses") 
+Rel(backendApp, theatreManagementService, "Uses") 
+Rel(bookingService, paymentService, "Calls for payment processing") 
+Rel(bookingService, theatreManagementService, "Queries for show and seating availability") 
+@enduml

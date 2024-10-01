@@ -1,0 +1,14 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+AddElementTag(tagged, $fontColor=red)
+
+Person(user, "Utilisateur")
+Container(app, "Application Web", "Java", "Gère les utilisateurs")
+
+' SystemDb hérite des couleurs définies dans skinparam
+SystemDb(database, "Base de données", "PostgreSQL", "Contient les données des utilisateurs", $tags="tagged")
+
+Rel(user, app, "Utilise")
+Rel(app, database, "Lit et écrit dans")
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml 
+LAYOUT_WITH_LEGEND() 
+title Container diagram for Online Theatre Booking System 
+Person(customer, "Theatre Patron", "Uses the booking website to find and book shows") 
+Container(webApp, "Booking Website", "Angular, JavaScript", "Allows users to browse shows and book tickets.") 
+ContainerDb(database, "Booking Database", "SQL Database", "Stores show schedules, booking, and customer information.") 
+Container(backendApp, "Backend Server", "Java, Spring Boot", "Processes bookings, integrates with the payment gateway and theatre management system.") 
+System_Ext(paymentGateway, "Payment Gateway", "Handles payment transactions.") 
+System_Ext(theatreManagementSystem, "Theatre Management System", "Manages show schedules and seating.") 
+Rel(customer, webApp, "Uses") 
+Rel(webApp, backendApp, "Sends booking requests to") 
+Rel(backendApp, database, "Reads from and writes to") 
+Rel(backendApp, paymentGateway, "Uses for payment processing") 
+Rel(backendApp, theatreManagementSystem, "Sends booking information to") 
+@enduml

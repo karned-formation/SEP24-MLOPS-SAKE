@@ -1,0 +1,23 @@
+@startuml 
+class BookingController { 
+  + createBooking() 
+  + cancelBooking() 
+} 
+class BookingService { 
+  + processBooking() 
+  + validateAvailability() 
+} 
+class BookingRepository { 
+  + findBookingById() 
+  + saveBooking() 
+} 
+class Booking { 
+  - bookingId 
+  - showId 
+  - userId 
+  - bookingTime 
+} 
+BookingController --> BookingService : uses 
+BookingService --> BookingRepository : uses 
+BookingRepository --> Booking : manages 
+@enduml
