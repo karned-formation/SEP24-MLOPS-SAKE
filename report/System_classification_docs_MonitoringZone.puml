@@ -1,0 +1,24 @@
+@startuml Basic Sample
+!$SYSTEM_BORDER_COLOR ?= "#000000"
+!include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!include System_classification_docs__Log_repo.puml
+!include System_classification_docs__ML_Metadata_Repo.puml
+!include System_classification_docs__Dataset_Repo.puml
+
+System_Boundary(System_classifier, "Classifier")  {
+    System_Boundary(Monitoring_Zone, "Monitoring_Zone")  {
+        System(Monitoring_Pipeline, "Monitoring_Pipeline")
+    }
+}
+Person_Ext(Admin, "Admin")
+
+Rel(ML_Metadata_Repository, Monitoring_Pipeline, "current metrics")
+Rel(Log_Master, Monitoring_Pipeline, "original predictions")
+Rel(Feedback_Database, Monitoring_Pipeline, "corrected predictions")
+Rel(Monitoring_Pipeline, Dataset_Repository, "updates")
+BiRel(Admin, Monitoring_Pipeline, "interacts")
+
+SHOW_FLOATING_LEGEND()
+
+@enduml

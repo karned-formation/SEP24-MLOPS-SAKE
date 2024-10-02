@@ -4,10 +4,10 @@
 HIDE_STEREOTYPE()
 AddElementTag(SystemDb_colors, $bgColor=SkyBlue, $fontColor=black)
 
-!include System_classification_docs_DevZone.puml
-!include System_classification_docs_ServingZone.puml
-!include System_classification_docs_MonitoringZone.puml
-!include System_classification_docs_ContinuousTrainingZone.puml
+System_Boundary(System_classifier, "Classifier")  {
+    SystemDb(Dataset_Repository, "Dataset_Repository", $tags="SystemDb_colors") 
+}
+
 
 SHOW_FLOATING_LEGEND()
 
