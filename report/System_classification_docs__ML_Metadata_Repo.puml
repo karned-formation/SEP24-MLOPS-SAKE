@@ -5,9 +5,7 @@ HIDE_STEREOTYPE()
 AddElementTag(SystemDb_colors, $bgColor=SkyBlue, $fontColor=black)
 
 System_Boundary(System_classifier, "Classifier")  {
-    System_Boundary(MLFlow, "MLFlow")  {
-        SystemDb(ML_Metadata_Repository, "ML_Metadata_Repository", "model performance metrics", $tags="SystemDb_colors") 
-    }
+    SystemDb(ML_Metadata_Repository, "ML_Metadata_Repository", "model performance metrics", $tags="SystemDb_colors") 
 }
 
 

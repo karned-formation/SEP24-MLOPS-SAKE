@@ -14,7 +14,9 @@ System_Boundary(System_classifier, "Classifier")  {
         System(ML_Experiment_Pipeline, "ML_Experiment_Pipeline")
     }
 }
+Person_Ext(Data_Scientist, "Data_Scientist")
 
+Rel(Data_Scientist, ML_Experiment_Pipeline, "develops")
 Rel(Data_Source_Training, ML_Experiment_Pipeline, "unstructured labelled images")
 Rel(OCR_Model, ML_Experiment_Pipeline, "optimized OCR Model")
 BiRel(ML_Experiment_Pipeline, Dataset_Repository, "cleaned labelled images")

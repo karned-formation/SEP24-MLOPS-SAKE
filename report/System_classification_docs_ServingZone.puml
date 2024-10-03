@@ -5,7 +5,6 @@
 !include System_classification_docs__Model_Repo.puml
 !include System_classification_docs__Log_repo.puml
 
-
 SystemDb_Ext(Data_Source_Production, "Data_Source_Production", "selected images by User", $tags="SystemDb_colors") 
 System_Boundary(System_classifier, "Classifier")  {
     System_Boundary(Serving_Zone, "Serving_Zone")  {

@@ -5,7 +5,7 @@ HIDE_STEREOTYPE()
 AddElementTag(SystemDb_colors, $bgColor=SkyBlue, $fontColor=black)
 
 System_Boundary(System_classifier, "Classifier")  {
-    SystemDb(Code_Repository, "Code_Repository", "Github", $tags="SystemDb_colors") 
+    SystemDb(Code_Repository, "Code_Repository", $tags="SystemDb_colors") 
 }
 
 
