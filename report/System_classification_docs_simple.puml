@@ -15,10 +15,11 @@ System_Boundary(System_classifier, "Classifier")  {
     System_Boundary(Development_Zone, "Development_Zone")  {
     }
 }
-Person_Ext(Admin, "DataScientist")
+Person_Ext(Data_Scientist, "Data_Scientist")
 
 Rel(Data_Source_Training, Development_Zone, "unstructured labelled images")
 Rel(OCR_Model, Development_Zone, "optimized OCR Model")
+Rel(Data_Scientist, Development_Zone, "develops")
 'BiRel(Development_Zone, Dataset_Repository, "cleaned labelled images")
 'Rel(Development_Zone, Model_Repository, "produces")
 
