@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from typing import Tuple
+from IPython.display import display
 
 def get_original_and_reduced_datasets(original_file:str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
