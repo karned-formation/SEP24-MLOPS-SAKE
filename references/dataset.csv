@@ -1,37 +1,37 @@
 filename,new_type,original_type,motif_rejet,true_cat,inclusion_dataset,excluded_types,grouped_type
-img_0001110.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001111.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001119.jpg,advertisement,advertisement,n'est pas une publicit�,,False,False,advertisement
-img_0001151.jpg,advertisement,advertisement,bad quality,,False,False,advertisement
-img_0001165.jpg,advertisement,advertisement,bad quality,,False,False,advertisement
-img_0001178.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,False,advertisement
-img_0001192.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001196.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001206.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001233.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,False,advertisement
-img_0001247.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001280.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001288.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,False,advertisement
-img_0001321.jpg,advertisement,advertisement,n'est pas une publicit�,,False,False,advertisement
-img_0001332.jpg,advertisement,advertisement,bad quality,,False,False,advertisement
-img_0001354.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001381.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001394.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001409.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,False,advertisement
-img_0001432.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001470.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001480.jpg,advertisement,advertisement,n'est pas une publicit�,,False,False,advertisement
-img_0001481.jpg,advertisement,advertisement,bad quality,,False,False,advertisement
-img_0001484.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001490.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001500.jpg,advertisement,advertisement,n'est pas une publicit�,,False,False,advertisement
-img_0001520.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001523.jpg,advertisement,advertisement,bad quality,,False,False,advertisement
-img_0001526.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001540.jpg,advertisement,advertisement,,,True,False,advertisement
-img_0001549.jpg,advertisement,advertisement,n'est pas une publicit�,,False,False,advertisement
-img_0001575.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,False,advertisement
-img_0001595.jpg,advertisement,advertisement,,,True,False,advertisement
+img_0001110.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001111.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001119.jpg,advertisement,advertisement,n'est pas une publicit�,,False,True,advertisement
+img_0001151.jpg,advertisement,advertisement,bad quality,,False,True,advertisement
+img_0001165.jpg,advertisement,advertisement,bad quality,,False,True,advertisement
+img_0001178.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,True,advertisement
+img_0001192.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001196.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001206.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001233.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,True,advertisement
+img_0001247.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001280.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001288.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,True,advertisement
+img_0001321.jpg,advertisement,advertisement,n'est pas une publicit�,,False,True,advertisement
+img_0001332.jpg,advertisement,advertisement,bad quality,,False,True,advertisement
+img_0001354.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001381.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001394.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001409.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,True,advertisement
+img_0001432.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001470.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001480.jpg,advertisement,advertisement,n'est pas une publicit�,,False,True,advertisement
+img_0001481.jpg,advertisement,advertisement,bad quality,,False,True,advertisement
+img_0001484.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001490.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001500.jpg,advertisement,advertisement,n'est pas une publicit�,,False,True,advertisement
+img_0001520.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001523.jpg,advertisement,advertisement,bad quality,,False,True,advertisement
+img_0001526.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001540.jpg,advertisement,advertisement,,,False,True,advertisement
+img_0001549.jpg,advertisement,advertisement,n'est pas une publicit�,,False,True,advertisement
+img_0001575.jpg,advertisement,advertisement,illisible ou difficilement exploitable,,False,True,advertisement
+img_0001595.jpg,advertisement,advertisement,,,False,True,advertisement
 img_0001121.jpg,budget,budget,,,False,True,budget
 img_0001138.jpg,budget,budget,,,False,True,budget
 img_0001142.jpg,budget,budget,,,False,True,budget
@@ -65,251 +65,251 @@ img_0001581.jpg,budget,budget,,,False,True,budget
 img_0001592.jpg,budget,budget,,,False,True,budget
 img_0001601.jpg,budget,budget,,,False,True,budget
 img_0001603.jpg,budget,budget,n'appartient pas � la cat�gorie,,False,True,budget
-img_0000594.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000595.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000596.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000597.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000598.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000599.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000600.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000601.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000602.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000603.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000604.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000605.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000606.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000607.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000608.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000609.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000610.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000611.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000612.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000613.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000614.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000615.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000616.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000617.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000618.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000619.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000620.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000621.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000622.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000623.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000624.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000625.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000626.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000627.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000628.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000629.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000630.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000631.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000632.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000633.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000634.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000635.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000636.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000637.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000638.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000639.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000640.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000641.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000642.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000643.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000644.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000645.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000646.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000647.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000648.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000649.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000650.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000651.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000652.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000653.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000654.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000655.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000656.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000657.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000658.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000659.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000660.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000661.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000662.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000663.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000664.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000665.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000666.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000667.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000668.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000669.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000670.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000671.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000672.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000673.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000674.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000675.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000676.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000677.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000678.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000679.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000680.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000681.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000682.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000683.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000684.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000685.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000686.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000687.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000688.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000689.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000690.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000691.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000692.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000693.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000694.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000695.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000696.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000697.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000698.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000699.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000700.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000701.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000702.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000703.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000704.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000705.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000706.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000707.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000708.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000709.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000710.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000711.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000712.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000713.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000714.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000715.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000716.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000717.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000718.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000719.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000720.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000721.jpg,carte postale,carte postale,handwritten,,False,False,carte postale
-img_0000722.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000723.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000724.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000725.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000726.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000727.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000728.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000729.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000730.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000731.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000732.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000733.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000734.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000735.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000736.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000737.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000738.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000739.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000740.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,False,carte postale
-img_0000741.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000742.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000743.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000744.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000745.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000746.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000747.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000748.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000749.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000750.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000751.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000752.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000753.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000754.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000755.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000756.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000757.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000758.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000759.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000760.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000761.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000762.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000763.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,False,carte postale
-img_0000764.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,False,carte postale
-img_0000765.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000766.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000767.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000768.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000769.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000770.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,False,carte postale
-img_0000771.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000772.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000773.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000774.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000775.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000776.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000777.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000778.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000779.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000780.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000781.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000782.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000783.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000784.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000785.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000786.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000787.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000788.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000789.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000790.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000791.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000792.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000793.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000794.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000795.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000796.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000797.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000798.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000799.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000800.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000801.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000802.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000803.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,False,carte postale
-img_0000804.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000805.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000806.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0000807.jpg,carte postale,carte postale,,,True,False,carte postale
-img_0001146.jpg,email,email,,,True,False,email
-img_0001174.jpg,email,email,,,True,False,email
-img_0001186.jpg,email,email,,,True,False,email
-img_0001205.jpg,email,email,n'appartient pas � la cat�gorie,,False,False,email
-img_0001205.jpg,email,email,Not an email. Could have a note category ? a report category ?,,False,False,email
-img_0001208.jpg,email,email,,,True,False,email
-img_0001210.jpg,email,email,,,True,False,email
-img_0001214.jpg,email,email,,,True,False,email
-img_0001235.jpg,email,email,,,True,False,email
-img_0001262.jpg,email,email,HTML code,,False,False,email
-img_0001267.jpg,email,email,,,True,False,email
-img_0001275.jpg,email,email,,,True,False,email
-img_0001346.jpg,email,email,illisible ou difficilement exploitable,,False,False,email
-img_0001347.jpg,email,email,,,True,False,email
-img_0001353.jpg,email,email,,,True,False,email
-img_0001391.jpg,email,email,,,True,False,email
-img_0001392.jpg,email,email,,,True,False,email
-img_0001436.jpg,email,email,illisible ou difficilement exploitable,,False,False,email
-img_0001450.jpg,email,email,n'appartient pas � la cat�gorie,,False,False,email
-img_0001450.jpg,email,email,Not an email nor another category,,False,False,email
-img_0001452.jpg,email,email,,,True,False,email
-img_0001458.jpg,email,email,,,True,False,email
-img_0001469.jpg,email,email,illisible ou difficilement exploitable,,False,False,email
-img_0001475.jpg,email,email,,,True,False,email
-img_0001485.jpg,email,email,n'appartient pas � la cat�gorie,,False,False,email
-img_0001485.jpg,email,email,Not an email nor another category,,False,False,email
-img_0001487.jpg,email,email,not relevant image,,False,False,email
-img_0001499.jpg,email,email,,,True,False,email
-img_0001517.jpg,email,email,illisible ou difficilement exploitable,,False,False,email
-img_0001554.jpg,email,email,,,True,False,email
-img_0001561.jpg,email,email,,,True,False,email
+img_0000594.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000595.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000596.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000597.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000598.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000599.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000600.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000601.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000602.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000603.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000604.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000605.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000606.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000607.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000608.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000609.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000610.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000611.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000612.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000613.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000614.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000615.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000616.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000617.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000618.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000619.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000620.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000621.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000622.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000623.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000624.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000625.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000626.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000627.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000628.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000629.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000630.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000631.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000632.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000633.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000634.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000635.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000636.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000637.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000638.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000639.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000640.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000641.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000642.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000643.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000644.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000645.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000646.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000647.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000648.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000649.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000650.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000651.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000652.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000653.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000654.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000655.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000656.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000657.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000658.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000659.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000660.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000661.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000662.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000663.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000664.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000665.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000666.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000667.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000668.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000669.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000670.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000671.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000672.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000673.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000674.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000675.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000676.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000677.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000678.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000679.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000680.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000681.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000682.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000683.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000684.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000685.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000686.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000687.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000688.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000689.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000690.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000691.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000692.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000693.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000694.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000695.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000696.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000697.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000698.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000699.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000700.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000701.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000702.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000703.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000704.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000705.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000706.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000707.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000708.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000709.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000710.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000711.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000712.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000713.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000714.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000715.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000716.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000717.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000718.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000719.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000720.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000721.jpg,carte postale,carte postale,handwritten,,False,True,carte postale
+img_0000722.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000723.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000724.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000725.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000726.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000727.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000728.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000729.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000730.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000731.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000732.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000733.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000734.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000735.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000736.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000737.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000738.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000739.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000740.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,True,carte postale
+img_0000741.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000742.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000743.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000744.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000745.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000746.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000747.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000748.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000749.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000750.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000751.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000752.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000753.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000754.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000755.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000756.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000757.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000758.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000759.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000760.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000761.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000762.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000763.jpg,carte postale,carte postale,n'appartient pas � la cat�gorie,,False,True,carte postale
+img_0000764.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,True,carte postale
+img_0000765.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000766.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000767.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000768.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000769.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000770.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,True,carte postale
+img_0000771.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000772.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000773.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000774.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000775.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000776.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000777.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000778.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000779.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000780.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000781.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000782.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000783.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000784.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000785.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000786.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000787.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000788.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000789.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000790.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000791.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000792.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000793.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000794.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000795.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000796.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000797.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000798.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000799.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000800.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000801.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000802.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000803.jpg,carte postale,carte postale,illisible ou difficilement exploitable,,False,True,carte postale
+img_0000804.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000805.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000806.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0000807.jpg,carte postale,carte postale,,,False,True,carte postale
+img_0001146.jpg,email,email,,,False,True,email
+img_0001174.jpg,email,email,,,False,True,email
+img_0001186.jpg,email,email,,,False,True,email
+img_0001205.jpg,email,email,n'appartient pas � la cat�gorie,,False,True,email
+img_0001205.jpg,email,email,Not an email. Could have a note category ? a report category ?,,False,True,email
+img_0001208.jpg,email,email,,,False,True,email
+img_0001210.jpg,email,email,,,False,True,email
+img_0001214.jpg,email,email,,,False,True,email
+img_0001235.jpg,email,email,,,False,True,email
+img_0001262.jpg,email,email,HTML code,,False,True,email
+img_0001267.jpg,email,email,,,False,True,email
+img_0001275.jpg,email,email,,,False,True,email
+img_0001346.jpg,email,email,illisible ou difficilement exploitable,,False,True,email
+img_0001347.jpg,email,email,,,False,True,email
+img_0001353.jpg,email,email,,,False,True,email
+img_0001391.jpg,email,email,,,False,True,email
+img_0001392.jpg,email,email,,,False,True,email
+img_0001436.jpg,email,email,illisible ou difficilement exploitable,,False,True,email
+img_0001450.jpg,email,email,n'appartient pas � la cat�gorie,,False,True,email
+img_0001450.jpg,email,email,Not an email nor another category,,False,True,email
+img_0001452.jpg,email,email,,,False,True,email
+img_0001458.jpg,email,email,,,False,True,email
+img_0001469.jpg,email,email,illisible ou difficilement exploitable,,False,True,email
+img_0001475.jpg,email,email,,,False,True,email
+img_0001485.jpg,email,email,n'appartient pas � la cat�gorie,,False,True,email
+img_0001485.jpg,email,email,Not an email nor another category,,False,True,email
+img_0001487.jpg,email,email,not relevant image,,False,True,email
+img_0001499.jpg,email,email,,,False,True,email
+img_0001517.jpg,email,email,illisible ou difficilement exploitable,,False,True,email
+img_0001554.jpg,email,email,,,False,True,email
+img_0001561.jpg,email,email,,,False,True,email
 img_0000000.jpg,facture,facture,,,True,False,facture
 img_0000001.jpg,facture,facture,,,True,False,facture
 img_0000002.jpg,facture,facture,,,True,False,facture
@@ -441,7 +441,7 @@ img_0001153.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001171.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001194.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001202.jpg,handwritten,handwritten,,,False,True,handwritten
-img_0001207.jpg,advertisement,handwritten,not the good type,advertisement,False,False,advertisement
+img_0001207.jpg,advertisement,handwritten,not the good type,advertisement,False,True,advertisement
 img_0001231.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001239.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001251.jpg,handwritten,handwritten,,,False,True,handwritten
@@ -454,7 +454,7 @@ img_0001304.jpg,handwritten,handwritten,Not a true handwritten note,,False,True,
 img_0001323.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001327.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001333.jpg,handwritten,handwritten,Not a true handwritten note,,False,True,handwritten
-img_0001334.jpg,advertisement,handwritten,not relevant,advertisement,False,False,advertisement
+img_0001334.jpg,advertisement,handwritten,not relevant,advertisement,False,True,advertisement
 img_0001339.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001368.jpg,handwritten,handwritten,,,False,True,handwritten
 img_0001403.jpg,handwritten,handwritten,,,False,True,handwritten
@@ -576,11 +576,11 @@ img_0000171.jpg,id_pieces,id_pieces,n'appartient pas � la cat�gorie (c'est u
 img_0000172.jpg,id_pieces,id_pieces,,,True,False,id_pieces
 img_0000173.jpg,id_pieces,id_pieces,another unexpected language (DE),,False,False,id_pieces
 img_0000174.jpg,id_pieces,id_pieces,,,True,False,id_pieces
-img_0000175.jpg,passeport,id_pieces,n'appartient pas � la cat�gorie,passeport,True,False,passeport
+img_0000175.jpg,passeport,id_pieces,n'appartient pas � la cat�gorie,passeport,False,True,passeport
 img_0000176.jpg,id_pieces,id_pieces,notice id,,False,False,id_pieces
 img_0000177.jpg,id_pieces,id_pieces,appartient � 2 cat�gories,,False,False,id_pieces
 img_0000178.jpg,id_pieces,id_pieces,illisible ou difficilement exploitable,,False,False,id_pieces
-img_0000179.jpg,passeport,id_pieces,n'appartient pas � la cat�gorie,passeport,True,False,passeport
+img_0000179.jpg,passeport,id_pieces,n'appartient pas � la cat�gorie,passeport,False,True,passeport
 img_0000180.jpg,id_pieces,id_pieces,appartient � 2 cat�gories,,False,False,id_pieces
 img_0000181.jpg,id_pieces,id_pieces,notice id,,False,False,id_pieces
 img_0000182.jpg,id_pieces,id_pieces,appartient � 2 cat�gories,,False,False,id_pieces
@@ -589,12 +589,12 @@ img_0000184.jpg,id_pieces,id_pieces,,,True,False,id_pieces
 img_0000185.jpg,id_pieces,id_pieces,not relevant,,False,False,id_pieces
 img_0000186.jpg,id_pieces,id_pieces,,,True,False,id_pieces
 img_0000187.jpg,id_pieces,id_pieces,,,True,False,id_pieces
-img_0000188.jpg,passeport,id_pieces,not relevant,passeport,False,False,passeport
+img_0000188.jpg,passeport,id_pieces,not relevant,passeport,False,True,passeport
 img_0000189.jpg,id_pieces,id_pieces,n'appartient pas � la cat�gorie (c'est un permis),,False,False,id_pieces
 img_0000190.jpg,id_pieces,id_pieces,,,True,False,id_pieces
 img_0000191.jpg,id_pieces,id_pieces,bad quality,,False,False,id_pieces
 img_0000192.jpg,id_pieces,id_pieces,notice id,,False,False,id_pieces
-img_0000193.jpg,passeport,id_pieces,not the good type,passeport,False,False,passeport
+img_0000193.jpg,passeport,id_pieces,not the good type,passeport,False,True,passeport
 img_0000194.jpg,id_pieces,id_pieces,,,True,False,id_pieces
 img_0000195.jpg,id_pieces,id_pieces,illisible ou difficilement exploitable,,False,False,id_pieces
 img_0000196.jpg,id_pieces,id_pieces,notice id,,False,False,id_pieces
@@ -660,7 +660,7 @@ img_0000223.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,f
 img_0000224.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
 img_0000225.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
 img_0000226.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
-img_0000227.jpg,letter,justif_domicile,only letter in french,letter,False,False,letter
+img_0000227.jpg,letter,justif_domicile,only letter in french,letter,False,True,letter
 img_0000228.jpg,justif_domicile,justif_domicile,,,True,False,facture
 img_0000229.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
 img_0000230.jpg,facture,justif_domicile,changement catégorie,facture,True,False,facture
@@ -684,35 +684,35 @@ img_0000247.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,f
 img_0000248.jpg,justif_domicile,justif_domicile,Mauvais contenu,,False,False,facture
 img_0000249.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
 img_0000250.jpg,justif_domicile,justif_domicile,Mauvaise qualité,,False,False,facture
-img_0001112.jpg,letter,letter,,,True,False,letter
-img_0001136.jpg,letter,letter,,,True,False,letter
-img_0001137.jpg,letter,letter,,,True,False,letter
-img_0001158.jpg,letter,letter,unsure to reject. we need to try cleaning on this one,,False,False,letter
-img_0001184.jpg,letter,letter,,,True,False,letter
-img_0001189.jpg,letter,letter,,,True,False,letter
-img_0001190.jpg,letter,letter,,,True,False,letter
-img_0001226.jpg,letter,letter,,,True,False,letter
-img_0001234.jpg,letter,letter,only letter in german,,False,False,letter
-img_0001240.jpg,letter,letter,,,True,False,letter
-img_0001254.jpg,letter,letter,Not a letter,,False,False,letter
-img_0001260.jpg,letter,letter,,,True,False,letter
-img_0001276.jpg,letter,letter,not a relevant image,,False,False,letter
-img_0001291.jpg,letter,letter,,,True,False,letter
-img_0001312.jpg,letter,letter,,,True,False,letter
-img_0001337.jpg,letter,letter,,,True,False,letter
-img_0001338.jpg,letter,letter,,,True,False,letter
-img_0001380.jpg,letter,letter,,,True,False,letter
-img_0001384.jpg,letter,letter,,,True,False,letter
-img_0001405.jpg,letter,letter,,,True,False,letter
-img_0001420.jpg,letter,letter,,,True,False,letter
-img_0001496.jpg,letter,letter,,,True,False,letter
-img_0001507.jpg,letter,letter,,,True,False,letter
-img_0001508.jpg,letter,letter,,,True,False,letter
-img_0001529.jpg,letter,letter,,,True,False,letter
-img_0001552.jpg,letter,letter,,,True,False,letter
-img_0001559.jpg,letter,letter,bad quality,,False,False,letter
-img_0001572.jpg,letter,letter,not relevant image,,False,False,letter
-img_0001585.jpg,letter,letter,,,True,False,letter
+img_0001112.jpg,letter,letter,,,False,True,letter
+img_0001136.jpg,letter,letter,,,False,True,letter
+img_0001137.jpg,letter,letter,,,False,True,letter
+img_0001158.jpg,letter,letter,unsure to reject. we need to try cleaning on this one,,False,True,letter
+img_0001184.jpg,letter,letter,,,False,True,letter
+img_0001189.jpg,letter,letter,,,False,True,letter
+img_0001190.jpg,letter,letter,,,False,True,letter
+img_0001226.jpg,letter,letter,,,False,True,letter
+img_0001234.jpg,letter,letter,only letter in german,,False,True,letter
+img_0001240.jpg,letter,letter,,,False,True,letter
+img_0001254.jpg,letter,letter,Not a letter,,False,True,letter
+img_0001260.jpg,letter,letter,,,False,True,letter
+img_0001276.jpg,letter,letter,not a relevant image,,False,True,letter
+img_0001291.jpg,letter,letter,,,False,True,letter
+img_0001312.jpg,letter,letter,,,False,True,letter
+img_0001337.jpg,letter,letter,,,False,True,letter
+img_0001338.jpg,letter,letter,,,False,True,letter
+img_0001380.jpg,letter,letter,,,False,True,letter
+img_0001384.jpg,letter,letter,,,False,True,letter
+img_0001405.jpg,letter,letter,,,False,True,letter
+img_0001420.jpg,letter,letter,,,False,True,letter
+img_0001496.jpg,letter,letter,,,False,True,letter
+img_0001507.jpg,letter,letter,,,False,True,letter
+img_0001508.jpg,letter,letter,,,False,True,letter
+img_0001529.jpg,letter,letter,,,False,True,letter
+img_0001552.jpg,letter,letter,,,False,True,letter
+img_0001559.jpg,letter,letter,bad quality,,False,True,letter
+img_0001572.jpg,letter,letter,not relevant image,,False,True,letter
+img_0001585.jpg,letter,letter,,,False,True,letter
 img_0001117.jpg,memo,memo,,,False,True,memo
 img_0001122.jpg,memo,memo,,,False,True,memo
 img_0001157.jpg,memo,memo,,,False,True,memo
@@ -744,385 +744,385 @@ img_0001586.jpg,memo,memo,,,False,True,memo
 img_0001596.jpg,memo,memo,,,False,True,memo
 img_0001599.jpg,memo,memo,,,False,True,memo
 img_0001605.jpg,memo,memo,,,False,True,memo
-img_0001125.jpg,news_article,news_article,,,True,False,article
-img_0001133.jpg,news_article,news_article,,,True,False,article
-img_0001167.jpg,news_article,news_article,,,True,False,article
-img_0001222.jpg,news_article,news_article,only article in french,,False,False,article
-img_0001225.jpg,news_article,news_article,,,True,False,article
-img_0001230.jpg,news_article,news_article,,,True,False,article
-img_0001244.jpg,news_article,news_article,,,True,False,article
-img_0001246.jpg,news_article,news_article,,,True,False,article
-img_0001266.jpg,news_article,news_article,,,True,False,article
-img_0001268.jpg,news_article,news_article,,,True,False,article
-img_0001282.jpg,news_article,news_article,,,True,False,article
-img_0001314.jpg,news_article,news_article,,,True,False,article
-img_0001319.jpg,news_article,news_article,not relevant image,,False,False,article
-img_0001324.jpg,news_article,news_article,,,True,False,article
-img_0001360.jpg,news_article,news_article,,,True,False,article
-img_0001363.jpg,news_article,news_article,,,True,False,article
-img_0001370.jpg,news_article,news_article,,,True,False,article
-img_0001373.jpg,news_article,news_article,,,True,False,article
-img_0001388.jpg,news_article,news_article,not the good type,,False,False,article
-img_0001401.jpg,news_article,news_article,,,True,False,article
-img_0001404.jpg,news_article,news_article,,,True,False,article
-img_0001412.jpg,news_article,news_article,,,True,False,article
-img_0001434.jpg,news_article,news_article,bad quality,,False,False,article
-img_0001437.jpg,news_article,news_article,,,True,False,article
-img_0001448.jpg,news_article,news_article,,,True,False,article
-img_0001456.jpg,news_article,news_article,,,True,False,article
-img_0001457.jpg,news_article,news_article,,,True,False,article
-img_0001459.jpg,news_article,news_article,,,True,False,article
-img_0001533.jpg,news_article,news_article,,,True,False,article
-img_0001545.jpg,news_article,news_article,,,True,False,article
-img_0001547.jpg,news_article,news_article,,,True,False,article
-img_0001571.jpg,news_article,news_article,,,True,False,article
-img_0001584.jpg,news_article,news_article,,,True,False,article
-img_0001589.jpg,news_article,news_article,,,True,False,article
-img_0001598.jpg,news_article,news_article,,,True,False,article
-img_0001607.jpg,news_article,news_article,,,True,False,article
-img_0000251.jpg,passeport,passeport,no photo,,False,False,passeport
-img_0000252.jpg,passeport,passeport,,,True,False,passeport
-img_0000253.jpg,passeport,passeport,no photo or name,,False,False,passeport
-img_0000254.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000255.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000256.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000257.jpg,passeport,passeport,,,True,False,passeport
-img_0000258.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000259.jpg,passeport,passeport,,,True,False,passeport
-img_0000260.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000261.jpg,passeport,passeport,floue,,False,False,passeport
-img_0000262.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000263.jpg,passeport,passeport,,,True,False,passeport
-img_0000264.jpg,passeport,passeport,fake,,False,False,passeport
-img_0000265.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000266.jpg,passeport,passeport,frontpage only,,False,False,passeport
-img_0000267.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000268.jpg,passeport,passeport,frontpage only,,False,False,passeport
-img_0000269.jpg,passeport,passeport,,,True,False,passeport
-img_0000270.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000271.jpg,passeport,passeport,,,True,False,passeport
-img_0000272.jpg,passeport,passeport,,,True,False,passeport
-img_0000273.jpg,passeport,passeport,bad quality + another unexpected language (DE),,False,False,passeport
-img_0000274.jpg,passeport,passeport,,,True,False,passeport
-img_0000275.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000276.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000277.jpg,passeport,passeport,,,True,False,passeport
-img_0000278.jpg,passeport,passeport,,,True,False,passeport
-img_0000279.jpg,passeport,passeport,not relevant,,False,False,passeport
-img_0000280.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000281.jpg,passeport,passeport,,,True,False,passeport
-img_0000282.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000283.jpg,passeport,passeport,floue,,False,False,passeport
-img_0000284.jpg,passeport,passeport,,,True,False,passeport
-img_0000285.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000286.jpg,passeport,passeport,old passport,,False,False,passeport
-img_0000287.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000288.jpg,passeport,passeport,bad quality,,False,False,passeport
-img_0000289.jpg,passeport,passeport,,,True,False,passeport
-img_0000290.jpg,passeport,passeport,,,True,False,passeport
-img_0000291.jpg,passeport,passeport,,,True,False,passeport
-img_0000292.jpg,passeport,passeport,is a template,,False,False,passeport
-img_0000293.jpg,passeport,passeport,fake,,False,False,passeport
-img_0000294.jpg,passeport,passeport,old passport,,False,False,passeport
-img_0000295.jpg,passeport,passeport,frontpage only,,False,False,passeport
-img_0000296.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000297.jpg,passeport,passeport,frontpage only,,False,False,passeport
-img_0000298.jpg,passeport,passeport,,,True,False,passeport
-img_0000299.jpg,passeport,passeport,,,True,False,passeport
-img_0000300.jpg,passeport,passeport,flou,,False,False,passeport
-img_0000301.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000302.jpg,passeport,passeport,bad quality + another unexpected language (CA),,False,False,passeport
-img_0000303.jpg,passeport,passeport,,,True,False,passeport
-img_0000304.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000305.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000306.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000307.jpg,passeport,passeport,bad quality,,False,False,passeport
-img_0000308.jpg,passeport,passeport,old passport,,False,False,passeport
+img_0001125.jpg,news_article,news_article,,,False,True,article
+img_0001133.jpg,news_article,news_article,,,False,True,article
+img_0001167.jpg,news_article,news_article,,,False,True,article
+img_0001222.jpg,news_article,news_article,only article in french,,False,True,article
+img_0001225.jpg,news_article,news_article,,,False,True,article
+img_0001230.jpg,news_article,news_article,,,False,True,article
+img_0001244.jpg,news_article,news_article,,,False,True,article
+img_0001246.jpg,news_article,news_article,,,False,True,article
+img_0001266.jpg,news_article,news_article,,,False,True,article
+img_0001268.jpg,news_article,news_article,,,False,True,article
+img_0001282.jpg,news_article,news_article,,,False,True,article
+img_0001314.jpg,news_article,news_article,,,False,True,article
+img_0001319.jpg,news_article,news_article,not relevant image,,False,True,article
+img_0001324.jpg,news_article,news_article,,,False,True,article
+img_0001360.jpg,news_article,news_article,,,False,True,article
+img_0001363.jpg,news_article,news_article,,,False,True,article
+img_0001370.jpg,news_article,news_article,,,False,True,article
+img_0001373.jpg,news_article,news_article,,,False,True,article
+img_0001388.jpg,news_article,news_article,not the good type,,False,True,article
+img_0001401.jpg,news_article,news_article,,,False,True,article
+img_0001404.jpg,news_article,news_article,,,False,True,article
+img_0001412.jpg,news_article,news_article,,,False,True,article
+img_0001434.jpg,news_article,news_article,bad quality,,False,True,article
+img_0001437.jpg,news_article,news_article,,,False,True,article
+img_0001448.jpg,news_article,news_article,,,False,True,article
+img_0001456.jpg,news_article,news_article,,,False,True,article
+img_0001457.jpg,news_article,news_article,,,False,True,article
+img_0001459.jpg,news_article,news_article,,,False,True,article
+img_0001533.jpg,news_article,news_article,,,False,True,article
+img_0001545.jpg,news_article,news_article,,,False,True,article
+img_0001547.jpg,news_article,news_article,,,False,True,article
+img_0001571.jpg,news_article,news_article,,,False,True,article
+img_0001584.jpg,news_article,news_article,,,False,True,article
+img_0001589.jpg,news_article,news_article,,,False,True,article
+img_0001598.jpg,news_article,news_article,,,False,True,article
+img_0001607.jpg,news_article,news_article,,,False,True,article
+img_0000251.jpg,passeport,passeport,no photo,,False,True,passeport
+img_0000252.jpg,passeport,passeport,,,False,True,passeport
+img_0000253.jpg,passeport,passeport,no photo or name,,False,True,passeport
+img_0000254.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000255.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000256.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000257.jpg,passeport,passeport,,,False,True,passeport
+img_0000258.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000259.jpg,passeport,passeport,,,False,True,passeport
+img_0000260.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000261.jpg,passeport,passeport,floue,,False,True,passeport
+img_0000262.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000263.jpg,passeport,passeport,,,False,True,passeport
+img_0000264.jpg,passeport,passeport,fake,,False,True,passeport
+img_0000265.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000266.jpg,passeport,passeport,frontpage only,,False,True,passeport
+img_0000267.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000268.jpg,passeport,passeport,frontpage only,,False,True,passeport
+img_0000269.jpg,passeport,passeport,,,False,True,passeport
+img_0000270.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000271.jpg,passeport,passeport,,,False,True,passeport
+img_0000272.jpg,passeport,passeport,,,False,True,passeport
+img_0000273.jpg,passeport,passeport,bad quality + another unexpected language (DE),,False,True,passeport
+img_0000274.jpg,passeport,passeport,,,False,True,passeport
+img_0000275.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000276.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000277.jpg,passeport,passeport,,,False,True,passeport
+img_0000278.jpg,passeport,passeport,,,False,True,passeport
+img_0000279.jpg,passeport,passeport,not relevant,,False,True,passeport
+img_0000280.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000281.jpg,passeport,passeport,,,False,True,passeport
+img_0000282.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000283.jpg,passeport,passeport,floue,,False,True,passeport
+img_0000284.jpg,passeport,passeport,,,False,True,passeport
+img_0000285.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000286.jpg,passeport,passeport,old passport,,False,True,passeport
+img_0000287.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000288.jpg,passeport,passeport,bad quality,,False,True,passeport
+img_0000289.jpg,passeport,passeport,,,False,True,passeport
+img_0000290.jpg,passeport,passeport,,,False,True,passeport
+img_0000291.jpg,passeport,passeport,,,False,True,passeport
+img_0000292.jpg,passeport,passeport,is a template,,False,True,passeport
+img_0000293.jpg,passeport,passeport,fake,,False,True,passeport
+img_0000294.jpg,passeport,passeport,old passport,,False,True,passeport
+img_0000295.jpg,passeport,passeport,frontpage only,,False,True,passeport
+img_0000296.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000297.jpg,passeport,passeport,frontpage only,,False,True,passeport
+img_0000298.jpg,passeport,passeport,,,False,True,passeport
+img_0000299.jpg,passeport,passeport,,,False,True,passeport
+img_0000300.jpg,passeport,passeport,flou,,False,True,passeport
+img_0000301.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000302.jpg,passeport,passeport,bad quality + another unexpected language (CA),,False,True,passeport
+img_0000303.jpg,passeport,passeport,,,False,True,passeport
+img_0000304.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000305.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000306.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000307.jpg,passeport,passeport,bad quality,,False,True,passeport
+img_0000308.jpg,passeport,passeport,old passport,,False,True,passeport
 img_0000309.jpg,form,passeport,form to get a passeport,form,False,True,form
-img_0000310.jpg,passeport,passeport,template,,False,False,passeport
-img_0000311.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000312.jpg,passeport,passeport,frontpage,,False,False,passeport
+img_0000310.jpg,passeport,passeport,template,,False,True,passeport
+img_0000311.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000312.jpg,passeport,passeport,frontpage,,False,True,passeport
 img_0000313.jpg,id_pieces,passeport,bad quality,id_pieces,False,False,id_pieces
-img_0000314.jpg,passeport,passeport,,,True,False,passeport
-img_0000315.jpg,passeport,passeport,form for entering us soil,,False,False,passeport
-img_0000316.jpg,passeport,passeport,,,True,False,passeport
-img_0000317.jpg,passeport,passeport,bad quality + another unexpected language (BULG),,False,False,passeport
-img_0000318.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000319.jpg,passeport,passeport,,,True,False,passeport
-img_0000320.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000321.jpg,passeport,passeport,bad quality,,False,False,passeport
-img_0000322.jpg,passeport,passeport,,,True,False,passeport
-img_0000323.jpg,passeport,passeport,,,True,False,passeport
-img_0000324.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000325.jpg,passeport,passeport,pas de visage,,False,False,passeport
-img_0000326.jpg,passeport,passeport,,,True,False,passeport
-img_0000327.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000328.jpg,passeport,passeport,features missing,,False,False,passeport
-img_0000329.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000330.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000331.jpg,passeport,passeport,,,True,False,passeport
-img_0000332.jpg,passeport,passeport,,,True,False,passeport
-img_0000333.jpg,passeport,passeport,not relevant,,False,False,passeport
-img_0000334.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000335.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000336.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000337.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000338.jpg,passeport,passeport,,,True,False,passeport
-img_0000339.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000340.jpg,passeport,passeport,not a passeport,,False,False,passeport
-img_0000341.jpg,passeport,passeport,bad quality,,False,False,passeport
-img_0000342.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000343.jpg,passeport,passeport,floue,,False,False,passeport
-img_0000344.jpg,passeport,passeport,,,True,False,passeport
-img_0000345.jpg,passeport,passeport,not relevant,,False,False,passeport
-img_0000346.jpg,passeport,passeport,,,True,False,passeport
-img_0000347.jpg,passeport,passeport,,,True,False,passeport
-img_0000348.jpg,passeport,passeport,not a passeport,,False,False,passeport
-img_0000349.jpg,passeport,passeport,frontpage,,False,False,passeport
-img_0000350.jpg,passeport,passeport,not a passport,,False,False,passeport
-img_0000351.jpg,passeport,passeport,,,True,False,passeport
-img_0000352.jpg,passeport,passeport,frontpage,,False,False,passeport
+img_0000314.jpg,passeport,passeport,,,False,True,passeport
+img_0000315.jpg,passeport,passeport,form for entering us soil,,False,True,passeport
+img_0000316.jpg,passeport,passeport,,,False,True,passeport
+img_0000317.jpg,passeport,passeport,bad quality + another unexpected language (BULG),,False,True,passeport
+img_0000318.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000319.jpg,passeport,passeport,,,False,True,passeport
+img_0000320.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000321.jpg,passeport,passeport,bad quality,,False,True,passeport
+img_0000322.jpg,passeport,passeport,,,False,True,passeport
+img_0000323.jpg,passeport,passeport,,,False,True,passeport
+img_0000324.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000325.jpg,passeport,passeport,pas de visage,,False,True,passeport
+img_0000326.jpg,passeport,passeport,,,False,True,passeport
+img_0000327.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000328.jpg,passeport,passeport,features missing,,False,True,passeport
+img_0000329.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000330.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000331.jpg,passeport,passeport,,,False,True,passeport
+img_0000332.jpg,passeport,passeport,,,False,True,passeport
+img_0000333.jpg,passeport,passeport,not relevant,,False,True,passeport
+img_0000334.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000335.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000336.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000337.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000338.jpg,passeport,passeport,,,False,True,passeport
+img_0000339.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000340.jpg,passeport,passeport,not a passeport,,False,True,passeport
+img_0000341.jpg,passeport,passeport,bad quality,,False,True,passeport
+img_0000342.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000343.jpg,passeport,passeport,floue,,False,True,passeport
+img_0000344.jpg,passeport,passeport,,,False,True,passeport
+img_0000345.jpg,passeport,passeport,not relevant,,False,True,passeport
+img_0000346.jpg,passeport,passeport,,,False,True,passeport
+img_0000347.jpg,passeport,passeport,,,False,True,passeport
+img_0000348.jpg,passeport,passeport,not a passeport,,False,True,passeport
+img_0000349.jpg,passeport,passeport,frontpage,,False,True,passeport
+img_0000350.jpg,passeport,passeport,not a passport,,False,True,passeport
+img_0000351.jpg,passeport,passeport,,,False,True,passeport
+img_0000352.jpg,passeport,passeport,frontpage,,False,True,passeport
 img_0000353.jpg,id_pieces,passeport,not a passeport,id_pieces,True,False,id_pieces
-img_0000354.jpg,passeport,passeport,not a passeport,,False,False,passeport
-img_0000355.jpg,paye,paye,,,True,False,paye
-img_0000356.jpg,paye,paye,,,True,False,paye
-img_0000357.jpg,paye,paye,,,True,False,paye
-img_0000358.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000359.jpg,paye,paye,,,True,False,paye
-img_0000360.jpg,paye,paye,,,True,False,paye
-img_0000361.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000362.jpg,paye,paye,,,True,False,paye
-img_0000363.jpg,paye,paye,,,True,False,paye
-img_0000364.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000365.jpg,paye,paye,,,True,False,paye
-img_0000366.jpg,paye,paye,,,True,False,paye
-img_0000367.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000368.jpg,paye,paye,,,True,False,paye
-img_0000369.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000370.jpg,paye,paye,,,True,False,paye
-img_0000371.jpg,paye,paye,,,True,False,paye
-img_0000372.jpg,paye,paye,,,True,False,paye
-img_0000373.jpg,paye,paye,,,True,False,paye
-img_0000374.jpg,paye,paye,bad quality,,False,False,paye
-img_0000375.jpg,paye,paye,,,True,False,paye
-img_0000376.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000377.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000378.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000379.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000380.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000381.jpg,paye,paye,,,True,False,paye
-img_0000382.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000383.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000384.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000385.jpg,paye,paye,,,True,False,paye
-img_0000386.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000387.jpg,paye,paye,,,True,False,paye
-img_0000388.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000389.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000390.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000391.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000392.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000393.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000394.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000395.jpg,paye,paye,not relevant,,False,False,paye
-img_0000396.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000397.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000398.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000399.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000400.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000401.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000402.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000403.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000404.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000405.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000406.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000407.jpg,paye,paye,,,True,False,paye
-img_0000408.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000409.jpg,paye,paye,,,True,False,paye
-img_0000410.jpg,paye,paye,,,True,False,paye
-img_0000411.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000412.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000413.jpg,paye,paye,,,True,False,paye
-img_0000414.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000415.jpg,paye,paye,,,True,False,paye
-img_0000416.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000417.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000418.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000419.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000420.jpg,paye,paye,,,True,False,paye
-img_0000421.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000422.jpg,paye,paye,,,True,False,paye
-img_0000423.jpg,paye,paye,,,True,False,paye
-img_0000424.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000425.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000426.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000427.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000428.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000429.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000430.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000431.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000432.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000433.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000434.jpg,paye,paye,,,True,False,paye
-img_0000435.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000436.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000437.jpg,paye,paye,,,True,False,paye
-img_0000438.jpg,paye,paye,,,True,False,paye
-img_0000439.jpg,paye,paye,,,True,False,paye
-img_0000440.jpg,paye,paye,,,True,False,paye
-img_0000441.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000442.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000443.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000444.jpg,paye,paye,,,True,False,paye
-img_0000445.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000446.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000447.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000448.jpg,paye,paye,,,True,False,paye
-img_0000449.jpg,paye,paye,,,True,False,paye
-img_0000450.jpg,paye,paye,,,True,False,paye
-img_0000451.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000452.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000453.jpg,paye,paye,,,True,False,paye
-img_0000454.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000455.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000456.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000457.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000458.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000459.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000460.jpg,paye,paye,,,True,False,paye
-img_0000461.jpg,paye,paye,,,True,False,paye
-img_0000462.jpg,paye,paye,,,True,False,paye
-img_0000463.jpg,paye,paye,,,True,False,paye
-img_0000464.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000465.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000466.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000467.jpg,paye,paye,,,True,False,paye
-img_0000468.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000469.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000470.jpg,paye,paye,not a relevant image,,False,False,paye
-img_0000471.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000472.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000473.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000474.jpg,paye,paye,,,True,False,paye
-img_0000475.jpg,paye,paye,not relevant,,False,False,paye
-img_0000476.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000477.jpg,paye,paye,,,True,False,paye
-img_0000478.jpg,paye,paye,,,True,False,paye
-img_0000479.jpg,paye,paye,,,True,False,paye
-img_0000480.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000481.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000482.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000483.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000484.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000485.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000486.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000487.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000488.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000489.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000490.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000491.jpg,paye,paye,,,True,False,paye
-img_0000492.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000493.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000494.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000495.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000496.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000497.jpg,paye,paye,not a relevant image,,False,False,paye
-img_0000498.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000499.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000500.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000501.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000502.jpg,paye,paye,,,True,False,paye
-img_0000503.jpg,paye,paye,,,True,False,paye
-img_0000504.jpg,paye,paye,,,True,False,paye
-img_0000505.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000506.jpg,paye,paye,,,True,False,paye
-img_0000507.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000508.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000509.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000510.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000511.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000512.jpg,paye,paye,not the good type,,False,False,paye
-img_0000513.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000514.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000515.jpg,paye,paye,,,True,False,paye
-img_0000516.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000517.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000518.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000519.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000520.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000521.jpg,paye,paye,,,True,False,paye
-img_0000522.jpg,paye,paye,,,True,False,paye
-img_0000523.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000524.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000525.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000526.jpg,paye,paye,,,True,False,paye
-img_0000527.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000528.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000529.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000530.jpg,paye,paye,,,True,False,paye
-img_0000531.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000532.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000533.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000534.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000535.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000536.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000537.jpg,paye,paye,,,True,False,paye
-img_0000538.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000539.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000540.jpg,paye,paye,not relevant image,,False,False,paye
-img_0000541.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000542.jpg,paye,paye,,,True,False,paye
-img_0000543.jpg,paye,paye,,,True,False,paye
-img_0000544.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000545.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000546.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000547.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000548.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000549.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000550.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000551.jpg,paye,paye,,,True,False,paye
-img_0000552.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000553.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000554.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000555.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000556.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000557.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000558.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000559.jpg,paye,paye,,,True,False,paye
-img_0000560.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000561.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000562.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000563.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000564.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000565.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000566.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000567.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000568.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000569.jpg,paye,paye,,,True,False,paye
-img_0000570.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000571.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000572.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000573.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000574.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000575.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000576.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000577.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000578.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000579.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000580.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000581.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000582.jpg,paye,paye,,,True,False,paye
-img_0000583.jpg,paye,paye,,,True,False,paye
-img_0000584.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000585.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000586.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000587.jpg,paye,paye,,,True,False,paye
-img_0000588.jpg,paye,paye,not a relevant image,,False,False,paye
-img_0000589.jpg,paye,paye,Mauvais contenu,,False,False,paye
-img_0000590.jpg,paye,paye,,,True,False,paye
-img_0000591.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000592.jpg,paye,paye,Mauvaise qualité,,False,False,paye
-img_0000593.jpg,paye,paye,Mauvaise qualité,,False,False,paye
+img_0000354.jpg,passeport,passeport,not a passeport,,False,True,passeport
+img_0000355.jpg,paye,paye,,,False,True,paye
+img_0000356.jpg,paye,paye,,,False,True,paye
+img_0000357.jpg,paye,paye,,,False,True,paye
+img_0000358.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000359.jpg,paye,paye,,,False,True,paye
+img_0000360.jpg,paye,paye,,,False,True,paye
+img_0000361.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000362.jpg,paye,paye,,,False,True,paye
+img_0000363.jpg,paye,paye,,,False,True,paye
+img_0000364.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000365.jpg,paye,paye,,,False,True,paye
+img_0000366.jpg,paye,paye,,,False,True,paye
+img_0000367.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000368.jpg,paye,paye,,,False,True,paye
+img_0000369.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000370.jpg,paye,paye,,,False,True,paye
+img_0000371.jpg,paye,paye,,,False,True,paye
+img_0000372.jpg,paye,paye,,,False,True,paye
+img_0000373.jpg,paye,paye,,,False,True,paye
+img_0000374.jpg,paye,paye,bad quality,,False,True,paye
+img_0000375.jpg,paye,paye,,,False,True,paye
+img_0000376.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000377.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000378.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000379.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000380.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000381.jpg,paye,paye,,,False,True,paye
+img_0000382.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000383.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000384.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000385.jpg,paye,paye,,,False,True,paye
+img_0000386.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000387.jpg,paye,paye,,,False,True,paye
+img_0000388.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000389.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000390.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000391.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000392.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000393.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000394.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000395.jpg,paye,paye,not relevant,,False,True,paye
+img_0000396.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000397.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000398.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000399.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000400.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000401.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000402.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000403.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000404.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000405.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000406.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000407.jpg,paye,paye,,,False,True,paye
+img_0000408.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000409.jpg,paye,paye,,,False,True,paye
+img_0000410.jpg,paye,paye,,,False,True,paye
+img_0000411.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000412.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000413.jpg,paye,paye,,,False,True,paye
+img_0000414.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000415.jpg,paye,paye,,,False,True,paye
+img_0000416.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000417.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000418.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000419.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000420.jpg,paye,paye,,,False,True,paye
+img_0000421.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000422.jpg,paye,paye,,,False,True,paye
+img_0000423.jpg,paye,paye,,,False,True,paye
+img_0000424.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000425.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000426.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000427.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000428.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000429.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000430.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000431.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000432.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000433.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000434.jpg,paye,paye,,,False,True,paye
+img_0000435.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000436.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000437.jpg,paye,paye,,,False,True,paye
+img_0000438.jpg,paye,paye,,,False,True,paye
+img_0000439.jpg,paye,paye,,,False,True,paye
+img_0000440.jpg,paye,paye,,,False,True,paye
+img_0000441.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000442.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000443.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000444.jpg,paye,paye,,,False,True,paye
+img_0000445.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000446.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000447.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000448.jpg,paye,paye,,,False,True,paye
+img_0000449.jpg,paye,paye,,,False,True,paye
+img_0000450.jpg,paye,paye,,,False,True,paye
+img_0000451.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000452.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000453.jpg,paye,paye,,,False,True,paye
+img_0000454.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000455.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000456.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000457.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000458.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000459.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000460.jpg,paye,paye,,,False,True,paye
+img_0000461.jpg,paye,paye,,,False,True,paye
+img_0000462.jpg,paye,paye,,,False,True,paye
+img_0000463.jpg,paye,paye,,,False,True,paye
+img_0000464.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000465.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000466.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000467.jpg,paye,paye,,,False,True,paye
+img_0000468.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000469.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000470.jpg,paye,paye,not a relevant image,,False,True,paye
+img_0000471.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000472.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000473.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000474.jpg,paye,paye,,,False,True,paye
+img_0000475.jpg,paye,paye,not relevant,,False,True,paye
+img_0000476.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000477.jpg,paye,paye,,,False,True,paye
+img_0000478.jpg,paye,paye,,,False,True,paye
+img_0000479.jpg,paye,paye,,,False,True,paye
+img_0000480.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000481.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000482.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000483.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000484.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000485.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000486.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000487.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000488.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000489.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000490.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000491.jpg,paye,paye,,,False,True,paye
+img_0000492.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000493.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000494.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000495.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000496.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000497.jpg,paye,paye,not a relevant image,,False,True,paye
+img_0000498.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000499.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000500.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000501.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000502.jpg,paye,paye,,,False,True,paye
+img_0000503.jpg,paye,paye,,,False,True,paye
+img_0000504.jpg,paye,paye,,,False,True,paye
+img_0000505.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000506.jpg,paye,paye,,,False,True,paye
+img_0000507.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000508.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000509.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000510.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000511.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000512.jpg,paye,paye,not the good type,,False,True,paye
+img_0000513.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000514.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000515.jpg,paye,paye,,,False,True,paye
+img_0000516.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000517.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000518.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000519.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000520.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000521.jpg,paye,paye,,,False,True,paye
+img_0000522.jpg,paye,paye,,,False,True,paye
+img_0000523.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000524.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000525.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000526.jpg,paye,paye,,,False,True,paye
+img_0000527.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000528.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000529.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000530.jpg,paye,paye,,,False,True,paye
+img_0000531.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000532.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000533.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000534.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000535.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000536.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000537.jpg,paye,paye,,,False,True,paye
+img_0000538.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000539.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000540.jpg,paye,paye,not relevant image,,False,True,paye
+img_0000541.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000542.jpg,paye,paye,,,False,True,paye
+img_0000543.jpg,paye,paye,,,False,True,paye
+img_0000544.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000545.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000546.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000547.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000548.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000549.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000550.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000551.jpg,paye,paye,,,False,True,paye
+img_0000552.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000553.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000554.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000555.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000556.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000557.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000558.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000559.jpg,paye,paye,,,False,True,paye
+img_0000560.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000561.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000562.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000563.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000564.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000565.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000566.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000567.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000568.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000569.jpg,paye,paye,,,False,True,paye
+img_0000570.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000571.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000572.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000573.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000574.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000575.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000576.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000577.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000578.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000579.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000580.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000581.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000582.jpg,paye,paye,,,False,True,paye
+img_0000583.jpg,paye,paye,,,False,True,paye
+img_0000584.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000585.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000586.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000587.jpg,paye,paye,,,False,True,paye
+img_0000588.jpg,paye,paye,not a relevant image,,False,True,paye
+img_0000589.jpg,paye,paye,Mauvais contenu,,False,True,paye
+img_0000590.jpg,paye,paye,,,False,True,paye
+img_0000591.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000592.jpg,paye,paye,Mauvaise qualité,,False,True,paye
+img_0000593.jpg,paye,paye,Mauvaise qualité,,False,True,paye
 img_0001127.jpg,presentation,presentation,,,False,True,presentation
 img_0001160.jpg,presentation,presentation,,,False,True,presentation
 img_0001182.jpg,presentation,presentation,,,False,True,presentation
@@ -1140,14 +1140,14 @@ img_0001322.jpg,presentation,presentation,,,False,True,presentation
 img_0001325.jpg,presentation,presentation,,,False,True,presentation
 img_0001336.jpg,presentation,presentation,,,False,True,presentation
 img_0001344.jpg,presentation,presentation,,,False,True,presentation
-img_0001351.jpg,news_article,presentation,Not a presentation,news_article,True,False,article
+img_0001351.jpg,news_article,presentation,Not a presentation,news_article,False,True,article
 img_0001364.jpg,presentation,presentation,,,False,True,presentation
 img_0001371.jpg,presentation,presentation,,,False,True,presentation
 img_0001376.jpg,presentation,presentation,,,False,True,presentation
 img_0001377.jpg,presentation,presentation,,,False,True,presentation
-img_0001382.jpg,scientific_publication,presentation,Could be multicategory ?,scientific_publication,True,False,article
+img_0001382.jpg,scientific_publication,presentation,Could be multicategory ?,scientific_publication,False,True,article
 img_0001386.jpg,presentation,presentation,,,False,True,presentation
-img_0001395.jpg,scientific_publication,presentation,Not a presentation,scientific_publication,True,False,article
+img_0001395.jpg,scientific_publication,presentation,Not a presentation,scientific_publication,False,True,article
 img_0001398.jpg,presentation,presentation,,,False,True,presentation
 img_0001402.jpg,presentation,presentation,,,False,True,presentation
 img_0001408.jpg,presentation,presentation,,,False,True,presentation
@@ -1163,37 +1163,37 @@ img_0001493.jpg,presentation,presentation,,,False,True,presentation
 img_0001509.jpg,presentation,presentation,,,False,True,presentation
 img_0001528.jpg,presentation,presentation,,,False,True,presentation
 img_0001593.jpg,presentation,presentation,,,False,True,presentation
-img_0001162.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001168.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001169.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001177.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001199.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001203.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001212.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001213.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001293.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001301.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001313.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001335.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001349.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,False,questionnaire
-img_0001359.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001366.jpg,questionnaire,questionnaire,not relevant image,,False,False,questionnaire
-img_0001389.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001397.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001414.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001418.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,False,questionnaire
-img_0001446.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001464.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001495.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001503.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001511.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001513.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001531.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001551.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001557.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001570.jpg,questionnaire,questionnaire,,,True,False,questionnaire
-img_0001578.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,False,questionnaire
-img_0001582.jpg,questionnaire,questionnaire,,,True,False,questionnaire
+img_0001162.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001168.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001169.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001177.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001199.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001203.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001212.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001213.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001293.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001301.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001313.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001335.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001349.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,True,questionnaire
+img_0001359.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001366.jpg,questionnaire,questionnaire,not relevant image,,False,True,questionnaire
+img_0001389.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001397.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001414.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001418.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,True,questionnaire
+img_0001446.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001464.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001495.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001503.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001511.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001513.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001531.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001551.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001557.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001570.jpg,questionnaire,questionnaire,,,False,True,questionnaire
+img_0001578.jpg,questionnaire,questionnaire,n'appartient pas � la cat�gorie,,False,True,questionnaire
+img_0001582.jpg,questionnaire,questionnaire,,,False,True,questionnaire
 img_0001113.jpg,resume,resume,,,True,False,resume
 img_0001116.jpg,resume,resume,,,True,False,resume
 img_0001123.jpg,resume,resume,,,True,False,resume
@@ -1524,34 +1524,34 @@ img_0001104.jpg,rrc.cvc,rrc.cvc,,,False,True,rrc.cvc
 img_0001105.jpg,rrc.cvc,rrc.cvc,,,False,True,rrc.cvc
 img_0001106.jpg,rrc.cvc,rrc.cvc,,,False,True,rrc.cvc
 img_0001107.jpg,rrc.cvc,rrc.cvc,,,False,True,rrc.cvc
-img_0001109.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001132.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001134.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001141.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001150.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001155.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,False,article
-img_0001159.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001173.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001187.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001221.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001255.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001279.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001310.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001326.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,False,article
-img_0001331.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,False,article
-img_0001358.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001379.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001421.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001445.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001454.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001471.jpg,scientific_publication,scientific_publication,only article in german,,False,False,article
-img_0001489.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,False,article
-img_0001510.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001530.jpg,news_article,scientific_publication,n'appartient pas � la cat�gorie,news_article,True,False,article
-img_0001535.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001541.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001569.jpg,scientific_publication,scientific_publication,,,True,False,article
-img_0001602.jpg,scientific_publication,scientific_publication,,,True,False,article
+img_0001109.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001132.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001134.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001141.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001150.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001155.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,True,article
+img_0001159.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001173.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001187.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001221.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001255.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001279.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001310.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001326.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,True,article
+img_0001331.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,True,article
+img_0001358.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001379.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001421.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001445.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001454.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001471.jpg,scientific_publication,scientific_publication,only article in german,,False,True,article
+img_0001489.jpg,scientific_publication,scientific_publication,n'appartient pas � la cat�gorie,,False,True,article
+img_0001510.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001530.jpg,news_article,scientific_publication,n'appartient pas � la cat�gorie,news_article,False,True,article
+img_0001535.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001541.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001569.jpg,scientific_publication,scientific_publication,,,False,True,article
+img_0001602.jpg,scientific_publication,scientific_publication,,,False,True,article
 img_0001129.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001131.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001163.jpg,scientific_report,scientific_report,,,False,True,scientific_report
@@ -1562,7 +1562,7 @@ img_0001191.jpg,scientific_report,scientific_report,,,False,True,scientific_repo
 img_0001211.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001216.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001237.jpg,scientific_report,scientific_report,,,False,True,scientific_report
-img_0001241.jpg,scientific_publication,scientific_report,n'appartient pas � la cat�gorie,scientific_publication,True,False,article
+img_0001241.jpg,scientific_publication,scientific_report,n'appartient pas � la cat�gorie,scientific_publication,False,True,article
 img_0001243.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001245.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001258.jpg,scientific_report,scientific_report,,,False,True,scientific_report
@@ -1584,29 +1584,29 @@ img_0001558.jpg,scientific_report,scientific_report,,,False,True,scientific_repo
 img_0001566.jpg,scientific_report,scientific_report,,,False,True,scientific_report
 img_0001567.jpg,handwritten,scientific_report,n'appartient pas � la cat�gorie,handwritten,False,True,handwritten
 img_0001604.jpg,scientific_report,scientific_report,,,False,True,scientific_report
-img_0001114.jpg,specification,specification,,,True,False,specification
-img_0001156.jpg,specification,specification,,,True,False,specification
-img_0001176.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,False,specification
-img_0001181.jpg,specification,specification,,,True,False,specification
-img_0001227.jpg,specification,specification,,,True,False,specification
-img_0001253.jpg,specification,specification,,,True,False,specification
-img_0001271.jpg,specification,specification,,,True,False,specification
-img_0001328.jpg,specification,specification,,,True,False,specification
-img_0001329.jpg,specification,specification,,,True,False,specification
-img_0001330.jpg,specification,specification,,,True,False,specification
-img_0001340.jpg,specification,specification,,,True,False,specification
-img_0001423.jpg,specification,specification,,,True,False,specification
-img_0001425.jpg,specification,specification,,,True,False,specification
-img_0001455.jpg,specification,specification,,,True,False,specification
-img_0001465.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,False,specification
-img_0001473.jpg,specification,specification,,,True,False,specification
-img_0001492.jpg,specification,specification,,,True,False,specification
-img_0001502.jpg,specification,specification,,,True,False,specification
-img_0001505.jpg,specification,specification,,,True,False,specification
-img_0001518.jpg,specification,specification,,,True,False,specification
-img_0001525.jpg,specification,specification,,,True,False,specification
-img_0001538.jpg,specification,specification,,,True,False,specification
-img_0001553.jpg,specification,specification,,,True,False,specification
-img_0001560.jpg,specification,specification,,,True,False,specification
-img_0001565.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,False,specification
-img_0001600.jpg,specification,specification,,,True,False,specification
+img_0001114.jpg,specification,specification,,,False,True,specification
+img_0001156.jpg,specification,specification,,,False,True,specification
+img_0001176.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,True,specification
+img_0001181.jpg,specification,specification,,,False,True,specification
+img_0001227.jpg,specification,specification,,,False,True,specification
+img_0001253.jpg,specification,specification,,,False,True,specification
+img_0001271.jpg,specification,specification,,,False,True,specification
+img_0001328.jpg,specification,specification,,,False,True,specification
+img_0001329.jpg,specification,specification,,,False,True,specification
+img_0001330.jpg,specification,specification,,,False,True,specification
+img_0001340.jpg,specification,specification,,,False,True,specification
+img_0001423.jpg,specification,specification,,,False,True,specification
+img_0001425.jpg,specification,specification,,,False,True,specification
+img_0001455.jpg,specification,specification,,,False,True,specification
+img_0001465.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,True,specification
+img_0001473.jpg,specification,specification,,,False,True,specification
+img_0001492.jpg,specification,specification,,,False,True,specification
+img_0001502.jpg,specification,specification,,,False,True,specification
+img_0001505.jpg,specification,specification,,,False,True,specification
+img_0001518.jpg,specification,specification,,,False,True,specification
+img_0001525.jpg,specification,specification,,,False,True,specification
+img_0001538.jpg,specification,specification,,,False,True,specification
+img_0001553.jpg,specification,specification,,,False,True,specification
+img_0001560.jpg,specification,specification,,,False,True,specification
+img_0001565.jpg,specification,specification,n'appartient pas � la cat�gorie,,False,True,specification
+img_0001600.jpg,specification,specification,,,False,True,specification
