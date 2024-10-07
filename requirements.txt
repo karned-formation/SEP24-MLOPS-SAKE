@@ -9,3 +9,7 @@ typing
 nltk
 ipython
 spacy
+langdetect
+fastapi
+starlette
+uvicorn
