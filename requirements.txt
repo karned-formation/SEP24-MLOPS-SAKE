@@ -1,0 +1,11 @@
+pandas
+numpy
+matplotlib
+seaborn
+opencv
+scikit-learn
+imbalanced-learn
+typing
+nltk
+ipython
+spacy
