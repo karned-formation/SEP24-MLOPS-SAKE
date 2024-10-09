@@ -175,11 +175,13 @@ def clean_transform_ocerised_text(text: str) -> str:
 
     return fct_clean 
 
-
-def main(data: str):
+def tokenize_data(data: str) -> str:
     cleaned_data = clean_transform_ocerised_text(data)
     tokenized_data = token_lemmatization_and_remove_stop_words(cleaned_data)
     return tokenized_data
+
+def main(data: str):
+    return tokenize_data(data)
 
 
 if __name__ == "__main__":
