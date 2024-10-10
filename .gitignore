@@ -1,7 +1,10 @@
 # Jupyter Notebook
 .ipynb_checkpoints
+.virtual_documents
 
 __pycache__/
+
+
 
 .vscode
 .idea
