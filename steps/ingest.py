@@ -9,7 +9,6 @@ ocr_endpoint = "http://localhost:8901/txt/blocks-words" # url de l'OCR
 data_path = "data/" # chemin du dossier data
 
 
-
 def get_full_text(image: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
     with open(image, "rb") as file:
