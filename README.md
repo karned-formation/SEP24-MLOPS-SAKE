@@ -7,8 +7,11 @@ CrÃ©er l'environnement anaconda avec python 3.11
 Activer l'environnement
 ```conda activate env_mlops```
 
-Tells conda also look on the conda-forge channel when searching for packages
+Ajouter conda-forge channel pour la recherche de packages
 ```conda config --append channels conda-forge```
+
+Créer un Kernel (pour les notebooks)
+```conda install -n env_mlops ipykernel --update-deps --force-reinstall```
 
 Installer les librairies requises
 ```conda install --yes --file requirements.txt```
