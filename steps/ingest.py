@@ -30,6 +30,8 @@ def get_processed_dataset(path_to_dataset: str) -> pd.DataFrame:
 
 def get_new_images_to_ocerize(raw_dataset: pd.DataFrame, processed_dataset: pd.DataFrame) -> List[str]:
     """Compare les deux fichiers et renvoi seulement les images qui ne sont pas déjà océrisées."""
+
+    # TODO: supprimer les images qui sont dans processed_dataset.csv et ne sont plus dans dataset.csv
     
     filenames = np.setdiff1d(raw_dataset["filename"].values, processed_dataset["filename"].values)
 
@@ -43,8 +45,9 @@ def save_text_to_file(text:str, path: str):
 
 def main():
 
-    path_to_dataset = f"{data_path}/processed/processed_dataset.csv"
+    path_to_dataset = f"{data_path}/processed/processed_dataset.csv" 
     raw_dataset = pd.read_csv(f"{data_path}dataset.csv")
+
     processed_dataset = get_processed_dataset(path_to_dataset)
 
     new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
