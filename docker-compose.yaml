@@ -1,0 +1,18 @@
+services:
+  ocr:
+    image: killiankopp/ms-ocr-ia:1.1
+    ports:
+      - "8901:8901"
+    networks:
+      - sake
+
+  etl:
+    image: killiankopp/ms-sake-etl:1.0
+    ports:
+      - "8903:8903"
+    networks:
+      - sake
+
+networks:
+  sake:
+    driver: bridge
