@@ -10,7 +10,7 @@ Activer l'environnement
 Ajouter conda-forge channel pour la recherche de packages
 ```conda config --append channels conda-forge```
 
-Cr�er un Kernel (pour les notebooks)
+Cr�er un Kernel (pour les notebooks)
 ```conda install -n env_mlops ipykernel --update-deps --force-reinstall```
 
 Installer les librairies requises
@@ -31,3 +31,17 @@ python3 -m spacy download en_core_web_sm
 
 ### Architecture des dossiers
 
+
+## Microservice : API REST
+Un fichier Docker Compose à la racine du projet permet de lancer l'ensemble des microservices.
+
+'''sh
+docker-compose up
+```
+
+Pour accéder aux différentes documentations, il suffit de se rendre à l'adresse suivante :
+OCR
+http://localhost:8901/docs
+
+ETL
+http://localhost:8903/docs
