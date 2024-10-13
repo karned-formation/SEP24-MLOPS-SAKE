@@ -23,8 +23,12 @@ def get_processed_dataset(path_to_dataset: str) -> pd.DataFrame:
     if os.path.isfile(path_to_dataset):
         processed_dataset = pd.read_csv(path_to_dataset)
     else:
-        processed_dataset = pd.DataFrame(columns=['filename','new_type','original_type','motif_rejet','true_cat','inclusion_dataset','excluded_types','grouped_type', 'full_text', 'cleaned_text'], dtype="object")
-        processed_dataset.to_csv(path_to_dataset, index=None)
+        columns = [
+            'filename', 'new_type', 'original_type', 'motif_rejet', 'true_cat',
+            'inclusion_dataset', 'excluded_types', 'grouped_type', 'full_text', 'cleaned_text'
+        ]
+        processed_dataset = pd.DataFrame(columns=columns, dtype="object")
+        processed_dataset.to_csv(path_to_dataset, index=False)
     return processed_dataset
 
 
