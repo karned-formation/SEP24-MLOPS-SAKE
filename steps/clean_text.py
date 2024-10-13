@@ -2,11 +2,12 @@ import pandas as pd
 import requests
 from src.data.check_structure import check_existing_folder
 import os
+from typing import Optional
 
-def load_processed_dataset(filepath):
+def load_processed_dataset(filepath: str) -> pd.DataFrame:
     return pd.read_csv(filepath)
 
-def clean_text(api_url, text):
+def clean_text(api_url: str, text: str) -> Optional[str]:
     headers = {'Content-Type': 'text/plain'}
     
     params = {
@@ -17,19 +18,18 @@ def clean_text(api_url, text):
     print(response.text)
     if response.status_code == 200:
         return response.text
-    return ''
+    return None
 
-def read_file_content(filename):
-            with open(filename, 'r', encoding='utf-8') as file:
-                return file.read()
+def read_file_content(filename: str) -> str:
+    with open(filename, 'r', encoding='utf-8') as file:
+        return file.read()
             
-def process_dataset(processed_dataset, api_url):
+def process_dataset(processed_dataset: pd.DataFrame, api_url: str) -> pd.DataFrame:
     filenames = []
     cleaned_texts = []
     categories = []
 
     for index, row in processed_dataset.iterrows():
-        
         file_content = read_file_content(row['full_text'])
         cleaned_text = clean_text(api_url, file_content)
         filenames.append(row['filename'])
@@ -42,7 +42,7 @@ def process_dataset(processed_dataset, api_url):
         'category': categories
     })
 
-def save_cleaned_dataset(cleaned_dataset, filepath):
+def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     cleaned_dataset.to_csv(filepath, index=False)
 
 
