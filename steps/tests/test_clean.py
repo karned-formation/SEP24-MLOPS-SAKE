@@ -1,4 +1,4 @@
-from etl.clean import tokenize_data
+from steps.etl.clean import tokenize_data
 
 txt_test = """
 FACTURE

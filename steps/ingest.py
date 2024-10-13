@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 from typing import List
-from src.data.check_structure import check_existing_file, check_existing_folder
+from src.data.check_structure import check_existing_folder
+from time import sleep
 
 ocr_endpoint = "http://localhost:8901/txt/blocks-words" # url de l'OCR 
 data_path = "data/" # chemin du dossier data
@@ -66,7 +67,7 @@ def main():
     new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
 
         # Pour chaque image, on récupère le texte et on l'enregistre dans un fichier .txt
-    for _, row in new_images.head(10).iterrows():                                             
+    for _, row in new_images.head(10).iterrows():                                              # TODO : remove head(10)
         full_text = get_full_text(f"{data_path}raw/final/{row.filename}")
 
         text_file_path = f"{data_path}/processed/{row.filename}.txt"
@@ -74,7 +75,7 @@ def main():
         new_images.loc[new_images['filename']==row.filename, 'full_text'] = text_file_path 
    
     # On ajoute les nouvelles images océrisées au dataset   
-    processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)  
+    processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)  # TODO : remove head(10)
     processed_dataset.to_csv(path_to_dataset, index=None)
 
 if __name__ == "__main__":
