@@ -15,6 +15,7 @@ src/preprocessing/ocr_analysis.py
 src/preprocessing/preprocessing_dataset_selection.py
 src/preprocessing/preprocessing_text_features.py
 steps/__init__.py
+steps/clean_text.py
 steps/ingest.py
 steps/predict.py
 steps/test.py
@@ -22,6 +23,8 @@ steps/etl/__init__.py
 steps/etl/app.py
 steps/etl/clean.py
 steps/etl/download_contents.py
+steps/tests/__init__.py
+steps/tests/test_clean.py
 tests/__init__.py
 tests/test_ingest.py
 tests/test_predict.py
