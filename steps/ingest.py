@@ -56,20 +56,20 @@ def main():
         os.makedirs(output_folderpath)
 
     path_to_dataset = f"{data_path}/processed/processed_dataset.csv" 
-    raw_dataset = pd.read_csv(f"{data_path}dataset.csv")
+    raw_dataset = pd.read_csv(f"{data_path}working_dataset.csv")
 
     processed_dataset = get_processed_dataset(path_to_dataset)
 
     new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
 
-    for _, row in new_images.head(10).iterrows():                                               # TODO : Attention j'ai mis head(10) pour tester, à enlever
+    for _, row in new_images.iterrows():                                             
         full_text = get_full_text(f"{data_path}raw/final/{row.filename}")
 
         text_file_path = f"{data_path}/processed/{row.filename}.txt"
         save_text_to_file(full_text, text_file_path)
         new_images.loc[new_images['filename']==row.filename, 'full_text'] = text_file_path 
    
-    processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)   # TODO : Attention j'ai mis head(10) pour tester, à enlever
+    processed_dataset = pd.concat([processed_dataset, new_images],ignore_index=True)  
     processed_dataset.to_csv(path_to_dataset, index=None)
 
 if __name__ == "__main__":

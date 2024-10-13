@@ -31,6 +31,10 @@ python3 -m spacy download fr_core_news_sm
 python3 -m spacy download en_core_web_sm
 
 ### Importer les données avec DVC
+
+dvc remote modify origin --local access_key_id YOUR_ACCESS_KEY
+dvc remote modify origin --local secret_access_key YOUR_ACCESS_KEY
+
 rm -rf data/raw_data
 rm -rf .dvc/cache
 dvc fetch data/raw_data.dvc
