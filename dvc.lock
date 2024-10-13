@@ -4,14 +4,14 @@ stages:
     cmd: python3 steps/ingest.py
     deps:
     - path: data/raw
-      md5: 0ce3cf8da34948123a73ec7b83491967.dir
-      size: 237724967
-      nfiles: 1609
+      md5: 162423e418f3e2859e615633bd5614f6.dir
+      size: 21954635
+      nfiles: 183
     - path: steps/ingest.py
-      md5: 0ab5d82bb7f8515be9e0e31b0ff78738
-      size: 2976
+      md5: 383b0bfd28a7892ceff25ebf54630c8d
+      size: 3156
     outs:
     - path: data/processed
-      md5: e70567dc2f4bd7792634c202d6d05fb4.dir
-      size: 9223
+      md5: e682b2ed22a2a3849bd9bf3b0ca71564.dir
+      size: 6758
       nfiles: 11
