@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import os
 from typing import List
-
+from src.data.check_structure import check_existing_file, check_existing_folder
 
 ocr_endpoint = "http://localhost:8901/txt/blocks-words" # url de l'OCR 
 data_path = "data/" # chemin du dossier data
@@ -48,6 +48,12 @@ def save_text_to_file(text:str, path: str):
 
 
 def main():
+
+    output_folderpath = "data/processed/"
+
+    # Crate folder if needed
+    if check_existing_folder(output_folderpath):
+        os.makedirs(output_folderpath)
 
     path_to_dataset = f"{data_path}/processed/processed_dataset.csv" 
     raw_dataset = pd.read_csv(f"{data_path}dataset.csv")

@@ -1,0 +1,17 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python3 steps/ingest.py
+    deps:
+    - path: data/raw
+      md5: 0ce3cf8da34948123a73ec7b83491967.dir
+      size: 237724967
+      nfiles: 1609
+    - path: steps/ingest.py
+      md5: 0ab5d82bb7f8515be9e0e31b0ff78738
+      size: 2976
+    outs:
+    - path: data/processed
+      md5: e70567dc2f4bd7792634c202d6d05fb4.dir
+      size: 9223
+      nfiles: 11
