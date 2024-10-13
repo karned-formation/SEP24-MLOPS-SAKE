@@ -1,0 +1,9 @@
+stages:
+  ingest:
+    cmd: python3 steps/ingest.py
+    deps:
+    - data/raw
+    - steps/ingest.py
+    outs:
+    - data/processed:
+        persist: true

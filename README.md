@@ -10,7 +10,7 @@ Activer l'environnement
 Ajouter conda-forge channel pour la recherche de packages
 ```conda config --append channels conda-forge```
 
-Cr�er un Kernel (pour les notebooks)
+Créer un Kernel (pour les notebooks)
 ```conda install -n env_mlops ipykernel --update-deps --force-reinstall```
 
 Installer les librairies requises
@@ -21,15 +21,30 @@ Mettre à jour la liste des librairies requises
 
 Notes : 
 importer les stopwords
->>> import nltk
->>> nltk.download('stopwords')
->>> nltk.download('punkt_tab')
-
+```
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt_tab')
+```
 importer 
+```
 python3 -m spacy download fr_core_news_sm
 python3 -m spacy download en_core_web_sm
+```
+### Importer les données avec DVC
+```
+dvc remote modify origin --local access_key_id YOUR_ACCESS_KEY
+dvc remote modify origin --local secret_access_key YOUR_ACCESS_KEY
+
+rm -rf data/raw_data
+rm -rf .dvc/cache
+dvc fetch data/raw_data.dvc
+dvc pull 
+dvc checkout
+```
 
 ### Architecture des dossiers
+
 
 
 ## Microservice : API REST
