@@ -9,12 +9,13 @@ stages:
       nfiles: 183
     - path: steps/ingest.py
       md5: 8dfb1fc3d7cb0da4d522918f3be9cc2a
-      size: 3207
+      size: 3288
     outs:
     - path: data/processed
-      md5: c780345822f617fd46756fa81f838a91.dir
-      size: 95851
-      nfiles: 131
+      hash: md5
+      md5: 0c73803b5a8cfba04c87a34a1a4ca88a.dir
+      size: 112832
+      nfiles: 151
   clean:
     cmd: python3 steps/clean_text.py
     deps:
