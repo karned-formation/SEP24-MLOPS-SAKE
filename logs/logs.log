@@ -1,0 +1,79 @@
+2024-10-16 11:29:49,303 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:21:37,778 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:22:09,471 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:22:09,491 - custom_logger - INFO - Starting the ingest process.
+2024-10-16 14:22:09,493 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:22:09,494 - custom_logger - INFO - created directory at: data/raw/final/
+2024-10-16 14:22:09,494 - custom_logger - ERROR - An error occured during the ingest process: DataIngestionConfig.__init__() missing 1 required positional argument: 'processed_dir'
+2024-10-16 14:22:45,059 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:22:45,081 - custom_logger - INFO - Starting the ingest process.
+2024-10-16 14:22:45,083 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:22:45,083 - custom_logger - INFO - created directory at: data/raw/final/
+2024-10-16 14:22:45,106 - custom_logger - ERROR - An error occured during the ingest process: HTTPConnectionPool(host='localhost', port=8901): Max retries exceeded with url: /txt/blocks-words (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f52fad24690>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2024-10-16 14:23:43,032 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:23:43,059 - custom_logger - INFO - Starting the ingest process.
+2024-10-16 14:23:43,060 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:23:43,061 - custom_logger - INFO - created directory at: data/raw/final/
+2024-10-16 14:23:43,071 - custom_logger - ERROR - An error occured during the ingest process: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2024-10-16 14:30:31,378 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:30:31,399 - custom_logger - INFO - Starting the ingest process.
+2024-10-16 14:30:31,401 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:30:31,401 - custom_logger - INFO - created directory at: data/raw/final/
+2024-10-16 14:31:14,026 - custom_logger - INFO - Ingest process completed.
+2024-10-16 14:31:38,460 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:31:38,460 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:31:38,460 - custom_logger - ERROR - An error occurred during the cleaning process: name 'check_existing_folder' is not defined
+2024-10-16 14:37:46,010 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:37:46,035 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:37:46,036 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:37:46,036 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:40:07,550 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:40:07,572 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:40:07,574 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:40:07,574 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:41:35,734 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:41:35,757 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:41:35,758 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:41:35,758 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:42:48,075 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:42:48,094 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:42:48,095 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:42:48,095 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:43:44,395 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:43:44,413 - custom_logger - INFO - Starting the ingest process.
+2024-10-16 14:43:44,415 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:43:44,415 - custom_logger - INFO - created directory at: data/raw/final/
+2024-10-16 14:44:50,526 - custom_logger - INFO - Ingest process completed.
+2024-10-16 14:44:51,482 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:44:51,532 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:44:51,533 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:44:51,533 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:47:08,190 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:47:08,213 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:47:08,215 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:47:08,215 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:48:14,559 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:48:14,578 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:48:14,579 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:48:14,580 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:49:14,489 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:49:14,512 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:49:14,514 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:49:14,514 - custom_logger - INFO - Getting data cleaning configuration
+2024-10-16 14:49:14,514 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:49:41,521 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:49:41,546 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:49:41,547 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:49:41,548 - custom_logger - INFO - Getting data cleaning configuration
+2024-10-16 14:49:41,548 - custom_logger - INFO - Config: {'data_cleaning': {'clean_endpoint': 'http://localhost:8903/clean', 'processed_dir': 'data/processed/', 'cleaned_dir': 'data/cleaned/', 'processed_dataset_path': 'data/processed/processed_dataset.csv', 'cleaned_dataset_path': 'data/cleaned/cleaned_dataset.csv'}, 'data_preprocessing': {'clean_dataset_path': 'data/cleaned/cleaned_dataset.csv', 'tfidf_vectorizer_path': 'models/tfidf.joblib', 'X_train_path': 'data/cleaned/X_train.csv', 'X_test_path': 'data/cleaned/X_test.csv', 'y_train_path': 'data/cleaned/y_train.csv', 'y_test_path': 'data/cleaned/y_test.csv'}, 'model_training': {'X_train_path': 'data/cleaned/X_train.csv', 'y_train_path': 'data/cleaned/y_train.csv', 'model_path': 'models/model.pkl'}, 'model_evaluation': {'X_test_path': 'data/cleaned/X_test.csv', 'y_test_path': 'data/cleaned/y_test.csv', 'model_path': 'models/model.pkl', 'evaluation_results_path': 'metrics/metrics.json'}, 'data_ingestion': {'ocr_endpoint': 'http://localhost:8901/txt/blocks-words', 'image_dir': 'data/raw/final/', 'processed_dir': 'data/processed/', 'raw_dataset_path': 'data/working_dataset.csv', 'processed_dataset_path': 'data/processed/processed_dataset.csv'}}
+2024-10-16 14:49:41,548 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'data_cleaning'"
+2024-10-16 14:51:19,620 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:51:19,641 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:51:19,642 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:51:19,643 - custom_logger - ERROR - An error occurred during the cleaning process: "'ConfigBox' object has no attribute 'processed_texts_dir'"
+2024-10-16 14:52:08,368 - custom_logger - INFO - Custom logger module initialized.
+2024-10-16 14:52:08,387 - custom_logger - INFO - Starting the cleaning process...
+2024-10-16 14:52:08,388 - custom_logger - INFO - yaml file: src/config.yaml loaded successfully
+2024-10-16 14:52:08,388 - custom_logger - INFO - created directory at: data/processed/
+2024-10-16 14:52:08,388 - custom_logger - INFO - created directory at: data/cleaned/
+2024-10-16 14:52:15,618 - custom_logger - INFO - Cleaning process completed successfully.

@@ -1,8 +1,9 @@
 import pandas as pd
 import requests
-from src.data.check_structure import check_existing_folder
 import os
 from typing import Optional
+from custom_logger import logger
+from src.config_manager import ConfigurationManager
 
 def load_processed_dataset(filepath: str) -> pd.DataFrame:
     return pd.read_csv(filepath)
@@ -56,10 +57,7 @@ def main():
     4. Saves the cleaned dataset to a specified path.
     
     Variables:
-    - output_folderpath (str): Path to the folder where the cleaned dataset will be saved.
-    - processed_dataset_path (str): Path to the processed dataset file.
-    - cleaned_dataset_path (str): Path to save the cleaned dataset file.
-    - api_url (str): URL of the API used for cleaning the dataset.
+    - config_manager: ConfigurationManager object to get the data cleaning configuration.
     
     Functions:
     - check_existing_folder(folderpath): Checks if the folder exists.
@@ -67,20 +65,17 @@ def main():
     - process_dataset(dataset, api_url): Sends the dataset to the API for cleaning and returns the cleaned dataset.
     - save_cleaned_dataset(dataset, filepath): Saves the cleaned dataset to the given file path.
     """
-    
-    output_folderpath = "data/cleaned/"
+    try:
+        logger.info("Starting the cleaning process...")
+        config_manager = ConfigurationManager()
+        data_cleaning_config = config_manager.get_data_cleaning_config()
 
-    # Crate folder if needed
-    if check_existing_folder(output_folderpath):
-        os.makedirs(output_folderpath)
-
-    processed_dataset_path = 'data/processed/processed_dataset.csv'
-    cleaned_dataset_path = 'data/cleaned/cleaned_dataset.csv'
-    api_url = 'http://localhost:8903/clean'
-
-    processed_dataset = load_processed_dataset(processed_dataset_path)
-    cleaned_dataset = process_dataset(processed_dataset, api_url)
-    save_cleaned_dataset(cleaned_dataset, cleaned_dataset_path)
+        processed_dataset = load_processed_dataset(data_cleaning_config.processed_dataset_path)
+        cleaned_dataset = process_dataset(processed_dataset, data_cleaning_config.clean_endpoint)
+        save_cleaned_dataset(cleaned_dataset, data_cleaning_config.cleaned_dataset_path)
+        logger.info("Cleaning process completed successfully.")
+    except Exception as e:
+        logger.error(f"An error occurred during the cleaning process: {str(e)}")
 
 if __name__ == '__main__':
     main()
