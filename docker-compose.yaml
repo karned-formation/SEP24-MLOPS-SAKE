@@ -12,6 +12,28 @@ services:
       - "8903:8903"
     networks:
       - sake
+  
+  preprocessing:
+    image: abenayoub/ms-sake-preprocessing
+    ports:
+      - "8904:8904"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/train:/app/data/processed/train
+      - ./data/processed/test:/app/data/processed/test
+      - ./data/vectorizers:/app/data/vectorizers
+      - ./data/cleaned:/app/data/cleaned
+
+  train:
+    image: killiankopp/ms-sake-train:1.0
+    ports:
+      - "8905:8905"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/train:/app/data/processed/train
+      - ./data/models:/app/data/models
 
 networks:
   sake:
