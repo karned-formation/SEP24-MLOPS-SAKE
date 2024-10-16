@@ -13,3 +13,7 @@ langdetect
 fastapi
 starlette
 uvicorn
+dvc
+dvc-s3
+ipynbname
+lime
