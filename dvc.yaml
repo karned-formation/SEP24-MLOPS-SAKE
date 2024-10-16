@@ -1,0 +1,16 @@
+stages:
+  ingest:
+    cmd: python3 steps/ingest.py
+    deps:
+    - data/raw
+    - steps/ingest.py
+    outs:
+    - data/processed:
+        persist: true
+  clean:
+    cmd: python3 steps/clean_text.py
+    deps:
+    - data/processed
+    - steps/clean_text.py
+    outs:
+    - data/cleaned
