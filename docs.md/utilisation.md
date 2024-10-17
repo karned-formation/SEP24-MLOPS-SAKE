@@ -14,3 +14,4 @@ Pour accéder aux différentes documentations, il suffit de se rendre à l'adres
 ```sh
 dvc repro
 ```
+![alt text](pipeline_ingestion.png)

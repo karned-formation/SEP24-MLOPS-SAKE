@@ -2,7 +2,7 @@ pandas
 numpy
 matplotlib
 seaborn
-opencv
+opencv-python
 scikit-learn
 imbalanced-learn
 typing

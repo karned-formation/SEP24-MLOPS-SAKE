@@ -44,7 +44,7 @@ pip install -e .
 
 # Mise en place de DVC
 
-Configuration de DVC
+Configuration de DVC (cela est récupérable sur le site) https://dagshub.com/Belwen/SEP24-MLOPS-SAKE
 ```sh
 dvc remote modify origin --local access_key_id YOUR_ACCESS_KEY
 dvc remote modify origin --local secret_access_key YOUR_ACCESS_KEY
@@ -52,7 +52,5 @@ dvc remote modify origin --local secret_access_key YOUR_ACCESS_KEY
 
 Récupération des données
 ```sh
-dvc fetch data/raw.dvc
 dvc pull 
-dvc checkout
 ```
