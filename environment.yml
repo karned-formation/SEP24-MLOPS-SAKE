@@ -1,0 +1,26 @@
+name: env_mlops
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - pip
+  - pip:
+        - opencv-python
+  - scikit-learn
+  - imbalanced-learn
+  - typing
+  - nltk
+  - ipython
+  - spacy
+  - langdetect
+  - fastapi
+  - starlette
+  - uvicorn
+  - dvc
+  - dvc-s3
+  - ipynbname
+  - lime
