@@ -3,14 +3,12 @@ import pandas as pd
 import numpy as np
 import os
 from typing import List
-from src.data.check_structure import check_existing_folder
 from time import sleep
+from custom_logger import logger
+from src.config_manager import ConfigurationManager
 
-ocr_endpoint = "http://localhost:8901/txt/blocks-words" # url de l'OCR 
-data_path = "data/" # chemin du dossier data
 
-
-def get_full_text(image: str) -> str:
+def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
     with open(image, "rb") as file:
         files = {"file": file}
@@ -46,37 +44,38 @@ def save_text_to_file(text:str, path: str):
 
 
 def main():
+    try:
+        logger.info("Starting the ingest process.")
+        config_manager = ConfigurationManager()
+        data_ingestion_config = config_manager.get_data_ingestion_config()
 
-    output_folderpath = "data/processed/"
+        # On récupère le dataset contenant les images brutes
+        raw_dataset = pd.read_csv(data_ingestion_config.raw_dataset_path)
 
-    # Crate folder if needed
-    if check_existing_folder(output_folderpath):
-        os.makedirs(output_folderpath)
+        # On récupère le dataset contenant le texte océrisé
+        processed_dataset = get_processed_dataset(data_ingestion_config.processed_dataset_path)
 
-    # On récupère le dataset contenant les images brutes
-    path_to_dataset = f"{data_path}/processed/processed_dataset.csv" 
-    raw_dataset = pd.read_csv(f"{data_path}working_dataset.csv")
+        # On supprime les images qui ne sont plus dans le dataset
+        processed_dataset = processed_dataset[processed_dataset['filename'].isin(raw_dataset['filename'])]
 
-    # On récupère le dataset contenant le texte océrisé
-    processed_dataset = get_processed_dataset(path_to_dataset)
+        # On liste les images qui n'ont pas encore été océrisées
+        new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
 
-    # On supprime les images qui ne sont plus dans le dataset
-    processed_dataset = processed_dataset[processed_dataset['filename'].isin(raw_dataset['filename'])]
+            # Pour chaque image, on récupère le texte et on l'enregistre dans un fichier .txt
+        for _, row in new_images.head(10).iterrows():                                              # TODO : remove head(10)
+            full_text = get_full_text(f"{data_ingestion_config.image_dir}{row.filename}", data_ingestion_config.ocr_endpoint)
 
-    # On liste les images qui n'ont pas encore été océrisées
-    new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
-
-        # Pour chaque image, on récupère le texte et on l'enregistre dans un fichier .txt
-    for _, row in new_images.head(10).iterrows():                                              # TODO : remove head(10)
-        full_text = get_full_text(f"{data_path}raw/final/{row.filename}")
-
-        text_file_path = f"{data_path}/processed/{row.filename}.txt"
-        save_text_to_file(full_text, text_file_path)
-        new_images.loc[new_images['filename']==row.filename, 'full_text'] = text_file_path 
-   
-    # On ajoute les nouvelles images océrisées au dataset   
-    processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)  # TODO : remove head(10)
-    processed_dataset.to_csv(path_to_dataset, index=None)
+            text_file_path = f"{data_ingestion_config.processed_dir}{row.filename}.txt"
+            save_text_to_file(full_text, text_file_path)
+            new_images.loc[new_images['filename']==row.filename, 'full_text'] = text_file_path 
+    
+        # On ajoute les nouvelles images océrisées au dataset   
+        processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)  # TODO : remove head(10)
+        processed_dataset.to_csv(data_ingestion_config.processed_dataset_path, index=None)
+        logger.info("Ingest process completed.")
+    except Exception as e:
+        logger.error(f"An error occured during the ingest process: {e}")
+        raise e
 
 if __name__ == "__main__":
     main()

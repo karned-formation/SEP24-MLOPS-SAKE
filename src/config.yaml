@@ -1,0 +1,32 @@
+data_ingestion:
+  ocr_endpoint: "http://localhost:8901/txt/blocks-words"
+  image_dir: "data/raw/final/"
+  processed_dir: "data/processed/" 
+  raw_dataset_path: "data/working_dataset.csv" 
+  processed_dataset_path: "data/processed/processed_dataset.csv"
+  
+data_cleaning:
+  clean_endpoint: "http://localhost:8903/clean"
+  processed_dir: "data/processed/"
+  cleaned_dir: "data/cleaned/"
+  processed_dataset_path: "data/processed/processed_dataset.csv"
+  cleaned_dataset_path: "data/cleaned/cleaned_dataset.csv"
+
+data_preprocessing:
+  clean_dataset_path: "data/cleaned/cleaned_dataset.csv"
+  tfidf_vectorizer_path: "models/tfidf.joblib"
+  X_train_path: "data/cleaned/X_train.csv"
+  X_test_path: "data/cleaned/X_test.csv"
+  y_train_path: "data/cleaned/y_train.csv"
+  y_test_path: "data/cleaned/y_test.csv"
+
+model_training:
+  X_train_path: "data/cleaned/X_train.csv"
+  y_train_path: "data/cleaned/y_train.csv"
+  model_path: "models/model.pkl"
+
+model_evaluation:
+  X_test_path: "data/cleaned/X_test.csv"
+  y_test_path: "data/cleaned/y_test.csv"
+  model_path: "models/model.pkl"
+  evaluation_results_path: "metrics/metrics.json"

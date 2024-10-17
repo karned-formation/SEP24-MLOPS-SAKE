@@ -16,9 +16,11 @@ src/preprocessing/preprocessing_dataset_selection.py
 src/preprocessing/preprocessing_text_features.py
 steps/__init__.py
 steps/clean_text.py
+steps/evaluate.py
 steps/ingest.py
-steps/predict.py
+steps/preprocess.py
 steps/test.py
+steps/train.py
 steps/etl/__init__.py
 steps/etl/app.py
 steps/etl/clean.py
@@ -26,5 +28,6 @@ steps/etl/download_contents.py
 steps/tests/__init__.py
 steps/tests/test_clean.py
 tests/__init__.py
+tests/test_cleantext.py
 tests/test_ingest.py
 tests/test_predict.py
