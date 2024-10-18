@@ -6,8 +6,11 @@ doc_classification.egg-info/SOURCES.txt
 doc_classification.egg-info/dependency_links.txt
 doc_classification.egg-info/top_level.txt
 src/__init__.py
+src/common_utils.py
+src/config.py
+src/config_manager.py
+src/entity.py
 src/data/__init__.py
-src/data/check_structure.py
 src/models/__init__.py
 src/models/test_models_analysis.py
 src/preprocessing/__init__.py
