@@ -17,3 +17,4 @@ dvc
 dvc-s3
 ipynbname
 lime
+python-box

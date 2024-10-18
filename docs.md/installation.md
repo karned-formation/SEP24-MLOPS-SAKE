@@ -19,6 +19,11 @@ python -m ipykernel install --user --name=env_mlops --display-name "env_mlops"
 conda install jupyter --yes
 ```
 
+Windows: lancer ce batch pour avoir un alias python3 sur pyhton (copie)
+```sh
+alias_python3_with_python.bat
+```
+
 ## Créer son environnement avec Venv / Pip
 `✨ /!\ au préalable : python 3.11 doit être installé et être la version active`
 

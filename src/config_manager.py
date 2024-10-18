@@ -18,7 +18,7 @@ class ConfigurationManager:
     def get_data_ingestion_config(self) -> DataIngestionConfig:
           config = self.config.data_ingestion
 
-          create_directories([config.image_dir])
+          create_directories([config.image_dir, config.processed_dir])
 
           data_ingestion_config = DataIngestionConfig(
                 ocr_endpoint = config.ocr_endpoint,
