@@ -1,4 +1,6 @@
 /raw
 /processed
 /cleaned
+/models
+/vectorizers
 dataset.csv

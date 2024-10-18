@@ -14,7 +14,7 @@ services:
       - sake
   
   preprocessing:
-    image: abenayoub/ms-sake-preprocessing
+    image: abenayoub/ms-sake-preprocessing:1.0
     ports:
       - "8904:8904"
     networks:
@@ -26,7 +26,7 @@ services:
       - ./data/cleaned:/app/data/cleaned
 
   train:
-    image: abenayoub/ms-sake-train
+    image: abenayoub/ms-sake-train:1.0
     ports:
       - "8905:8905"
     networks:

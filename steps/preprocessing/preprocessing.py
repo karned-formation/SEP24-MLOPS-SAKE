@@ -8,21 +8,24 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
 
 
-dataset_dir = '/app/data/cleaned/'
-dataset_path = '/app/data/cleaned/cleaned_dataset.csv' 
-vectorizer_path = '/app/models/tfidf.joblib'
+# Paths
+X_train_path = "/app/data/processed/train/X_train.joblib"
+X_test_path = "/app/data/processed/test/X_test.joblib"
+y_train_path = "/app/data/processed/train/y_train.joblib"
+y_test_path = "/app/data/processed/test/y_test.joblib"
+tfidf_vectorizer_path = "/app/data/vectorizers/tfidf.joblib"
 
-def save_vectorizer(vectorizer, vectorizer_path: str) -> None:
+def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     """
     Save a trained TF-IDF vectorizer to the specified path, 
     along with metadata about Python and Joblib versions.
 
     Args:
         vectorizer (TfidfVectorizer): The trained TF-IDF vectorizer to save.
-        vectorizer_path (str): The file path where the vectorizer will be saved.
+        tfidf_vectorizer_path (str): The file path where the vectorizer will be saved.
     """
     # Ensure the directory exists
-    directory = os.path.dirname(vectorizer_path)
+    directory = os.path.dirname(tfidf_vectorizer_path)
     os.makedirs(directory, exist_ok=True)
 
     # Prepare metadata about the environment
@@ -33,61 +36,34 @@ def save_vectorizer(vectorizer, vectorizer_path: str) -> None:
     print(metadata)
 
     # Save vectorizer with metadata
-    joblib.dump({'vectorizer': vectorizer, 'metadata': metadata}, vectorizer_path)
-    print(f"Vectorizer saved to {vectorizer_path} with metadata: {metadata}")
+    joblib.dump({'vectorizer': vectorizer, 'metadata': metadata}, tfidf_vectorizer_path)
+    print(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
 
-
-def custom_label_encoder(labels, action="encode"):
+def save_variables_in_directories(variables: dict) -> None:
     """
-    Encode or decode labels using a predefined custom mapping. 
-    Accepts lists, numpy arrays, or pandas Series as input.
+    Serialize and save multiple variables using Joblib.
 
     Args:
-        labels (list, np.ndarray, pd.Series): Labels to encode or decode.
-        action (str): "encode" to transform labels to encoded values, 
-                      "decode" to transform encoded values back to labels.
-
-    Returns:
-        list: Encoded or decoded labels as a list.
-
-    Raises:
-        ValueError: If any labels are not in the mapping or if an invalid action is provided.
+        variables (dict): A dictionary where keys are variable names, and values are
+                          tuples containing (variable, directory_path).
     """
-    # Define the custom mapping inside the function
-    custom_mapping = {'facture': 0, 'id_pieces': 1, 'resume': 2}
-    
-    # Convert input to a list for consistency in processing
-    if isinstance(labels, (np.ndarray, pd.Series)):
-        labels = labels.tolist()
+    # Iterate over the dictionary and save each variable in its respective directory
+    for var_name, (var_value, file_path) in variables.items():
+        # Ensure the directory exists
+        directory = os.path.dirname(file_path)
+        os.makedirs(directory, exist_ok=True)
 
-    if action == "encode":
-        # Ensure all labels are in the provided mapping
-        missing_labels = [label for label in labels if label not in custom_mapping]
-        if missing_labels:
-            raise ValueError(f"Labels {missing_labels} are not in the provided mapping.")
-        # Encode the labels using the mapping
-        return [custom_mapping[label] for label in labels]
-    
-    elif action == "decode":
-        # Create inverse mapping for decoding
-        inverse_mapping = {v: k for k, v in custom_mapping.items()}
-        # Ensure all encoded values are in the inverse mapping
-        missing_labels = [label for label in labels if label not in inverse_mapping]
-        if missing_labels:
-            raise ValueError(f"Encoded values {missing_labels} are not in the inverse mapping.")
-        # Decode the labels using the inverse mapping
-        return [inverse_mapping[label] for label in labels]
-    
-    else:
-        raise ValueError("Invalid action. Use 'encode' or 'decode'.")
+        # Save the variable
+        joblib.dump(var_value, file_path)
+        print(f"Variable '{var_name}' saved to {file_path}")
 
 
-def split_dataset(dataset_path: str, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+def split_dataset(clean_dataset_path: str, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Split the dataset into training and testing sets, and encode the labels using a custom encoder.
 
     Args:
-        dataset_path (str): Path to the dataset CSV file.
+        clean_dataset_path (str): Path to the dataset CSV file.
         test_size (float): Proportion of the dataset to include in the test split.
         random_state (int): Random state for reproducibility.
 
@@ -95,15 +71,12 @@ def split_dataset(dataset_path: str, test_size: float = 0.2, random_state: int =
         Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]: Training and testing splits for features (X) and labels (y).
     """
     # Load dataset
-    df = pd.read_csv(dataset_path)
+    df = pd.read_csv(clean_dataset_path)
     X = df.drop(['category'], axis=1)
     y = df['category']
 
-    # Encode labels using the custom label encoder
-    y_encoded = custom_label_encoder(y, action="encode")
-
     # Split dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=test_size, random_state=random_state, stratify=y_encoded)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
     print("Dataset split into training and testing sets.")
     return X_train, X_test, pd.Series(y_train), pd.Series(y_test)
 
@@ -143,17 +116,12 @@ def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame)
     return vectorized_data
 
 
-def main(dataset_path: str, dataset_dir: str, vectorizer_path: str) -> None:
+def main(clean_dataset_path: str) -> None:
     """
     Main function to split the dataset, fit and apply TF-IDF vectorization, and save the results.
-
-    Args:
-        dataset_path (str): Path to the input dataset CSV file.
-        dataset_dir (str): Directory where the split datasets will be saved.
-        vectorizer_path (str): Path to save the fitted TF-IDF vectorizer.
     """
     # Split the dataset into train and test sets
-    X_train, X_test, y_train, y_test = split_dataset(dataset_path)
+    X_train, X_test, y_train, y_test = split_dataset(clean_dataset_path)
     
     # Fit TF-IDF vectorizer on the training data
     fitted_vectorizer = fit_tfidf_vectorizer(X_train)
@@ -162,15 +130,26 @@ def main(dataset_path: str, dataset_dir: str, vectorizer_path: str) -> None:
     X_train_vectorized = transform_with_tfidf(fitted_vectorizer, X_train)
     X_test_vectorized = transform_with_tfidf(fitted_vectorizer, X_test)
 
-    # Save the transformed data and labels to CSV files
-    pd.DataFrame(X_train_vectorized.toarray()).to_csv(f"{dataset_dir}/train/X_train.csv", index=False)
-    pd.DataFrame(X_test_vectorized.toarray()).to_csv(f"{dataset_dir}/test/X_test.csv", index=False)
-    pd.Series(y_train).to_csv(f"{dataset_dir}/train/y_train.csv", index=False)
-    pd.Series(y_test).to_csv(f"{dataset_dir}/test/y_test.csv", index=False)
-    print(f"Transformed data and labels saved to {dataset_dir}.")
+    # Prepare variables to save, specifying the directory for each
+    variables_to_save = {
+        'X_train': (X_train_vectorized, X_train_path),
+        'X_test': (X_test_vectorized, X_test_path),
+        'y_train': (y_train, y_train_path),
+        'y_test': (y_test, y_test_path),
+        'tfid_vectorizer': (fitted_vectorizer, tfidf_vectorizer_path)
+    }
+
+    # Save the transformed data and labels using Joblib
+    save_variables_in_directories(variables_to_save)
 
     # Save the fitted TF-IDF vectorizer
-    save_vectorizer(fitted_vectorizer, vectorizer_path)
+    # save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
 
 if __name__ == "__main__":
-    main(dataset_path='cleaned.csv', dataset_dir='.', vectorizer_path='./tfidf.joblib')
+    clean_dataset_path = "../../data/cleaned/cleaned_dataset.csv"
+    X_train_path = "../../data/processed/train/X_train.joblib"
+    X_test_path = "../../data/processed/test/X_test.joblib"
+    y_train_path = "../../data/processed/train/y_train.joblib"
+    y_test_path = "../../data/processed/test/y_test.joblib"
+    tfidf_vectorizer_path = "../../data/vectorizers/tfidf.joblib"
+    main(clean_dataset_path)
