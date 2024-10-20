@@ -3,7 +3,7 @@
 ![System_classification_docs_DevZone](../report/plantUML_models/out/niv1_System_classification/System_classification_docs_DevZone.png)
 
 # Run Microservices : API REST
-1) (OPTIONAL if required) Launch **Docker daemon**
+1) Launch **Docker daemon**
     - Linux
         ```sh
         sudo systemctl start docker
@@ -24,9 +24,9 @@
 
 # Run ML_Experiment_Pipeline
 
-OPTIONAL: if you want to run the pipeline from scratch (removing history)
- 1) Remove DVC history  (DVC cache + DVC data folders + DVC lock file)
- 2) Get the data from **raw.dvc** (initialize only **data/raw** with the input data of the pipeline)
+- [OPTIONAL] if you want to run the pipeline from scratch
+  1) Remove DVC history  (DVC cache + DVC data folders + DVC lock file)
+  2) Get the data from **raw.dvc** (initialize only **data/raw** with the input data of the pipeline)
  
     - Linux
         ```sh
@@ -48,10 +48,11 @@ OPTIONAL: if you want to run the pipeline from scratch (removing history)
         dvc checkout
         ```
 
-Run ML_Experiment_Pipeline
-```sh
-dvc repro
-```
+- Run ML_Experiment_Pipeline
+    ```sh
+    dvc repro
+    ```
+
 ![alt text](pipeline_ingestion_and_clean.png)
 
 
