@@ -1,11 +1,11 @@
-@startuml Basic Sample
+@startuml System_classification_docs__Dataset_Repo
 !$SYSTEM_BORDER_COLOR ?= "#000000"
 !include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 HIDE_STEREOTYPE()
 AddElementTag(SystemDb_colors, $bgColor=SkyBlue, $fontColor=black)
 
 System_Boundary(System_classifier, "Classifier")  {
-    SystemDb(Code_Repository, "Code_Repository", $tags="SystemDb_colors") 
+    SystemDb(Dataset_Repository, "Dataset_Repository", $tags="SystemDb_colors") 
 }
 
 
