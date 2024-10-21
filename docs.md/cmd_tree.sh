@@ -1,1 +1,1 @@
-tree --gitignore -d -L 2
+tree .. --gitignore -d -L 2
