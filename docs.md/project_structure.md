@@ -1,5 +1,5 @@
 # Project folder structure
-```bash
+```
 ├── data                    Data only managed with DVC/DagsHub through pipelines
 │   ├── cleaned
 │   ├── models
