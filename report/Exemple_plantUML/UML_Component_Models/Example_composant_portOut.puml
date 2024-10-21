@@ -1,6 +1,3 @@
-
-[Edit online] 	
-
 @startuml
 component C {
   portout p1
