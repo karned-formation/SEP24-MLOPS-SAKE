@@ -1,0 +1,146 @@
+
+
+Diagramme de composants
+
+Diagramme de composants: Un diagramme de composants est un type de diagramme structurel utilisé dans UML (Unified Modeling Language) pour visualiser l'organisation et les relations des composants d'un système. Ces diagrammes aident à décomposer des systèmes complexes en composants gérables, en montrant leurs interdépendances, et en assurant une conception et une architecture efficaces du système.
+
+Avantages de PlantUML:
+
+    Simplicité: Avec PlantUML, vous pouvez créer des diagrammes de composants en utilisant des descriptions textuelles simples et intuitives, éliminant le besoin d'outils de dessin complexes.
+    Intégration: PlantUML s'intègre de manière transparente à divers outils et plateformes, ce qui en fait un choix polyvalent pour les développeurs et les architectes.
+    Collaboration: Le forum PlantUML offre une plateforme aux utilisateurs pour discuter, partager et demander de l'aide sur leurs diagrammes, favorisant ainsi une communauté de collaboration.
+
+[Back to top]
+Composants
+Les composants doivent être mis entre parenthèses.
+
+Vous pouvez également utiliser le mot-clé component pour définir un composant . Et vous pouvez définir un alias, en utilisant le mot-clé as . Cet alias sera utilisé plus tard, lors de la définition des relations
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+[First component]
+[Another component] as Comp2
+component Comp3
+component [Last\ncomponent] as Comp4
+
+@enduml
+
+WARNING
+ This translation need to be updated. WARNING
+[Back to top]
+Interfaces
+
+Les interfaces sont définies à l'aide du symbole () (parce que cela ressemble à un cercle).
+
+Vous pouvez aussi utiliser le mot-clé interface pour définir une interface. Vous pouvez aussi définir un alias, à l'aide du mot-clé as. Cet alias pourrait être utilisé plus tard, lors de la définition des relations.
+
+Nous verrons plus tard qu'il n'est pas obligatoire de définir les interfaces.
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+() "First Interface"
+() "Another interface" as Interf2
+interface Interf3
+interface "Last\ninterface" as Interf4
+
+[component]
+footer //Adding "component" to force diagram to be a **component diagram**//
+@enduml
+
+[Back to top]
+Exemple de base
+
+Les liens entre les éléments sont établis à l'aide de combinaisons de symboles de lignes pointillées (..), de lignes droites (--) et de flèches (-->)
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+DataAccess - [First Component]
+[First Component] ..> HTTP : use
+
+@enduml
+
+[Back to top]
+Utilisation des notes
+
+Vous pouvez utiliser les mots-clés note left of , note right of, note top of , note bottom of pour définir des notes relatives à un seul objet.
+
+Une note peut également être définie seule avec les mots-clés note , puis liée à d'autres objets à l'aide du symbole ..
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+interface "Data Access" as DA
+
+DA - [First Component]
+[First Component] ..> HTTP : use
+
+note left of HTTP : Web Service only
+
+note right of [First Component]
+  A note can also
+  be on several lines
+end note
+
+@enduml
+
+WARNING
+ This translation need to be updated. WARNING
+[Back to top]
+Regroupement de composants
+
+Vous pouvez utiliser plusieurs mots-clés pour regrouper des composants et des interfaces
+
+    package
+    node
+    folder
+    frame
+    cloud
+    database
+
+[Copy to clipboard]
+[Edit online] 	
+
+@startuml
+
+package "Some Group" {
+  HTTP - [First Component]
+  [Another Component]
+}
+
+node "Other Groups" {
+  FTP - [Second Component]
+  [First Component] --> FTP
+}
+
+cloud {
+  [Example 1]
+}
+
+
+database "MySql" {
+  folder "This is my folder" {
+    [Folder 3]
+  }
+  frame "Foo" {
+    [Frame 4]
+  }
+}
+
+
+[Another Component] --> [Example 1]
+[Example 1] --> [Folder 3]
+[Folder 3] --> [Frame 4]
+
+@enduml
+
