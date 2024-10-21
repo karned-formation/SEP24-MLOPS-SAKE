@@ -17,8 +17,8 @@ def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
         Tuple[pd.DataFrame, pd.Series]: The feature data (X_train) as a DataFrame and labels (y_train) as a Series.
     """
     try:
-        X_train = pd.read_csv(f"{data_dir}/X_train.csv")
-        y_train = pd.read_csv(f"{data_dir}/y_train.csv")
+        X_train = joblib.load('../../data/processed/train/X_train.joblib')
+        y_train = joblib.load('../../data/processed/train/y_train.joblib')
         return X_train, y_train
     except Exception as e:
         raise FileNotFoundError(f"Error loading data files from {data_dir}: {e}")
