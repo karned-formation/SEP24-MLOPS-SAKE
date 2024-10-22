@@ -1,0 +1,5 @@
+variables:
+  composant_a: "Composant A"
+  composant_b: "Composant B"
+  couleur_a: "yellow"
+  couleur_b: "lightgreen"

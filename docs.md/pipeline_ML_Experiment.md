@@ -1,6 +1,6 @@
 
 # Overview of ML_Experiment_Pipeline
-![System_classification_docs_DevZone](../report/plantUML_models/out/dockers/ML_Experiment_Pipeline.png)
+![System_classification_docs_DevZone](../report/plantUML_models/out/pipelines/ML_Experiment_Pipeline.png)
 
 # Run Microservices : API REST
 1) Launch **Docker daemon**
