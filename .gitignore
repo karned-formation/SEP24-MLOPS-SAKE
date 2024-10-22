@@ -10,3 +10,5 @@ __pycache__/
 
 logs/
 env_mlops/
+
+test_sarah.ipynb
