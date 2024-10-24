@@ -1,0 +1,5 @@
+apiVersion: v2
+name: mlflow
+description: A Helm chart for deploying MLflow with PostgreSQL and S3 integration
+version: 0.1.0
+appVersion: "1.0"

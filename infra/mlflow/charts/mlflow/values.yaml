@@ -1,0 +1,14 @@
+AppName: mlflow
+Namespace: sake
+
+mlflow:
+  image: cr.fly.io/mlflow:latest
+  artifactRoot: "gs://sake-mlflow-storage"
+
+gcp:
+  secretName: sake-gcp-secret
+  serviceAccountKey: service-account-key.json
+
+service:
+  type: ClusterIP
+  port: 5000

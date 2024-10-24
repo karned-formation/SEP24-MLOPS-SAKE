@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-mlflow
+  namespace: {{ .Values.Namespace }}
+  labels:
+    app: {{ .Values.AppName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.AppName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.AppName }}
+    spec:
+      containers:
+        - name: {{ .Values.AppName }}
+          image: {{ .Values.mlflow.image }}
+          env:
+            - name: BACKEND_STORE_URI
+              value: "postgresql://mlflow:$(POSTGRES_PASSWORD)@mlflow-postgres:5432/mlflowdb"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.AppName }}-postgres-secret
+                  key: postgres-password
+            - name: ARTIFACT_ROOT
+              value: {{ .Values.mlflow.artifactRoot }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/gcp/service-account-key.json  
+          volumeMounts:
+            - name: gcp-credentials
+              mountPath: /var/secrets/gcp  
+              readOnly: true
+          ports:
+            - containerPort: {{ .Values.service.port }}
+      volumes:
+        - name: gcp-credentials
+          secret:
+            secretName: {{ .Values.gcp.secretName }}  
