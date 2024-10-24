@@ -28,7 +28,7 @@ The environment may be installed either through conda or through VirtualEnv/Pip
 
 - [Windows] Run this batch get an alias 'python3' for 'pyhton' (copy)
 	```sh
-	alias_python3_with_python.bat
+	tools/alias_python3_with_python.bat
 	```
 
 - Create Kernel (used for notebooks Jupyter and/or VS Code)
