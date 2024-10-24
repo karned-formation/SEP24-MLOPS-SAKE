@@ -2,7 +2,7 @@ AppName: mlflow
 Namespace: sake
 
 mlflow:
-  image: cr.fly.io/mlflow:latest
+  image: ghcr.io/mlflow/mlflow:v2.17.0
   artifactRoot: "gs://sake-mlflow-storage"
 
 gcp:
