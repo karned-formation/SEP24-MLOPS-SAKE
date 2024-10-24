@@ -1,3 +1,7 @@
+# local packages
+-e .
+
+# external packages
 pandas
 numpy
 matplotlib

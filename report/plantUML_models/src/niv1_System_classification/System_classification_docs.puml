@@ -1,4 +1,4 @@
-@startuml Basic Sample
+@startuml System_classification_docs
 !$SYSTEM_BORDER_COLOR ?= "#000000"
 !include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 HIDE_STEREOTYPE()
