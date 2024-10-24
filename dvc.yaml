@@ -7,6 +7,8 @@ stages:
     outs:
     - data/processed:
         persist: true
+    - data/ocr_raw:
+        persist: true
   clean:
     cmd: python3 steps/clean_text.py
     deps:

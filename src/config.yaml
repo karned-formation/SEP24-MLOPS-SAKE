@@ -1,13 +1,13 @@
 data_ingestion:
   ocr_endpoint: "http://localhost:8901/txt/blocks-words"
   image_dir: "data/raw/final/"
-  processed_dir: "data/processed/" 
   raw_dataset_path: "data/working_dataset.csv" 
   processed_dataset_path: "data/processed/processed_dataset.csv"
+  ocr_text_dir: "data/ocr_raw/"
   
 data_cleaning:
   clean_endpoint: "http://localhost:8903/clean"
-  processed_dir: "data/processed/"
+  ocr_text_dir: "data/ocr_raw/"
   cleaned_dir: "data/cleaned/"
   processed_dataset_path: "data/processed/processed_dataset.csv"
   cleaned_dataset_path: "data/cleaned/cleaned_dataset.csv"
@@ -30,3 +30,9 @@ model_evaluation:
   y_test_path: "data/cleaned/y_test.csv"
   model_path: "models/model.pkl"
   evaluation_results_path: "metrics/metrics.json"
+
+label_encoder_mapping:
+  facture: 0
+  id_pieces: 1
+  resume: 2
+
