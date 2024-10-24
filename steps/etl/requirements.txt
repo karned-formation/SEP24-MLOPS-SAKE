@@ -2,6 +2,6 @@ requests>=2.32.0
 fastapi~=0.111.0
 starlette~=0.37.2
 numpy~=1.26.4
-nltk~=3.8.1
+nltk~=3.9
 spacy~=3.7.5
 langdetect~=1.0.9
