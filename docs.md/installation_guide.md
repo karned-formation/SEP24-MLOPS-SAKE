@@ -56,11 +56,6 @@ The environment may be installed either through conda or through VirtualEnv/Pip
 	python3 -m spacy download en_core_web_sm
 	```
 
-- To allow the access to all local packages developed in the source code of the repository
-	```sh
-	pip install -e .
-	```
-
 # Configure DVC
 
 - Configuration DVC (accessible from site https://dagshub.com/Belwen/SEP24-MLOPS-SAKE)
