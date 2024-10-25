@@ -2,8 +2,14 @@ AppName: mlflow
 Namespace: sake
 
 mlflow:
-  image: ghcr.io/mlflow/mlflow:v2.17.0
+  image: killiankopp/mlflow:v2.17.0-psycopg2
   artifactRoot: "gs://sake-mlflow-storage"
+
+postgre:
+  hostname: mlflow-postgres
+  port: 5432
+  username: mlflow
+  database: mlflowdb
 
 gcp:
   secretName: sake-gcp-secret

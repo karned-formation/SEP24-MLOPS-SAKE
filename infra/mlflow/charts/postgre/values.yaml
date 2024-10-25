@@ -1,10 +1,11 @@
 AppName: mlflow-postgres
 Namespace: sake
 
-PostgresDbUser: postgres
+PostgresDbUser: mlflow
 PostgresDbName: mlflowdb
 
 service:
+  name: mlflow-postgres
   type: ClusterIP
   port: 5432
 
