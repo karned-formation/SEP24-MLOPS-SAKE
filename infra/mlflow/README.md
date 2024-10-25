@@ -14,7 +14,7 @@ Le déploiement du pod MLFlow exploite le secret défini pour le pod PostGreSQL.
 
 Il faut créer un bucket pour MLFow sur GCP.
 Il faut créer un compte de service sur GCP et lui attribuer les droits sur le bucket MLFlow.
-Une fois le fichier JSON téléchargé en local 
+Une fois le fichier JSON téléchargé en local, créer un secret pour le stocker dans Kubernetes.
 
 ```sh
 kubectl create secret generic sake-gcp-secret \
@@ -23,3 +23,10 @@ kubectl create secret generic sake-gcp-secret \
 
 helm install mlflow -n sake -f ./mlflow/values.yaml --generate-name 
 ```
+
+**Mise à jour**
+```sh
+helm upgrade --install <deployment_name> ./mlflow -n sake -f ./mlflow/values.yaml
+```
+
+La version v17.0 n'est pas fonctionnelle !
