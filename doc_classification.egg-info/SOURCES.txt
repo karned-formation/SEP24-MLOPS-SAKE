@@ -28,8 +28,14 @@ steps/etl/__init__.py
 steps/etl/app.py
 steps/etl/clean.py
 steps/etl/download_contents.py
+steps/preprocessing/__init__.py
+steps/preprocessing/app.py
+steps/preprocessing/preprocessing.py
 steps/tests/__init__.py
 steps/tests/test_clean.py
+steps/training/__init__.py
+steps/training/app.py
+steps/training/train.py
 tests/__init__.py
 tests/test_cleantext.py
 tests/test_ingest.py

@@ -19,6 +19,7 @@ stages:
       md5: 06701a83f9d841d4194ba58f5a0e3d1e.dir
       size: 10787
       nfiles: 1
+
   clean:
     cmd: python3 steps/clean_text.py
     deps:
