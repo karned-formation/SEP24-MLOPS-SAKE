@@ -1,8 +1,11 @@
 import pandas as pd
 import requests
 import os
+import sys
 from typing import Optional
-from custom_logger import logger
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.custom_logger import logger
 from src.config_manager import ConfigurationManager
 
 def load_processed_dataset(filepath: str) -> pd.DataFrame:

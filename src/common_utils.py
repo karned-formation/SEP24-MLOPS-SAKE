@@ -2,8 +2,12 @@ from box import ConfigBox
 from box.exceptions import BoxValueError
 from pathlib import Path
 import yaml
-from custom_logger import logger
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.custom_logger import logger
+
 
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """reads yaml file and returns
