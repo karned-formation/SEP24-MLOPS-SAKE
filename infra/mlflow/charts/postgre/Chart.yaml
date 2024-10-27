@@ -1,0 +1,5 @@
+apiVersion: v2
+name: mlflow-postgres
+description: A Helm chart for deploying PostgreSQL for MLflow
+version: 0.1.0
+appVersion: "13"
