@@ -5,14 +5,14 @@ from pathlib import Path
 class DataIngestionConfig:
     ocr_endpoint: str
     image_dir: Path
-    processed_dir: Path
     raw_dataset_path: Path
     processed_dataset_path: Path
+    ocr_text_dir: Path
 
 @dataclass(frozen=True)
 class DataCleaningConfig:
     clean_endpoint: str
-    processed_dir: Path
+    ocr_text_dir: Path
     cleaned_dir: Path
     processed_dataset_path: Path
     cleaned_dataset_path: Path
@@ -38,3 +38,9 @@ class ModelEvaluationConfig:
     y_test_path: Path
     model_path: Path
     evaluation_results_path: Path
+
+@dataclass(frozen=True)
+class LabelEncodingConfig:
+    facture: int
+    id_pieces: int
+    resume: int

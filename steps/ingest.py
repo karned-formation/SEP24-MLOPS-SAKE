@@ -10,6 +10,7 @@ from src.config_manager import ConfigurationManager
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
+    logger.info(f"Ocerizing {image}...")
     with open(image, "rb") as file:
         files = {"file": file}
         response = requests.post(ocr_endpoint, files=files)
@@ -34,18 +35,22 @@ def get_new_images_to_ocerize(raw_dataset: pd.DataFrame, processed_dataset: pd.D
     """Compare les deux fichiers et renvoi seulement les images qui ne sont pas déjà océrisées."""
     
     filenames = np.setdiff1d(raw_dataset["filename"].values, processed_dataset["filename"].values)
-
     return raw_dataset[raw_dataset["filename"].isin(filenames)]
 
 def save_text_to_file(text:str, path: str):
     """Enregistre le texte océrisé dans un fichier .txt"""
-    with open(path, "w") as txt_file:
+    logger.info(f"Saving ocr text to {path}...")
+    with open(path, "w", encoding='utf8') as txt_file:
         txt_file.write(text)
 
+def add_processed_row(processed_dataset_path: str, row: str):
+    with open(processed_dataset_path,'a') as csv:
+        csv.write(row)
+    logger.info(f"Added row {row} to {processed_dataset_path}")
 
 def main():
     try:
-        logger.info("Starting the ingest process.")
+        logger.info("Starting the ingest process...")
         config_manager = ConfigurationManager()
         data_ingestion_config = config_manager.get_data_ingestion_config()
 
@@ -60,18 +65,16 @@ def main():
 
         # On liste les images qui n'ont pas encore été océrisées
         new_images = get_new_images_to_ocerize(raw_dataset, processed_dataset)
+        logger.info(f"{len(new_images)} new image(s) to ocerize")
 
-            # Pour chaque image, on récupère le texte et on l'enregistre dans un fichier .txt
-        for _, row in new_images.head(10).iterrows():                                              # TODO : remove head(10)
+        # Pour chaque image, on récupère le texte et on l'enregistre dans un fichier .txt
+        for _, row in new_images.iterrows():                                               
             full_text = get_full_text(f"{data_ingestion_config.image_dir}{row.filename}", data_ingestion_config.ocr_endpoint)
-
-            text_file_path = f"{data_ingestion_config.processed_dir}{row.filename}.txt"
-            save_text_to_file(full_text, text_file_path)
-            new_images.loc[new_images['filename']==row.filename, 'full_text'] = text_file_path 
-    
-        # On ajoute les nouvelles images océrisées au dataset   
-        processed_dataset = pd.concat([processed_dataset, new_images.head(10)],ignore_index=True)  # TODO : remove head(10)
-        processed_dataset.to_csv(data_ingestion_config.processed_dataset_path, index=None)
+            text_file_path = f"{data_ingestion_config.ocr_text_dir}{row.filename}.txt"
+            save_text_to_file(full_text, text_file_path)                                           
+            # On ajoute les nouvelles images océrisées au dataset
+            add_processed_row(data_ingestion_config.processed_dataset_path, f"{row.filename},{row.grouped_type},{text_file_path},\n")
+                 
         logger.info("Ingest process completed.")
     except Exception as e:
         logger.error(f"An error occured during the ingest process: {e}")
