@@ -9,29 +9,29 @@ stages:
       nfiles: 183
     - path: steps/ingest.py
       hash: md5
-      md5: 376c75e234b5591bce5da134154e9898
-      size: 3542
+      md5: 211888ad073b89a754e5065d25750eda
+      size: 3624
     outs:
     - path: data/processed
       hash: md5
-      md5: 5f727ff2f3352fabd8982d09f07f1dd1.dir
-      size: 185954
+      md5: 49829b9d0c35543e1b990e642d054777.dir
+      size: 186138
       nfiles: 184
   clean:
     cmd: python3 steps/clean_text.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 5f727ff2f3352fabd8982d09f07f1dd1.dir
-      size: 185954
+      md5: 49829b9d0c35543e1b990e642d054777.dir
+      size: 186138
       nfiles: 184
     - path: steps/clean_text.py
       hash: md5
-      md5: 7fb8f80af2feec7041569bcf958ecc85
-      size: 3101
+      md5: 035565fbe71c66116888a6aa31a3f892
+      size: 3184
     outs:
     - path: data/cleaned
       hash: md5
-      md5: f70b4737f3c8281362673408a2f52273.dir
-      size: 114139
+      md5: 6a45c9caf7858ad622fe4c3a01b9f49d.dir
+      size: 114321
       nfiles: 1
