@@ -8,8 +8,9 @@ stages:
       size: 21954635
       nfiles: 183
     - path: steps/ingest.py
-      md5: 9790b4b9f5c33129af4d8028dc37685a
-      size: 3447
+      hash: md5
+      md5: 376c75e234b5591bce5da134154e9898
+      size: 3542
     outs:
     - path: data/processed
       hash: md5
@@ -26,11 +27,11 @@ stages:
       nfiles: 184
     - path: steps/clean_text.py
       hash: md5
-      md5: c036595eb2ff24000d20b74f4af4d0eb
-      size: 3005
+      md5: 7fb8f80af2feec7041569bcf958ecc85
+      size: 3101
     outs:
     - path: data/cleaned
       hash: md5
-      md5: 271d8a338f3bf0ae5e0c5869ef990424.dir
-      size: 114227
+      md5: b48478a9aeeba14e16883cdf8a381b1e.dir
+      size: 114138
       nfiles: 1
