@@ -32,6 +32,6 @@ stages:
     outs:
     - path: data/cleaned
       hash: md5
-      md5: c31a22d767d972bdfe4198bbc20c9ceb.dir
-      size: 114183
+      md5: fd71b6a640695715c7047e9f0d10f1c0.dir
+      size: 114135
       nfiles: 1
