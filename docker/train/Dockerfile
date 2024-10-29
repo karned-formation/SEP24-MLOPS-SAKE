@@ -15,7 +15,7 @@ RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py ./
-COPY ../../src/train/train.py ./
+COPY docker/train/app.py ./
+COPY src/train/train.py ./
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}
