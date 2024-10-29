@@ -71,3 +71,6 @@ save_json_metrics(metrics, metrics_path)
 save_confusion_matrix(confusion_matrix, confusion_matrix_path)
 
 # %%
+
+pd.read_json('../../metrics/confusion_matrix.json')
+# %%
