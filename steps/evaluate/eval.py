@@ -1,25 +1,24 @@
 #%%
 import pandas as pd
 import numpy as np
+from imblearn.metrics import classification_report_imbalanced
 import json
 import os
 import joblib 
-from imblearn.metrics import classification_report_imbalanced
 
 model_path = '../../data/models/ovrc.joblib'
 X_test_path = '../../data/processed/test/X_test.joblib'
 y_test_path = '../../data/processed/test/y_test.joblib'
-metrics_path = '../../metrics/report.json'
+metrics_path = '../../metrics/scores.json'
+confusion_matrix_path = '../../metrics/confusion_matrix.json'
 
-
-#%%
 def load_variables():
      model = joblib.load(model_path)
      X_test = joblib.load(X_test_path)
      y_test = joblib.load(y_test_path)
      return model, X_test, y_test
 
-def get_accuracy():
+def get_accuracy(model, X_test, y_test):
      return model.score(X_test, y_test)
 
 def get_confusion_matrix(y_test, y_pred):
@@ -43,8 +42,9 @@ def convert_numpy_types(obj):
 
 def get_metrics(y_test, y_pred):
     report = classification_report_imbalanced(y_test, y_pred, output_dict=True)
+    report['accuracy'] = get_accuracy(model, X_test, y_test)
     report = convert_numpy_types(report)
-    json_report = json.dumps(report, indent=2)
+    json_report = json.dumps(report, indent=4)
     print(json_report)
     return json_report
 
@@ -55,13 +55,19 @@ def save_json_metrics(metrics, file_path):
         os.makedirs(directory)
     # Sauvegarde les métriques au format JSON
     with open(file_path, 'w') as json_file:
-        json.dump(metrics, json_file)
-    print(f"Report saved successfully to {file_path}.")
+        json.dump(metrics, json_file, indent=4, ensure_ascii=False)
+    print(f"Metrics saved successfully to {file_path}.")
+
+def save_confusion_matrix(confusion_matrix, confusion_matrix_path):
+    confusion_matrix.to_json(confusion_matrix_path)
+    print(f"Confusion matrix saved successfully to {confusion_matrix_path}.")
 
 #%%
 model, X_test, y_test = load_variables()
 y_pred = model.predict(X_test)
-accuracy = get_accuracy()
 confusion_matrix = get_confusion_matrix(y_test, y_pred)
 metrics = get_metrics(y_test, y_pred)
 save_json_metrics(metrics, metrics_path)
+save_confusion_matrix(confusion_matrix, confusion_matrix_path)
+
+# %%

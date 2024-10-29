@@ -122,6 +122,9 @@ def main(clean_dataset_path: str) -> None:
     """
     # Split the dataset into train and test sets
     X_train, X_test, y_train, y_test = split_dataset(clean_dataset_path)
+    print(y_test.shape, type(y_test))
+    print(y_train.shape, type(y_train))
+
     
     # Fit TF-IDF vectorizer on the training data
     fitted_vectorizer = fit_tfidf_vectorizer(X_train)
@@ -143,7 +146,7 @@ def main(clean_dataset_path: str) -> None:
     save_variables_in_directories(variables_to_save)
 
     # Save the fitted TF-IDF vectorizer
-    # save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
+    save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
 
 if __name__ == "__main__":
     clean_dataset_path = "../../data/cleaned/cleaned_dataset.csv"
