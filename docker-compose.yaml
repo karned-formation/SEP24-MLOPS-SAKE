@@ -6,34 +6,17 @@ services:
     networks:
       - sake
 
-  etl:
-    image: killiankopp/ms-sake-etl:1.0
+  ms-sake-clean-text:
+    build:
+      context: .  
+      dockerfile: docker/clean_text/Dockerfile  
+      args:
+        DOCKERFILE_PATH: docker/clean_text  
+    image: ms-sake-clean-text:1.0  
     ports:
       - "8903:8903"
     networks:
       - sake
-  
-  preprocessing:
-    image: abenayoub/ms-sake-preprocessing:1.0
-    ports:
-      - "8904:8904"
-    networks:
-      - sake
-    volumes:
-      - ./data/processed/train:/app/data/processed/train
-      - ./data/processed/test:/app/data/processed/test
-      - ./data/vectorizers:/app/data/vectorizers
-      - ./data/cleaned:/app/data/cleaned
-
-  train:
-    image: abenayoub/ms-sake-train:1.0
-    ports:
-      - "8905:8905"
-    networks:
-      - sake
-    volumes:
-      - ./data/processed/train:/app/data/processed/train
-      - ./data/models:/app/data/models
 
 networks:
   sake:
