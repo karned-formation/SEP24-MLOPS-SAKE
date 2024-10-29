@@ -24,6 +24,6 @@ COPY download_contents.py ./
 RUN python3 download_contents.py
 
 COPY app.py ./
-COPY clean.py ./
+COPY ../../src/data/clean.py ./
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers 1 --reload
