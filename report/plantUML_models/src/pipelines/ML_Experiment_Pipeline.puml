@@ -4,8 +4,9 @@
 
 folder data  #green {
   file "raw.dc" #lightgreen
-  file raw_dataset_path #lightgreen
+  file raw_dataset_path #lightgreen  
 }
+file "config.yaml" #lightgreen
 
 [ML_Experiment_Pipeline]
 component ML_Experiment_Pipeline #lightblue {
@@ -30,86 +31,86 @@ component ML_Experiment_Pipeline #lightblue {
   ' file model_path #lightgreen
   ' file evaluation_results_path #lightgreen
 
-  [Step_ingest]
-  component Step_ingest {
+  [ingest]
+  component ingest  <<Script>> {
   }
 
-  [Docker_ocr] 
-  component Docker_ocr #pink {
+  [ocr] 
+  component ocr <<Container>> #pink {
     portin 8901
   }
 
-  [Step_clean]
-  component Step_ingest {
+  [clean]
+  component clean  <<Script>> {
   }
 
-  [Docker_etl]
-  component Docker_etl  #pink {
+  [etl]
+  component etl <<Container>> #pink {
     port 8903
   }
 
-  ' [Step_preprocessing]
-  ' component Step_preprocessing {
+  ' [preprocessing]
+  ' component preprocessing {
   ' }
 
-  ' [Docker_preprocessing]
-  ' component Docker_preprocessing  #pink {
+  ' [preprocessing]
+  ' component preprocessing  #pink {
   '   port 8904
   ' }
 
-  ' [Step_train]
-  ' component Step_train {
+  ' [train]
+  ' component train {
   ' }
 
-  ' [Docker_train]
-  ' component Docker_train  #pink {
+  ' [train]
+  ' component train  #pink {
   '   port 8905
   ' }
 
-  ' [Step_evaluate]
-  ' component Step_evaluate {
+  ' [evaluate]
+  ' component evaluate {
   ' }
 
-  ' [Docker_evaluate]
-  ' component Docker_evaluate  #pink {
+  ' [evaluate]
+  ' component evaluate  #pink {
   '   port 8906
   ' }
 
 }
 
 [raw.dc] --> image_dir : fetch
-[raw_dataset_path] --> Step_ingest : noms des fichiers images
-image_dir --> Step_ingest : fichier images
-Step_ingest --> 8901 : image
-Step_ingest <-- 8901 : texte océrisé brut
-Step_ingest --> processed_dataset_path : textes océrisés brut
+[raw_dataset_path] --> ingest : noms des fichiers images
+image_dir --> ingest : fichier images
+ingest --> 8901 : image
+ingest <-- 8901 : texte océrisé brut
+ingest --> processed_dataset_path : textes océrisés brut
 
-processed_dataset_path --> Step_clean
-Step_clean --> 8903 : texte océrisé brut
-Step_clean <-- 8903 : texte océrisé nettoyé
-Step_clean --> cleaned_dataset_path : textes océrisés nettoyés
+processed_dataset_path --> clean
+clean --> 8903 : texte océrisé brut
+clean <-- 8903 : texte océrisé nettoyé
+clean --> cleaned_dataset_path : textes océrisés nettoyés
 
-' cleaned_dataset_path --> Step_preprocessing
-' Step_preprocessing --> 8904
-' Step_preprocessing <-- 8904
-' Step_preprocessing --> tfidf_vectorizer_path : vectorizer
-' Step_preprocessing --> X_train_path
-' Step_preprocessing --> y_train_path
-' Step_preprocessing --> X_test_path
-' Step_preprocessing --> y_test_path
+' cleaned_dataset_path --> preprocessing
+' preprocessing --> 8904
+' preprocessing <-- 8904
+' preprocessing --> tfidf_vectorizer_path : vectorizer
+' preprocessing --> X_train_path
+' preprocessing --> y_train_path
+' preprocessing --> X_test_path
+' preprocessing --> y_test_path
 
-' tfidf_vectorizer_path --> Step_train
-' X_train_path --> Step_train
-' y_train_path --> Step_train
-' Step_train --> 8905
-' Step_train <-- 8905
-' Step_train --> model_path
+' tfidf_vectorizer_path --> train
+' X_train_path --> train
+' y_train_path --> train
+' train --> 8905
+' train <-- 8905
+' train --> model_path
 
-' X_test_path --> Step_evaluate
-' y_test_path --> Step_evaluate
-' model_path --> Step_evaluate
-' Step_evaluate --> 8906
-' Step_evaluate <-- 8906
-' Step_evaluate --> evaluation_results_path
+' X_test_path --> evaluate
+' y_test_path --> evaluate
+' model_path --> evaluate
+' evaluate --> 8906
+' evaluate <-- 8906
+' evaluate --> evaluation_results_path
 
 @enduml
