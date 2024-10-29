@@ -149,10 +149,10 @@ def main(clean_dataset_path: str) -> None:
     save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
 
 if __name__ == "__main__":
-    clean_dataset_path = "../../data/cleaned/cleaned_dataset.csv"
-    X_train_path = "../../data/processed/train/X_train.joblib"
-    X_test_path = "../../data/processed/test/X_test.joblib"
-    y_train_path = "../../data/processed/train/y_train.joblib"
-    y_test_path = "../../data/processed/test/y_test.joblib"
-    tfidf_vectorizer_path = "../../data/vectorizers/tfidf.joblib"
+    clean_dataset_path = "data/cleaned/cleaned_dataset.csv"
+    X_train_path = "data/processed/train/X_train.joblib"
+    X_test_path = "data/processed/test/X_test.joblib"
+    y_train_path = "data/processed/train/y_train.joblib"
+    y_test_path = "data/processed/test/y_test.joblib"
+    tfidf_vectorizer_path = "data/vectorizers/tfidf.joblib"
     main(clean_dataset_path)

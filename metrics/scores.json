@@ -1,1 +1,37 @@
-"{\n    \"facture\": {\n        \"pre\": 1.0,\n        \"rec\": 1.0,\n        \"spe\": 1.0,\n        \"f1\": 1.0,\n        \"geo\": 1.0,\n        \"iba\": 1.0,\n        \"sup\": 15\n    },\n    \"id_pieces\": {\n        \"pre\": 1.0,\n        \"rec\": 1.0,\n        \"spe\": 1.0,\n        \"f1\": 1.0,\n        \"geo\": 1.0,\n        \"iba\": 1.0,\n        \"sup\": 16\n    },\n    \"resume\": {\n        \"pre\": 1.0,\n        \"rec\": 1.0,\n        \"spe\": 1.0,\n        \"f1\": 1.0,\n        \"geo\": 1.0,\n        \"iba\": 1.0,\n        \"sup\": 6\n    },\n    \"avg_pre\": 1.0,\n    \"avg_rec\": 1.0,\n    \"avg_spe\": 1.0,\n    \"avg_f1\": 1.0,\n    \"avg_geo\": 1.0,\n    \"avg_iba\": 1.0,\n    \"total_support\": 37,\n    \"accuracy\": 1.0\n}"
+{
+  "facture": {
+    "pre": 1,
+    "rec": 1,
+    "spe": 1,
+    "f1": 1,
+    "geo": 1,
+    "iba": 1,
+    "sup": 15
+  },
+  "id_pieces": {
+    "pre": 1,
+    "rec": 1,
+    "spe": 1,
+    "f1": 1,
+    "geo": 1,
+    "iba": 1,
+    "sup": 16
+  },
+  "resume": {
+    "pre": 1,
+    "rec": 1,
+    "spe": 1,
+    "f1": 1,
+    "geo": 1,
+    "iba": 1,
+    "sup": 6
+  },
+  "avg_pre": 1,
+  "avg_rec": 1,
+  "avg_spe": 1,
+  "avg_f1": 1,
+  "avg_geo": 1,
+  "avg_iba": 1,
+  "total_support": 37,
+  "accuracy": 1
+}
