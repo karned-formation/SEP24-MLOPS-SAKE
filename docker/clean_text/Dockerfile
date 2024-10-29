@@ -1,7 +1,7 @@
 FROM python:3.11
 
-# Argument t give to build command to be executed from root folder of Git
-# docker image build --build-arg DOCKERFILE_PATH=docker/clean_text -f docker/clean_text/Dockerfile .
+# Argument to build docker image command /!\ to be executed from root folder of Git
+# Example: docker image build --build-arg DOCKERFILE_PATH=docker/clean_text -f docker/clean_text/Dockerfile . -t ms-sake-clean-text:1.0
 ARG DOCKERFILE_PATH
 
 ENV LANG=C.UTF-8

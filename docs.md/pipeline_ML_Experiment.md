@@ -13,12 +13,12 @@
 2) Launch **Docker Compose** from the root of the project to launch microservices (Windows or Linux)
 
     ```sh
-    docker-compose up
+    docker-compose up --build
     ```
 
     To access to the docker documentationss, please open the following links :
     - OCR : http://localhost:8901/docs
-    - ETL (clean data) : http://localhost:8903/docs
+    - clean_text (remove stop words, small words, etc...) : http://localhost:8903/docs
     - PreProcessing (vectorize): http://localhost:8904/docs
     - Training : http://localhost:8905/docs
 

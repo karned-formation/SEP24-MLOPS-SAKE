@@ -1,6 +1,8 @@
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI
-from docker.clean_text.clean_text import main
+from clean_text import main
+import nltk
+nltk.download('punkt_tab')
 
 app = FastAPI()
 
