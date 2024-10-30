@@ -34,6 +34,17 @@ services:
     volumes:
       - ./data/processed/train:/app/data/processed/train
       - ./data/models:/app/data/models
+  
+  eval:
+    image: abenayoub/ms-sake-eval:1.0
+    ports:
+      - "8906:8906"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/test:/app/data/processed/test
+      - ./data/models:/app/data/models
+      - ./metrics:/app/metrics
 
 networks:
   sake:
