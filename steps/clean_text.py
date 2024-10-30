@@ -7,6 +7,7 @@ from typing import Optional
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.custom_logger import logger
 from src.config_manager import ConfigurationManager
+from src.entity import LabelEncodingConfig
 
 def load_processed_dataset(filepath: str) -> pd.DataFrame:
     return pd.read_csv(filepath)
@@ -19,7 +20,6 @@ def clean_text(api_url: str, text: str) -> Optional[str]:
     }
 
     response = requests.post(api_url, params=params, headers=headers)
-    print(response.text)
     if response.status_code == 200:
         return response.text
     return None
@@ -45,6 +45,11 @@ def process_dataset(processed_dataset: pd.DataFrame, api_url: str) -> pd.DataFra
         'cleaned_text': cleaned_texts,
         'category': categories
     })
+
+def encode_labels(clean_dataset: pd.DataFrame, mapper: LabelEncodingConfig) -> pd.DataFrame:
+    clean_dataset['category'] = clean_dataset['category'].map(mapper.__dict__)
+    return clean_dataset
+
 
 def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     cleaned_dataset.to_csv(filepath, index=False)
@@ -72,9 +77,12 @@ def main():
         logger.info("Starting the cleaning process...")
         config_manager = ConfigurationManager()
         data_cleaning_config = config_manager.get_data_cleaning_config()
+        label_encoding_config = config_manager.get_label_encoding_config()
 
         processed_dataset = load_processed_dataset(data_cleaning_config.processed_dataset_path)
         cleaned_dataset = process_dataset(processed_dataset, data_cleaning_config.clean_endpoint)
+        cleaned_dataset = encode_labels(cleaned_dataset, label_encoding_config)
+
         save_cleaned_dataset(cleaned_dataset, data_cleaning_config.cleaned_dataset_path)
         logger.info("Cleaning process completed successfully.")
     except Exception as e:
