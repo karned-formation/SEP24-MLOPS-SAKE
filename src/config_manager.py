@@ -1,6 +1,6 @@
 from src.config import CONFIG_FILE_PATH
 from src.common_utils import read_yaml, create_directories
-from custom_logger import logger
+from src.custom_logger import logger
 from src.entity import (DataIngestionConfig, 
                     DataCleaningConfig, 
                     DataPreprocessingConfig, 

@@ -2,23 +2,21 @@
 -e .
 
 # external packages
-pandas
-numpy
-matplotlib
-seaborn
-opencv-python
-scikit-learn
-imbalanced-learn
-typing
-nltk
-ipython
-spacy
-langdetect
-fastapi
-starlette
-uvicorn
-dvc
-dvc-s3
-ipynbname
-lime
-python-box
+pandas==2.2.3
+matplotlib==3.9.2
+seaborn==0.13.2
+opencv-python==4.10.0.84
+scikit-learn==1.5.2
+imbalanced-learn==0.12.4
+typing==3.7.4.3
+nltk==3.9.1
+ipython==8.29.0
+spacy==3.8.2
+langdetect==1.0.9
+fastapi[standard]==0.115.2
+dvc==3.56.0
+dvc-s3==3.2.0
+ipynbname==2024.1.0.0
+lime==0.2.0.1
+python-box==7.2.0
+docker==7.1.0

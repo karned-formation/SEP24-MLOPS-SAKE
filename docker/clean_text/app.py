@@ -1,6 +1,6 @@
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI
-from clean import main
+from clean_text import main
 
 app = FastAPI()
 

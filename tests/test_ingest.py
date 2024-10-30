@@ -4,13 +4,15 @@ import pandas as pd
 import numpy as np
 from steps.ingest import get_full_text, get_processed_dataset, get_new_images_to_ocerize, save_text_to_file
 
+ocr_endpoint = "http://localhost:8901/txt/blocks-words" # url de l'OCR
+
 class TestIngest(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open, read_data="mocked text")
     @patch("requests.post")
     def test_get_full_text(self, mock_post, mock_file):
         mock_post.return_value.text = "mocked text"
-        result = get_full_text("dummy_image.jpg")
+        result = get_full_text("dummy_image.jpg", ocr_endpoint)
         self.assertEqual(result, "mocked text")
         mock_post.assert_called_once()
         mock_file.assert_called_once_with("dummy_image.jpg", "rb")

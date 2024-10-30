@@ -4,9 +4,11 @@ import numpy as np
 import os
 from typing import List
 from time import sleep
-from custom_logger import logger
-from src.config_manager import ConfigurationManager
+import sys
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.custom_logger import logger
+from src.config_manager import ConfigurationManager
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
