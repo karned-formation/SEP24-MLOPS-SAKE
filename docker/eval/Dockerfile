@@ -4,7 +4,7 @@ ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
-ENV PORT=8906
+ENV PORT=8905
 
 EXPOSE $PORT
 
@@ -12,10 +12,10 @@ WORKDIR $APP_HOME
 
 RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
 
-COPY docker/train/requirements.txt ./
+COPY docker/eval/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY docker/train/app.py ./
-COPY src/train/train.py ./
+COPY docker/eval/app.py ./
+COPY src/eval/eval.py ./
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}
