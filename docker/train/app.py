@@ -1,12 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from train import main
 
 DEFAULT_DATA_DIR = '/app/data/processed/train'
-DEFAULT_MODEL_PATH = '/app/data/models/ovrc.joblib'
+DEFAULT_MODEL_PATH = '/app/models/ovrc.joblib'
 
 app = FastAPI()
 
-@app.post('/train')
+@app.get('/train')
 def train(data_dir: str = DEFAULT_DATA_DIR, model_path: str = DEFAULT_MODEL_PATH):
     """
     Trains the model using the specified data directory and saves it to the specified model path.

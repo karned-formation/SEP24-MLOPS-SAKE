@@ -5,7 +5,7 @@ import json
 import os
 import joblib 
 
-model_path = '../../data/models/ovrc.joblib'
+model_path = '../../models/ovrc.joblib'
 X_test_path = '../../data/processed/test/X_test.joblib'
 y_test_path = '../../data/processed/test/y_test.joblib'
 metrics_dir = '../../metrics/'

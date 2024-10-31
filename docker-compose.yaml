@@ -6,8 +6,15 @@ services:
     networks:
       - sake
 
-  etl:
-    image: killiankopp/ms-sake-etl:1.0
+  ms-sake-clean-text:
+    build:
+      context: .  
+      dockerfile: docker/clean_text/Dockerfile  
+      args:
+        DOCKERFILE_PATH: docker/clean_text  
+      cache_from:
+        - ms-sake-clean-text:cache  # pour force docker-compose à regarder le cache de ce docker (/!\ à utiliser avec `docker-compose up --build`)
+    image: ms-sake-clean-text:1.0  
     ports:
       - "8903:8903"
     networks:
@@ -22,8 +29,9 @@ services:
     volumes:
       - ./data/processed/train:/app/data/processed/train
       - ./data/processed/test:/app/data/processed/test
-      - ./data/vectorizers:/app/data/vectorizers
       - ./data/cleaned:/app/data/cleaned
+      - ./models:/app/models
+
 
   train:
     image: abenayoub/ms-sake-train:1.0
@@ -33,7 +41,7 @@ services:
       - sake
     volumes:
       - ./data/processed/train:/app/data/processed/train
-      - ./data/models:/app/data/models
+      - ./models:/app/models
   
   eval:
     image: abenayoub/ms-sake-eval:1.0
@@ -43,7 +51,7 @@ services:
       - sake
     volumes:
       - ./data/processed/test:/app/data/processed/test
-      - ./data/models:/app/data/models
+      - ./models:/app/models
       - ./metrics:/app/metrics
 
 networks:

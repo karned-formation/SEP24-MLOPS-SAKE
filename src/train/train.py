@@ -8,7 +8,7 @@ from typing import Tuple
 
 # Paths
 train_data_path = "/app/data/processed/train/"
-model_path = "/app/data/models/ovrc.joblib"
+model_path = "/app/models/ovrc.joblib"
 
 
 def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
@@ -100,5 +100,5 @@ def main(data_dir: str, model_path: str):
 # Execute main function
 if __name__ == "__main__":
     data_dir = 'data/processed/train'
-    model_path = 'data/models/ovrc.joblib'
+    model_path = 'models/ovrc.joblib'
     main(data_dir, model_path)
