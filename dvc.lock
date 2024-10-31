@@ -34,8 +34,8 @@ stages:
     outs:
     - path: data/cleaned
       hash: md5
-      md5: 4956727579a6bedefbf13190bee22647.dir
-      size: 112904
+      md5: 48c8ad14f3ff28378053acc4d35b3764.dir
+      size: 112971
       nfiles: 1
   structure_raw:
     cmd: python3 src/data/structure_raw.py
