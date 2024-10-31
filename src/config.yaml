@@ -5,20 +5,16 @@ data_structure_raw:
 
 data_ingestion:
   ocr_endpoint: "http://localhost:8901/txt/blocks-words"
-  image_dir: "data/raw/final/"
-  raw_dataset_path: "data/working_dataset.csv" 
-  processed_dataset_path: "data/processed/processed_dataset.csv"
-  ocr_text_dir: "data/ocr_raw/"
+  raw_dataset_dir: "data/raw_per_classes/"
+  ocr_text_dir: "data/ocr_raw_per_classes/"
   
 data_cleaning:
   clean_endpoint: "http://localhost:8903/clean"
-  ocr_text_dir: "data/ocr_raw/"
-  cleaned_dir: "data/cleaned/"
-  processed_dataset_path: "data/processed/processed_dataset.csv"
-  cleaned_dataset_path: "data/cleaned/cleaned_dataset.csv"
+  ocr_text_dir: "data/ocr_raw_per_classes/"
+  cleaned_datasets_dir: "data/cleaned/"
 
 data_preprocessing:
-  clean_dataset_path: "data/cleaned/cleaned_dataset.csv"
+  cleaned_datasets_dir: "data/cleaned/"
   tfidf_vectorizer_path: "models/tfidf.joblib"
   X_train_path: "data/cleaned/X_train.csv"
   X_test_path: "data/cleaned/X_test.csv"

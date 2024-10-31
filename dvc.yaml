@@ -7,21 +7,18 @@ stages:
     - data/working_dataset.csv
     outs:
     - data/raw_per_classes
-
   ingest:
     cmd: python3 steps/ingest.py
     deps:
-    - data/raw
+    - data/raw_per_classes
     - steps/ingest.py
     outs:
-    - data/processed:
-        persist: true
-    - data/ocr_raw:
+    - data/ocr_raw_per_classes:
         persist: true
   clean:
     cmd: python3 steps/clean_text.py
     deps:
-    - data/processed
+    - data/ocr_raw_per_classes
     - steps/clean_text.py
     outs:
     - data/cleaned

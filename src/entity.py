@@ -10,22 +10,18 @@ class DataStructureRawConfig:
 @dataclass(frozen=True)
 class DataIngestionConfig:
     ocr_endpoint: str
-    image_dir: Path
-    raw_dataset_path: Path
-    processed_dataset_path: Path
+    raw_dataset_dir: Path
     ocr_text_dir: Path
 
 @dataclass(frozen=True)
 class DataCleaningConfig:
     clean_endpoint: str
     ocr_text_dir: Path
-    cleaned_dir: Path
-    processed_dataset_path: Path
-    cleaned_dataset_path: Path
+    cleaned_datasets_dir: Path
 
 @dataclass(frozen=True)
 class DataPreprocessingConfig:
-    cleaned_dataset_path: Path
+    cleaned_datasets_dir: Path
     tfidf_vectorizer_path: Path
     X_train_path: Path
     X_test_path: Path

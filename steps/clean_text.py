@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import os
 import sys
-from typing import Optional
+from typing import Optional, List, Dict
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.custom_logger import logger
@@ -28,65 +28,65 @@ def read_file_content(filename: str) -> str:
     with open(filename, 'r', encoding='utf-8') as file:
         return file.read()
             
-def process_dataset(processed_dataset: pd.DataFrame, api_url: str) -> pd.DataFrame:
-    filenames = []
-    cleaned_texts = []
-    categories = []
-
-    for index, row in processed_dataset.iterrows():
-        file_content = read_file_content(row['full_text'])
-        cleaned_text = clean_text(api_url, file_content)
-        filenames.append(row['filename'])
-        cleaned_texts.append(cleaned_text)
-        categories.append(row['grouped_type'])
-
+def make_dataset(ocr_txts: List[str], cleaned_txts: List[str], mapper: Dict[str, int]) -> pd.DataFrame:
     return pd.DataFrame({
-        'filename': filenames,
-        'cleaned_text': cleaned_texts,
-        'category': categories
+        'filename': [ocr_txt.replace('.txt', '') for ocr_txt in ocr_txts],
+        'cleaned_text': cleaned_txts,
+        'category': encode_labels(ocr_txts, mapper)
     })
 
-def encode_labels(clean_dataset: pd.DataFrame, mapper: LabelEncodingConfig) -> pd.DataFrame:
-    clean_dataset['category'] = clean_dataset['category'].map(mapper.__dict__)
-    return clean_dataset
+def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str,mapper: Dict[str, int]) -> None:
+    for root, _, files in os.walk(ocr_text_dir):
+        logger.info(f"Cleaning directory {root}")
+        ocr_images = []
+        for file in files:
+            if file.endswith('.txt'):
+                relative_path = os.path.relpath(os.path.join(root, file), ocr_text_dir)
+                ocr_images.append(relative_path)
+       
+        if(len(ocr_images) == 0): # Skip if no txt files found
+            continue
 
+        cleaned_txts =[]
+        for image in ocr_images:
+            file_content = read_file_content(os.path.join(ocr_text_dir, image))
+            cleaned_text = clean_text(api_url, file_content)
+            cleaned_txts.append(cleaned_text)
+
+        logger.info(f"Creating cleaned dataset for {root}")
+        dataset = make_dataset(ocr_images, cleaned_txts, mapper)
+        class_folder = os.path.basename(os.path.dirname(ocr_images[0]))
+        os.makedirs(f"{cleaned_datasets_dir}{class_folder}", exist_ok=True)
+
+        dataset_path = f"{cleaned_datasets_dir}{class_folder}/cleaned_dataset.csv"
+        dataset.to_csv(dataset_path, index=False)
+        logger.info(f"Dataset saved to {dataset_path}")
+
+
+def encode_labels(ocr_txts: List[str], mapper: Dict[str, int]) -> List[int]:
+    labels = []
+    for ocr_txt in ocr_txts:
+        category = ocr_txt.split('/')[0]
+        label = mapper.get(category, -1)  # Default to -1 if category not found
+        labels.append(label)
+    return labels
 
 def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     cleaned_dataset.to_csv(filepath, index=False)
 
 
 def main():
-    """
-    Main function to clean the processed dataset and save the cleaned dataset.
-    This function performs the following steps:
-    1. Creates the output folder if it does not exist.
-    2. Loads the processed dataset from a specified path.
-    3. Sends the processed dataset to an API for cleaning.
-    4. Saves the cleaned dataset to a specified path.
-    
-    Variables:
-    - config_manager: ConfigurationManager object to get the data cleaning configuration.
-    
-    Functions:
-    - check_existing_folder(folderpath): Checks if the folder exists.
-    - load_processed_dataset(filepath): Loads the processed dataset from the given file path.
-    - process_dataset(dataset, api_url): Sends the dataset to the API for cleaning and returns the cleaned dataset.
-    - save_cleaned_dataset(dataset, filepath): Saves the cleaned dataset to the given file path.
-    """
     try:
+        
         logger.info("Starting the cleaning process...")
         config_manager = ConfigurationManager()
         data_cleaning_config = config_manager.get_data_cleaning_config()
         label_encoding_config = config_manager.get_label_encoding_config()
-
-        processed_dataset = load_processed_dataset(data_cleaning_config.processed_dataset_path)
-        cleaned_dataset = process_dataset(processed_dataset, data_cleaning_config.clean_endpoint)
-        cleaned_dataset = encode_labels(cleaned_dataset, label_encoding_config)
-
-        save_cleaned_dataset(cleaned_dataset, data_cleaning_config.cleaned_dataset_path)
+        process_dir(data_cleaning_config.ocr_text_dir, data_cleaning_config.cleaned_datasets_dir, data_cleaning_config.clean_endpoint, label_encoding_config.__dict__)      
         logger.info("Cleaning process completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred during the cleaning process: {str(e)}")
+        raise e
 
 if __name__ == '__main__':
     main()
