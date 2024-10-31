@@ -2,10 +2,10 @@ import numpy as np
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from langdetect import detect
 import nltk
 nltk.download('wordnet')
 import spacy
-from langdetect import detect
 
 set_stop_words_french = set(stopwords.words('french'))
 set_stop_words_english = set(stopwords.words('english'))
