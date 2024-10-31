@@ -1,6 +1,6 @@
 services:
   ocr:
-    image: killiankopp/ms-ocr-ia:1.1
+    image: killiankopp/ms-ocr-ia:1.2
     ports:
       - "8901:8901"
     networks:
