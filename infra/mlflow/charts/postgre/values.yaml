@@ -1,0 +1,14 @@
+AppName: mlflow-postgres
+Namespace: sake
+
+PostgresDbUser: mlflow
+PostgresDbName: mlflowdb
+
+service:
+  name: mlflow-postgres
+  type: ClusterIP
+  port: 5432
+
+persistence:
+  accessMode: ReadWriteOnce
+  size: 5Gi

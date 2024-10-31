@@ -13,10 +13,9 @@ services:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
-        SOURCE_DIR: src/data
-        DOCKERFILE_DIR: docker/clean_text  
+        DOCKERFILE_PATH: docker/clean_text  
       cache_from:
-        - ms-sake-clean-text:cache
+        - ms-sake-clean-text:cache  # pour force docker-compose à regarder le cache de ce docker (/!\ à utiliser avec `docker-compose up --build`)
     image: ms-sake-clean-text:1.0  
     ports:
       - "8903:8903"

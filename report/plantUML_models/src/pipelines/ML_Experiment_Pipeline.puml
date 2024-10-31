@@ -1,0 +1,116 @@
+@startuml
+
+' left to right direction 
+
+folder data  #green {
+  file "raw.dc" #lightgreen
+  file raw_dataset_path #lightgreen  
+}
+file "config.yaml" #lightgreen
+
+[ML_Experiment_Pipeline]
+component ML_Experiment_Pipeline #lightblue {
+  folder image_dir #green
+  
+  folder processed_dir #green {
+    file processed_dataset_path #lightgreen
+  }
+  
+  folder clean_dir #green {
+    file clean_dataset_path  #lightgreen
+    ' file X_train_path #lightgreen
+    ' file X_test_path #lightgreen
+    ' file y_train_path #lightgreen
+    ' file y_test_path #lightgreen
+    ' file X_test_path #lightgreen
+    ' file y_test_path #lightgreen
+    }
+
+  ' file tfidf_vectorizer_path #lightgreen
+
+  ' file model_path #lightgreen
+  ' file evaluation_results_path #lightgreen
+
+  [ingest]
+  component ingest  <<Script>> {
+  }
+
+  [ocr] 
+  component ocr <<Container>> #pink {
+    portin 8901
+  }
+
+  [clean_all_images]
+  component clean_all_images  <<Script>> {
+  }
+
+  [clean_text]
+  component clean_text <<Container>> #pink {
+    port 8903
+  }
+
+  ' [preprocessing]
+  ' component preprocessing {
+  ' }
+
+  ' [preprocessing]
+  ' component preprocessing  #pink {
+  '   port 8904
+  ' }
+
+  ' [train]
+  ' component train {
+  ' }
+
+  ' [train]
+  ' component train  #pink {
+  '   port 8905
+  ' }
+
+  ' [evaluate]
+  ' component evaluate {
+  ' }
+
+  ' [evaluate]
+  ' component evaluate  #pink {
+  '   port 8906
+  ' }
+
+}
+
+[raw.dc] --> image_dir : fetch
+[raw_dataset_path] --> ingest : noms des fichiers images
+image_dir --> ingest : fichier images
+ingest --> 8901 : image
+ingest <-- 8901 : texte océrisé brut
+ingest --> processed_dataset_path : textes océrisés brut
+
+processed_dataset_path --> clean_all_images
+clean_all_images --> 8903 : texte océrisé brut
+clean_all_images <-- 8903 : texte océrisé nettoyé
+clean_all_images --> clean_dataset_path : textes océrisés nettoyés
+
+' clean_dataset_path --> preprocessing
+' preprocessing --> 8904
+' preprocessing <-- 8904
+' preprocessing --> tfidf_vectorizer_path : vectorizer
+' preprocessing --> X_train_path
+' preprocessing --> y_train_path
+' preprocessing --> X_test_path
+' preprocessing --> y_test_path
+
+' tfidf_vectorizer_path --> train
+' X_train_path --> train
+' y_train_path --> train
+' train --> 8905
+' train <-- 8905
+' train --> model_path
+
+' X_test_path --> evaluate
+' y_test_path --> evaluate
+' model_path --> evaluate
+' evaluate --> 8906
+' evaluate <-- 8906
+' evaluate --> evaluation_results_path
+
+@enduml

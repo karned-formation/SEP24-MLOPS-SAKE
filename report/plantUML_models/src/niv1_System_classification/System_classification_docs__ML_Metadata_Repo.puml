@@ -1,0 +1,14 @@
+@startuml System_classification_docs__ML_Metadata_Repo
+!$SYSTEM_BORDER_COLOR ?= "#000000"
+!include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+HIDE_STEREOTYPE()
+AddElementTag(SystemDb_colors, $bgColor=SkyBlue, $fontColor=black)
+
+System_Boundary(System_classifier, "Classifier")  {
+    SystemDb(ML_Metadata_Repository, "ML_Metadata_Repository", "model performance metrics", $tags="SystemDb_colors") 
+}
+
+
+SHOW_FLOATING_LEGEND()
+
+@enduml

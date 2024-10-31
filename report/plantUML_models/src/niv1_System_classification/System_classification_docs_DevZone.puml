@@ -1,0 +1,29 @@
+@startuml System_classification_docs_DevZone
+!$SYSTEM_BORDER_COLOR ?= "#000000"
+!include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!include System_classification_docs__Model_Repo.puml
+!include System_classification_docs__ML_Metadata_Repo.puml
+!include System_classification_docs__Dataset_Repo.puml
+!include System_classification_docs__Code_repo.puml
+
+SystemDb_Ext(Data_Source_Training, "Data_Source_Training", "selected images by Data Scientist", $tags="SystemDb_colors") 
+SystemDb_Ext(OCR_Model, "OCR_Model", $tags="SystemDb_colors") 
+System_Boundary(System_classifier, "Classifier")  {
+    System_Boundary(Development_Zone, "Development_Zone")  {
+        System(ML_Experiment_Pipeline, "ML_Experiment_Pipeline")
+    }
+}
+Person_Ext(Data_Scientist, "Data_Scientist")
+
+Rel(Data_Scientist, ML_Experiment_Pipeline, "develops")
+Rel(Data_Source_Training, ML_Experiment_Pipeline, "unstructured labelled images")
+Rel(OCR_Model, ML_Experiment_Pipeline, "optimized OCR Model")
+BiRel(ML_Experiment_Pipeline, Dataset_Repository, "cleaned labelled images")
+BiRel(ML_Experiment_Pipeline, Code_Repository, "code")
+Rel(ML_Experiment_Pipeline, Model_Repository, "produces")
+Rel(ML_Experiment_Pipeline, ML_Metadata_Repository, "generates")
+
+SHOW_FLOATING_LEGEND()
+
+@enduml

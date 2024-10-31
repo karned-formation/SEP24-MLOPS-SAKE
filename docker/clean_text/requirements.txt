@@ -1,0 +1,6 @@
+requests>=2.32.0
+fastapi[standard]==0.115.2
+numpy~=1.26.4
+nltk~=3.9
+spacy~=3.7.5
+langdetect~=1.0.9

@@ -1,0 +1,23 @@
+@startuml System_classification_docs_ContinuousTrainingZone
+!$SYSTEM_BORDER_COLOR ?= "#000000"
+!include https://raw.githubUsercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!include System_classification_docs__Model_Repo.puml
+!include System_classification_docs__Dataset_Repo.puml
+!include System_classification_docs__Code_repo.puml
+
+System_Boundary(System_classifier, "Classifier")  {
+    System_Boundary(Continuous_Training_Zone, "Continuous_Training_Zone")  {
+        System(ML_Training_Pipeline, "ML_Training_Pipeline")
+    }
+}
+
+Rel(Code_Repository, ML_Training_Pipeline, "code")
+Rel(Monitoring_Pipeline, ML_Training_Pipeline, "trigger")
+Rel(Dataset_Repository, ML_Training_Pipeline, "Training/Validation/Test data")
+Rel(ML_Training_Pipeline, Model_Repository, "Updates")
+Rel(Model_Repository, ML_Training_Pipeline, "Gets")
+
+SHOW_FLOATING_LEGEND()
+
+@enduml
