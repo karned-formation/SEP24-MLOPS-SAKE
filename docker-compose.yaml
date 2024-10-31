@@ -1,4 +1,5 @@
 services:
+  # Service OCR
   ocr:
     image: killiankopp/ms-ocr-ia:1.1
     ports:
@@ -6,6 +7,7 @@ services:
     networks:
       - sake
 
+  # Service de nettoyage de texte
   ms-sake-clean-text:
     build:
       context: .  
@@ -19,6 +21,66 @@ services:
       - "8903:8903"
     networks:
       - sake
+
+  # Service de prétraitement
+  ms-sake-preprocessing:
+    build:
+      context: .  
+      dockerfile: docker/preprocessing/Dockerfile  
+      args:
+        SOURCE_DIR: src/preprocessing
+        DOCKERFILE_DIR: docker/preprocessing
+      cache_from:
+        - ms-sake-preprocessing:cache
+    image: ms-sake-preprocessing:1.0  
+    ports:
+      - "8904:8904"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/train:/app/data/processed/train
+      - ./data/processed/test:/app/data/processed/test
+      - ./data/cleaned:/app/data/cleaned
+      - ./models:/app/models
+
+  # Service d'entraînement
+  ms-sake-train:
+    build:
+      context: .  
+      dockerfile: docker/train/Dockerfile  
+      args:
+        SOURCE_DIR: src/train
+        DOCKERFILE_DIR: docker/train
+      cache_from:
+        - ms-sake-train:cache
+    image: ms-sake-train:1.0  
+    ports:
+      - "8905:8905"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/train:/app/data/processed/train
+      - ./models:/app/models
+  
+  # Service d'évaluation
+  ms-sake-eval:
+    build:
+      context: .  
+      dockerfile: docker/eval/Dockerfile  
+      args:
+        SOURCE_DIR: src/eval
+        DOCKERFILE_DIR: docker/eval
+      cache_from:
+        - ms-sake-eval:cache
+    image: ms-sake-eval:1.0  
+    ports:
+      - "8906:8906"
+    networks:
+      - sake
+    volumes:
+      - ./data/processed/test:/app/data/processed/test
+      - ./models:/app/models
+      - ./metrics:/app/metrics
 
 networks:
   sake:
