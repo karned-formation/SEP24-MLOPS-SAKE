@@ -1,5 +1,6 @@
 FROM python:3.11
 
+ARG SOURCE_PATH
 # Argument to build docker image command /!\ to be executed from root folder of Git
 # Example: docker image build --build-arg DOCKERFILE_PATH=docker/clean_text -f docker/clean_text/Dockerfile . -t ms-sake-clean-text:1.0
 ARG DOCKERFILE_PATH
@@ -14,18 +15,17 @@ EXPOSE $PORT
 
 WORKDIR $APP_HOME
 
-RUN apt-get update
 RUN apt-get upgrade -y
 RUN pip install --upgrade pip
-
-COPY src/data/clean_text.py ./
-COPY $DOCKERFILE_PATH/download_contents.py ./
-COPY $DOCKERFILE_PATH/app.py ./
 COPY $DOCKERFILE_PATH/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN python3 -m spacy download fr_core_news_sm
 RUN python3 -m spacy download en_core_web_sm
+
+COPY $DOCKERFILE_PATH/app.py ./
+COPY $DOCKERFILE_PATH/download_contents.py ./
+COPY $SOURCE_PATH/clean_text.py ./
 
 RUN python3 download_contents.py
 
