@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from src.eval.eval import main
 import os
 
-MODEL_PATH = '/app/data/models/ovrc.joblib'
+MODEL_PATH = '/app/models/ovrc.joblib'
 X_TEST_PATH = '/app/data/processed/test/X_test.joblib'
 Y_TEST_PATH = '/app/data/processed/test/y_test.joblib'
 METRICS_DIR = '/app/metrics/'
