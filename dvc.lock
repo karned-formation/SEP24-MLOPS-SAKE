@@ -8,8 +8,9 @@ stages:
       size: 21954635
       nfiles: 183
     - path: steps/ingest.py
-      md5: 8eb1b8ca3f71ea4fa8a0fac289548717
-      size: 3662
+      hash: md5
+      md5: 480091e417ab7e0985df0c2289db7b37
+      size: 3757
     outs:
     - path: data/ocr_raw
       md5: db2967c099e8c41e5d7863fdbfe25a76.dir
@@ -19,7 +20,6 @@ stages:
       md5: 06701a83f9d841d4194ba58f5a0e3d1e.dir
       size: 10787
       nfiles: 1
-
   clean:
     cmd: python3 steps/clean_text.py
     deps:
@@ -28,10 +28,34 @@ stages:
       size: 10787
       nfiles: 1
     - path: steps/clean_text.py
-      md5: 5c1c56e8577db8bb758ff7300131f4b7
-      size: 3378
+      hash: md5
+      md5: 8f78065ef856ad45b57a76f004d7cfcb
+      size: 3474
     outs:
     - path: data/cleaned
-      md5: b0551145bffa656c7ce8f203dbddbc11.dir
-      size: 112925
+      hash: md5
+      md5: 4956727579a6bedefbf13190bee22647.dir
+      size: 112904
       nfiles: 1
+  structure_raw:
+    cmd: python3 src/data/structure_raw.py
+    deps:
+    - path: data/raw/final
+      hash: md5
+      md5: 6c3622ff98294a528208aece1e7ede8b.dir
+      size: 21954635
+      nfiles: 183
+    - path: data/working_dataset.csv
+      hash: md5
+      md5: 02086bf6991f01344eccc4aba1935f1e
+      size: 4542
+    - path: src/data/structure_raw.py
+      hash: md5
+      md5: ade835f2993867a165334d5c3791e4fe
+      size: 2917
+    outs:
+    - path: data/raw_per_classes
+      hash: md5
+      md5: 7344db80f20dab3044717fd439d7f63a.dir
+      size: 21954635
+      nfiles: 183

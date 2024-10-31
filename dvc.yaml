@@ -1,4 +1,13 @@
 stages:
+  structure_raw:
+    cmd: python3 src/data/structure_raw.py
+    deps:
+    - src/data/structure_raw.py
+    - data/raw/final
+    - data/working_dataset.csv
+    outs:
+    - data/raw_per_classes
+
   ingest:
     cmd: python3 steps/ingest.py
     deps:
