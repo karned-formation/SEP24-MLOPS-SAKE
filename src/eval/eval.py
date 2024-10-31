@@ -43,8 +43,7 @@ def get_metrics(model, X_test, y_test, y_pred):
     report = classification_report_imbalanced(y_test, y_pred, output_dict=True)
     report['accuracy'] = get_accuracy(model, X_test, y_test)
     report = convert_numpy_types(report)
-    json_report = json.dumps(report)
-    return json_report
+    return report
 
 def save_json_metrics(metrics, metrics_dir):
     """Save metrics as a JSON file at the specified file path."""
@@ -52,7 +51,7 @@ def save_json_metrics(metrics, metrics_dir):
     if metrics_dir and not os.path.exists(metrics_dir):
         os.makedirs(metrics_dir)
     with open(file_path, 'w') as json_file:
-        json.dump(metrics, json_file, indent=4)
+        json.dump(metrics, json_file)
     print(f"Metrics saved successfully to {file_path}.")
 
 def save_confusion_matrix(confusion_matrix, metrics_dir):
@@ -72,4 +71,4 @@ def main(model_path, X_test_path, y_test_path, metrics_dir):
 
 # Execute main function
 if __name__ == "__main__":
-    main(model_path, X_test_path, y_test_path)
+    main(model_path, X_test_path, y_test_path, metrics_dir)

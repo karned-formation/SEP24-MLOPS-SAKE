@@ -1,4 +1,5 @@
 services:
+  # Service OCR
   ocr:
     image: killiankopp/ms-ocr-ia:1.1
     ports:
@@ -6,22 +7,33 @@ services:
     networks:
       - sake
 
+  # Service de nettoyage de texte
   ms-sake-clean-text:
     build:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
-        DOCKERFILE_PATH: docker/clean_text  
+        SOURCE_DIR: src/data
+        DOCKERFILE_DIR: docker/clean_text  
       cache_from:
-        - ms-sake-clean-text:cache  # pour force docker-compose à regarder le cache de ce docker (/!\ à utiliser avec `docker-compose up --build`)
+        - ms-sake-clean-text:cache
     image: ms-sake-clean-text:1.0  
     ports:
       - "8903:8903"
     networks:
       - sake
-  
-  preprocessing:
-    image: abenayoub/ms-sake-preprocessing:1.0
+
+  # Service de prétraitement
+  ms-sake-preprocessing:
+    build:
+      context: .  
+      dockerfile: docker/preprocessing/Dockerfile  
+      args:
+        SOURCE_DIR: src/preprocessing
+        DOCKERFILE_DIR: docker/preprocessing
+      cache_from:
+        - ms-sake-preprocessing:cache
+    image: ms-sake-preprocessing:1.0  
     ports:
       - "8904:8904"
     networks:
@@ -32,9 +44,17 @@ services:
       - ./data/cleaned:/app/data/cleaned
       - ./models:/app/models
 
-
-  train:
-    image: abenayoub/ms-sake-train:1.0
+  # Service d'entraînement
+  ms-sake-train:
+    build:
+      context: .  
+      dockerfile: docker/train/Dockerfile  
+      args:
+        SOURCE_DIR: src/train
+        DOCKERFILE_DIR: docker/train
+      cache_from:
+        - ms-sake-train:cache
+    image: ms-sake-train:1.0  
     ports:
       - "8905:8905"
     networks:
@@ -43,8 +63,17 @@ services:
       - ./data/processed/train:/app/data/processed/train
       - ./models:/app/models
   
-  eval:
-    image: abenayoub/ms-sake-eval:1.0
+  # Service d'évaluation
+  ms-sake-eval:
+    build:
+      context: .  
+      dockerfile: docker/eval/Dockerfile  
+      args:
+        SOURCE_DIR: src/eval
+        DOCKERFILE_DIR: docker/eval
+      cache_from:
+        - ms-sake-eval:cache
+    image: ms-sake-eval:1.0  
     ports:
       - "8906:8906"
     networks:

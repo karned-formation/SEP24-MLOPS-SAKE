@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
-from src.eval.eval import main
+from eval import main
 import os
 
 MODEL_PATH = '/app/models/ovrc.joblib'
