@@ -2,6 +2,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 @dataclass(frozen=True)
+class DataStructureRawConfig:
+    raw_dataset_path: Path
+    image_dir: Path
+    raw_dataset_dir: Path
+
+@dataclass(frozen=True)
 class DataIngestionConfig:
     ocr_endpoint: str
     image_dir: Path

@@ -1,3 +1,8 @@
+data_structure_raw:
+  raw_dataset_path: "data/working_dataset.csv" 
+  image_dir: "data/raw/final/"
+  raw_dataset_dir: "data/raw_per_classes/" 
+
 data_ingestion:
   ocr_endpoint: "http://localhost:8901/txt/blocks-words"
   image_dir: "data/raw/final/"
