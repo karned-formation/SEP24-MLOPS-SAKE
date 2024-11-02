@@ -8,17 +8,15 @@ stages:
     outs:
     - data/raw_per_classes
   ingest:
-    cmd: python3 steps/ingest.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json' -d '' "
     deps:
     - data/raw_per_classes
-    - steps/ingest.py
     outs:
     - data/ocr_raw_per_classes:
         persist: true
   clean:
-    cmd: python3 steps/clean_text.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json' -d '' "
     deps:
     - data/ocr_raw_per_classes
-    - steps/clean_text.py
     outs:
     - data/cleaned

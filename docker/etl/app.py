@@ -16,7 +16,7 @@ app = FastAPI()
 def ingest():
     # Check if raw dataset directory exists
     if not os.path.exists(raw_dataset_dir):
-        raise HTTPException(status_code=500, detail="Raw dataset directory not found")
+        raise HTTPException(status_code=404, detail="Raw dataset directory not found")
     try:
         ingest_all(ocr_endpoint, raw_dataset_dir, ocr_text_dir)
         return {"message":"Ingestion completed"}
@@ -27,7 +27,7 @@ def ingest():
 def clean():
     # Check if OCR text directory exists
     if not os.path.exists(ocr_text_dir):
-        raise HTTPException(status_code=500, detail="OCR text directory not found")
+        raise HTTPException(status_code=404, detail="OCR text directory not found")
     try:
         clean_all(clean_endpoint, ocr_text_dir, cleaned_datasets_dir)
         return "Cleaning completed"
