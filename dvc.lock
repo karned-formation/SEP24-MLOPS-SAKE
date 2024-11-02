@@ -19,32 +19,28 @@ stages:
       size: 21954635
       nfiles: 183
   ingest:
-    cmd: python3 steps/ingest.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json'
+      -d '' "
     deps:
     - path: data/raw_per_classes
       md5: 7344db80f20dab3044717fd439d7f63a.dir
       size: 21954635
       nfiles: 183
-    - path: steps/ingest.py
-      md5: 9e4ce7e46367c01006149d4abcdc3b1c
-      size: 3023
     outs:
     - path: data/ocr_raw_per_classes
       md5: e1ea43812f5c0366f3d9072a442d7237.dir
       size: 174192
       nfiles: 183
   clean:
-    cmd: python3 steps/clean_text.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json'
+      -d '' "
     deps:
     - path: data/ocr_raw_per_classes
       md5: e1ea43812f5c0366f3d9072a442d7237.dir
       size: 174192
       nfiles: 183
-    - path: steps/clean_text.py
-      md5: ee08f567effc82cd2a7fe7360f7b2982
-      size: 3492
     outs:
     - path: data/cleaned
-      md5: 0e8c5ffb793ed32c0123a195204bc1fb.dir
-      size: 114563
-      nfiles: 3
+      md5: 4a6004a735092b6be367e1e4cb374ce0.dir
+      size: 114171
+      nfiles: 4

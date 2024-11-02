@@ -19,4 +19,5 @@ stages:
     deps:
     - data/ocr_raw_per_classes
     outs:
-    - data/cleaned
+    - data/cleaned:
+        persist: true

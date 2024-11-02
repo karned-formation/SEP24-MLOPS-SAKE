@@ -51,11 +51,7 @@ def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> N
         logger.info(f"Creating cleaned dataset for {root}")
         dataset = make_dataset(ocr_images, cleaned_txts)
         class_folder = os.path.basename(os.path.dirname(ocr_images[0]))
-        os.makedirs(f"{cleaned_datasets_dir}{class_folder}", exist_ok=True)
-
-        dataset_path = f"{cleaned_datasets_dir}{class_folder}/cleaned_dataset.csv"
-        dataset.to_csv(dataset_path, index=False)
-        logger.info(f"Dataset saved to {dataset_path}")
+        save_cleaned_dataset(dataset, f"{cleaned_datasets_dir}{class_folder}/cleaned_dataset.csv")
 
 
 # def encode_labels(ocr_txts: List[str], mapper: Dict[str, int]) -> List[int]:
@@ -67,6 +63,9 @@ def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> N
 #     return labels
 
 def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
+    """Enregistre la classe en cours dans un fichier .csv"""
+    logger.info(f"Saving current class to {filepath}...")
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
     cleaned_dataset.to_csv(filepath, index=False)
 
 
