@@ -1,15 +1,10 @@
 from pathlib import Path
 import requests
-import pandas as pd
-import numpy as np
 import os
 from typing import List
-from time import sleep
 import sys
+from custom_logger import logger
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.custom_logger import logger
-from src.config_manager import ConfigurationManager
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
@@ -50,23 +45,17 @@ def save_text_to_file(text:str, path: str):
         txt_file.write(text)
 
 
-def main():
+def ingest_all(ocr_endpoint: str, raw_dataset_dir: str, ocr_text_dir: str):
     try:
         logger.info("Starting the ingest process...")
-        config_manager = ConfigurationManager()
-        data_ingestion_config = config_manager.get_data_ingestion_config()
-
-        # On récupère les chemins des répertoires
-        raw_dataset_dir = data_ingestion_config.raw_dataset_dir
-        ocr_text_dir = data_ingestion_config.ocr_text_dir
-
+        
         # On récupère les images qui n'ont pas encore été océrisées
         images_to_ocerize = get_new_images_to_ocerize(raw_dataset_dir, ocr_text_dir)
         logger.info(f"{len(images_to_ocerize)} new image(s) to ocerize")
 
         # On océrise les images et on enregistre le texte dans un fichier .txt dans e répertoire correspondant à son répertoire d'origine
         for image in images_to_ocerize:
-            full_text = get_full_text(f"{raw_dataset_dir}{image}", data_ingestion_config.ocr_endpoint)
+            full_text = get_full_text(f"{raw_dataset_dir}{image}", ocr_endpoint)
             text_file_path = f"{ocr_text_dir}{image}.txt"
             save_text_to_file(full_text, text_file_path)
        
@@ -74,6 +63,4 @@ def main():
     except Exception as e:
         logger.error(f"An error occured during the ingest process: {e}")
         raise e
-
-if __name__ == "__main__":
-    main()
+    

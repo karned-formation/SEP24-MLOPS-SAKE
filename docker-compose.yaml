@@ -20,7 +20,24 @@ services:
       - "8903:8903"
     networks:
       - sake
-
+  # Service ETL
+  ms-sake-etl:
+    build:
+      context: .  
+      dockerfile: docker/etl/Dockerfile  
+      args:
+        SOURCE_DIR: src/data
+        DOCKERFILE_DIR: docker/etl  
+      cache_from:
+        - ms-sake-etl:cache  
+    image: ms-sake-etl:1.0  
+    ports:
+      - "8907:8907"
+    networks:
+      - sake
+    volumes:
+      - ./data/raw_per_classes:/app/data/raw_per_classes
+      - ./data/cleaned:/app/data/cleaned
 networks:
   sake:
     driver: bridge

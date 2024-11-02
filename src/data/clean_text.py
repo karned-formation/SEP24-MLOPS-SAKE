@@ -18,62 +18,6 @@ nlp_fr = spacy.load('fr_core_news_sm')
 nlp_en = spacy.load('en_core_web_sm')
 
 
-txt_test = """
-FACTURE
-
- 
-
- 
-
- 
-
-Joanna Binet
-48 Coubertin
-31400 Paris
-FACTURE A ENVOVE A FACTURE N° FR.001
-Cendrilon Ayot Cendrilon Ayot DATE 2901/2019
-69 rue Nations 46 Rue St Fertéol .
-22000 Paris 92360 Ile-de-France COMMANDE N ‘esoa0t9
-ECHEANCE 24/08/2019
-ae DESIGNATION PRIX UNIT. HT MONTANT HT
-1 Grand brun escargot pour manger 4100.00 100.00
-2 Petit mariniére uniforme en bleu 15.00 30.00
-3 Facile a jouer accordéon 5.00 15.00
-Total HT 145.00
-VA 20.0% 29.00
-TOTAL 174.006
-
-CONDITIONS ET MODALITES DE PAIEMENT
-
-Le paiement est d0 dans 15 jours
-
-Caisse d'Epargne
-IBAN: FR12 1234 5678
-‘SWIFTIBIC: ABCDFRP1XXX
-Joanna Binet
-
-48 Coubertin
-31400 Paris
-Facturé a Envoyé a
-Cendrilon Ayot Cendritlon Ayot
-69 rue Nations 46 Rue St Ferréol
-22000 Paris 92360 lle-de-France
-are DESIGNATION
-
-1. Grand brun escargot pour manger
-
-2 Petit mariniére uniforme en bleu
-
-3 Facile & jouer accordéon
-
-Conditions et modalités de paiement
-Le paiement est dd dans 15 jours
-
-Caisse d'Epargne
-IBAN: FR12 1234 5678
-SWIFT/BIC: ABCDFRP1XxX
-"""
-
 def _tokenisation_et_lemmatisation(mots, nlp_for_language) :
     """
     Perform tokenization and lemmatization on a given string of text, removing stop words and 
@@ -183,6 +127,61 @@ def tokenize_data(data: str) -> str:
 def main(data: str):
     return tokenize_data(data)
 
+txt_test = """
+FACTURE
+
+ 
+
+ 
+
+ 
+
+Joanna Binet
+48 Coubertin
+31400 Paris
+FACTURE A ENVOVE A FACTURE N° FR.001
+Cendrilon Ayot Cendrilon Ayot DATE 2901/2019
+69 rue Nations 46 Rue St Fertéol .
+22000 Paris 92360 Ile-de-France COMMANDE N ‘esoa0t9
+ECHEANCE 24/08/2019
+ae DESIGNATION PRIX UNIT. HT MONTANT HT
+1 Grand brun escargot pour manger 4100.00 100.00
+2 Petit mariniére uniforme en bleu 15.00 30.00
+3 Facile a jouer accordéon 5.00 15.00
+Total HT 145.00
+VA 20.0% 29.00
+TOTAL 174.006
+
+CONDITIONS ET MODALITES DE PAIEMENT
+
+Le paiement est d0 dans 15 jours
+
+Caisse d'Epargne
+IBAN: FR12 1234 5678
+‘SWIFTIBIC: ABCDFRP1XXX
+Joanna Binet
+
+48 Coubertin
+31400 Paris
+Facturé a Envoyé a
+Cendrilon Ayot Cendritlon Ayot
+69 rue Nations 46 Rue St Ferréol
+22000 Paris 92360 lle-de-France
+are DESIGNATION
+
+1. Grand brun escargot pour manger
+
+2 Petit mariniére uniforme en bleu
+
+3 Facile & jouer accordéon
+
+Conditions et modalités de paiement
+Le paiement est dd dans 15 jours
+
+Caisse d'Epargne
+IBAN: FR12 1234 5678
+SWIFT/BIC: ABCDFRP1XxX
+"""
 
 if __name__ == "__main__":
-    main(txt_test)
+    main(txt_test) # test the function

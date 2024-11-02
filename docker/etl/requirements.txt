@@ -1,0 +1,4 @@
+pandas==2.2.3
+requests>=2.32.0
+fastapi[standard]==0.115.2
+typing==3.7.4.3
