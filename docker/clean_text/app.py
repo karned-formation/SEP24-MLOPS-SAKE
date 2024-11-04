@@ -1,10 +1,11 @@
 from starlette.responses import PlainTextResponse
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from clean_text import main
 
 app = FastAPI()
+router = APIRouter(prefix="/clean")
 
-@app.post("/clean", response_class = PlainTextResponse)
+@router.post("/", response_class = PlainTextResponse)
 def clean(text: str):    
 
     return main(text)

@@ -1,13 +1,15 @@
 services:
   ocr:
     image: killiankopp/ms-ocr-ia:1.2
+    container_name: ms-ocr-ia
     ports:
       - "8901:8901"
     networks:
       - sake
 
   etl:
-    image: killiankopp/ms-sake-etl:1.0
+    image: ms-sake-clean-text:1.1
+    container_name: ms-sake-etl
     ports:
       - "8903:8903"
     networks:
@@ -15,6 +17,7 @@ services:
   
   preprocessing:
     image: abenayoub/ms-sake-preprocessing:1.0
+    container_name: ms-sake-preprocessing
     ports:
       - "8904:8904"
     networks:
@@ -26,7 +29,8 @@ services:
       - ./data/cleaned:/app/data/cleaned
 
   train:
-    image: abenayoub/ms-sake-train:1.0
+    image: abenayoub/ms-sake-train
+    container_name: ms-sake-train
     ports:
       - "8905:8905"
     networks:
@@ -34,6 +38,14 @@ services:
     volumes:
       - ./data/processed/train:/app/data/processed/train
       - ./data/models:/app/data/models
+
+  gateway:
+    image: docker/api-gateway
+    container_name: api-gateway
+    ports:
+      - "8900:80"
+    networks:
+      - sake
 
 networks:
   sake:

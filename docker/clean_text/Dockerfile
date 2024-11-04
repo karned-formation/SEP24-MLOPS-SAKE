@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME /app
 ENV PORT 8903
+ENV WORKERS 1
 
 EXPOSE $PORT
 
@@ -29,4 +30,4 @@ RUN python3 -m spacy download en_core_web_sm
 
 RUN python3 download_contents.py
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers 1 --reload
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}"]
