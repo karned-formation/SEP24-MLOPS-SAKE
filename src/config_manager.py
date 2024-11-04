@@ -60,15 +60,13 @@ class ConfigurationManager:
     def get_data_preprocessing_config(self) -> DataPreprocessingConfig:
         config = self.config.data_preprocessing
 
-        create_directories([config.cleaned_datasets_dir])
+        create_directories([config.cleaned_datasets_dir, config.train_data_dir, config.test_data_dir])
 
         data_preprocessing_config = DataPreprocessingConfig(
             cleaned_datasets_dir = config.cleaned_datasets_dir,
             tfidf_vectorizer_path = config.tfidf_vectorizer_path,
-            X_train_path = config.X_train_path,
-            X_test_path = config.X_test_path,
-            y_train_path = config.y_train_path,
-            y_test_path = config.y_test_path
+            train_data_dir = config.train_data_dir,
+            test_data_dir = config.test_data_dir
         )
 
         return data_preprocessing_config

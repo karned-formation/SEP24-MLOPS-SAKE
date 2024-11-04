@@ -6,7 +6,8 @@ stages:
     - data/raw/final
     - data/working_dataset.csv
     outs:
-    - data/raw_per_classes
+    - data/raw_per_classes:
+        persist: true
   ingest:
     cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json' -d '' "
     deps:
@@ -19,5 +20,5 @@ stages:
     deps:
     - data/ocr_raw_per_classes
     outs:
-    - data/cleaned:
+    - data/cleaned_per_classes:
         persist: true

@@ -17,8 +17,7 @@ ENV OCR_ENDPOINT http://ingest:8901/txt/blocks-words
 ENV RAW_DATASET_DIR data/raw_per_classes/
 ENV OCR_TEXT_DIR data/ocr_raw_per_classes/
 ENV CLEAN_ENDPOINT http://clean:8903/clean
-ENV CLEANED_DATASETS_DIR data/cleaned/
-
+ENV CLEANED_DATASETS_DIR data/cleaned_per_classes/
 
 EXPOSE $PORT
 

@@ -11,11 +11,11 @@ stages:
       md5: 02086bf6991f01344eccc4aba1935f1e
       size: 4542
     - path: src/data/structure_raw.py
-      md5: 1fe1a3a75fc413af66a5f7ccb922534c
-      size: 2917
+      md5: bd6b38b3e507debde6dee3cc44377811
+      size: 3193
     outs:
     - path: data/raw_per_classes
-      md5: 7344db80f20dab3044717fd439d7f63a.dir
+      md5: f649d221b593c31f1d3a432966a87f42.dir
       size: 21954635
       nfiles: 183
   ingest:
@@ -23,12 +23,12 @@ stages:
       -d '' "
     deps:
     - path: data/raw_per_classes
-      md5: 7344db80f20dab3044717fd439d7f63a.dir
+      md5: f649d221b593c31f1d3a432966a87f42.dir
       size: 21954635
       nfiles: 183
     outs:
     - path: data/ocr_raw_per_classes
-      md5: e1ea43812f5c0366f3d9072a442d7237.dir
+      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
       size: 174192
       nfiles: 183
   clean:
@@ -36,11 +36,11 @@ stages:
       -d '' "
     deps:
     - path: data/ocr_raw_per_classes
-      md5: e1ea43812f5c0366f3d9072a442d7237.dir
+      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
       size: 174192
       nfiles: 183
     outs:
-    - path: data/cleaned
-      md5: 4a6004a735092b6be367e1e4cb374ce0.dir
-      size: 114171
-      nfiles: 4
+    - path: data/cleaned_per_classes
+      md5: 419bcc72e987c725e9b9c1bf644550e1.dir
+      size: 113393
+      nfiles: 3

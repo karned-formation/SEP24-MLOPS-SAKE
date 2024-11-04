@@ -40,8 +40,9 @@ services:
       - sake
     volumes:
       - ./data/raw_per_classes:/app/data/raw_per_classes
-      - ./data/cleaned:/app/data/cleaned
+      - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
       - ./data/ocr_raw_per_classes:/app/data/ocr_raw_per_classes
 networks:
   sake:
     driver: bridge
+    

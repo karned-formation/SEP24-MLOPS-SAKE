@@ -11,26 +11,22 @@ data_ingestion:
 data_cleaning:
   clean_endpoint: "http://localhost:8903/clean"
   ocr_text_dir: "data/ocr_raw_per_classes/"
-  cleaned_datasets_dir: "data/cleaned/"
+  cleaned_datasets_dir: "data/cleaned_per_classes/"
 
 data_preprocessing:
-  cleaned_datasets_dir: "data/cleaned/"
-  tfidf_vectorizer_path: "models/tfidf.joblib"
-  X_train_path: "data/cleaned/X_train.csv"
-  X_test_path: "data/cleaned/X_test.csv"
-  y_train_path: "data/cleaned/y_train.csv"
-  y_test_path: "data/cleaned/y_test.csv"
+  cleaned_datasets_dir: "data/cleaned_per_classes/"
+  tfidf_vectorizer_path: "models/tfidf_vectorizer.joblib"
+  train_data_dir: "data/processed/train/"
+  test_data_dir: "data/processed/test/"
 
 model_training:
-  X_train_path: "data/cleaned/X_train.csv"
-  y_train_path: "data/cleaned/y_train.csv"
-  model_path: "models/model.pkl"
+  train_data_dir: "data/processed/train/"
+  model_path: "models/ovrc.joblib"
 
 model_evaluation:
-  X_test_path: "data/cleaned/X_test.csv"
-  y_test_path: "data/cleaned/y_test.csv"
-  model_path: "models/model.pkl"
-  evaluation_results_path: "metrics/metrics.json"
+  test_data_dir: "data/processed/test/"
+  model_path: "models/ovrc.joblib"
+  evaluation_results_dir: "metrics/"
 
 label_encoder_mapping:
   facture: 0

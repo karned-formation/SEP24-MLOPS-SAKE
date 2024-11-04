@@ -20,6 +20,7 @@ def get_new_images_to_ocerize(raw_dataset_dir: Path, ocr_text_dir: Path) -> List
     """
     raw_images = []
     for root, _, files in os.walk(raw_dataset_dir):
+        logger.info(f"Ocerizing directory {root}")
         for file in files:
             if file.endswith(('.png', '.jpg', '.jpeg')):
                 relative_path = os.path.relpath(os.path.join(root, file), raw_dataset_dir)
@@ -27,12 +28,11 @@ def get_new_images_to_ocerize(raw_dataset_dir: Path, ocr_text_dir: Path) -> List
 
     ocr_images = []
     for root, _, files in os.walk(ocr_text_dir):
-
+        logger.info(f"Checking: {root}")
         for file in files:
             if file.endswith('.txt'):
                 relative_path = os.path.relpath(os.path.join(root, file), ocr_text_dir)
                 ocr_images.append(relative_path.replace(".txt", ""))
-
     return [image for image in raw_images if image not in ocr_images]
 
 

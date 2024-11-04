@@ -26,8 +26,8 @@ def read_file_content(filename: str) -> str:
 def make_dataset(ocr_txts: List[str], cleaned_txts: List[str]) -> pd.DataFrame:
     return pd.DataFrame({
         'filename': [ocr_txt.replace('.txt', '') for ocr_txt in ocr_txts],
-        'cleaned_text': cleaned_txts
-        #,'category': encode_labels(ocr_txts, mapper)
+        'cleaned_text': cleaned_txts,
+        'category': [ocr_txt.split('/')[0] for ocr_txt in ocr_txts]
     })
 
 def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> None:
@@ -54,13 +54,13 @@ def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> N
         save_cleaned_dataset(dataset, f"{cleaned_datasets_dir}{class_folder}/cleaned_dataset.csv")
 
 
-# def encode_labels(ocr_txts: List[str], mapper: Dict[str, int]) -> List[int]:
-#     labels = []
-#     for ocr_txt in ocr_txts:
-#         category = ocr_txt.split('/')[0]
-#         label = mapper.get(category, -1)  # Default to -1 if category not found
-#         labels.append(label)
-#     return labels
+def encode_labels(ocr_txts: List[str], mapper: Dict[str, int]) -> List[int]:
+    labels = []
+    for ocr_txt in ocr_txts:
+        category = ocr_txt.split('/')[0]
+        label = mapper.get(category, -1)  # Default to -1 if category not found
+        labels.append(label)
+    return labels
 
 def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     """Enregistre la classe en cours dans un fichier .csv"""
