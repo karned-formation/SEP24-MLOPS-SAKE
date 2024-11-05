@@ -13,7 +13,7 @@ X_train_path = "/app/data/processed/train/X_train.joblib"
 X_test_path = "/app/data/processed/test/X_test.joblib"
 y_train_path = "/app/data/processed/train/y_train.joblib"
 y_test_path = "/app/data/processed/test/y_test.joblib"
-tfidf_vectorizer_path = "/app/data/vectorizers/tfidf.joblib"
+tfidf_vectorizer_path = "/app/models/tfidf_vectorizer.joblib"
 
 def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     """
@@ -122,6 +122,9 @@ def main(clean_dataset_path: str) -> None:
     """
     # Split the dataset into train and test sets
     X_train, X_test, y_train, y_test = split_dataset(clean_dataset_path)
+    print(y_test.shape, type(y_test))
+    print(y_train.shape, type(y_train))
+
     
     # Fit TF-IDF vectorizer on the training data
     fitted_vectorizer = fit_tfidf_vectorizer(X_train)
@@ -143,13 +146,13 @@ def main(clean_dataset_path: str) -> None:
     save_variables_in_directories(variables_to_save)
 
     # Save the fitted TF-IDF vectorizer
-    # save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
+    save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
 
 if __name__ == "__main__":
-    clean_dataset_path = "../../data/cleaned/cleaned_dataset.csv"
-    X_train_path = "../../data/processed/train/X_train.joblib"
-    X_test_path = "../../data/processed/test/X_test.joblib"
-    y_train_path = "../../data/processed/train/y_train.joblib"
-    y_test_path = "../../data/processed/test/y_test.joblib"
-    tfidf_vectorizer_path = "../../data/vectorizers/tfidf.joblib"
+    clean_dataset_path = "data/cleaned/cleaned_dataset.csv"
+    X_train_path = "data/processed/train/X_train.joblib"
+    X_test_path = "data/processed/test/X_test.joblib"
+    y_train_path = "data/processed/train/y_train.joblib"
+    y_test_path = "data/processed/test/y_test.joblib"
+    tfidf_vectorizer_path = "models/tfidf_vectorizer.joblib"
     main(clean_dataset_path)

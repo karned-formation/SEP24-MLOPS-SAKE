@@ -6,6 +6,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
 
+# Paths
+train_data_path = "/app/data/processed/train/"
+model_path = "/app/models/ovrc.joblib"
+
+
 def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
     """
     Loads the training data from the data folder.
@@ -17,8 +22,8 @@ def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
         Tuple[pd.DataFrame, pd.Series]: The feature data (X_train) as a DataFrame and labels (y_train) as a Series.
     """
     try:
-        X_train = pd.read_csv(f"{data_dir}/X_train.csv")
-        y_train = pd.read_csv(f"{data_dir}/y_train.csv")
+        X_train = joblib.load(os.path.join(data_dir, 'X_train.joblib'))
+        y_train = joblib.load(os.path.join(data_dir, 'y_train.joblib'))
         return X_train, y_train
     except Exception as e:
         raise FileNotFoundError(f"Error loading data files from {data_dir}: {e}")
@@ -94,6 +99,6 @@ def main(data_dir: str, model_path: str):
 
 # Execute main function
 if __name__ == "__main__":
-    data_dir = '../../data/processed/train'
-    model_path = '../../data/models/ovrc.joblib'
+    data_dir = 'data/processed/train'
+    model_path = 'models/ovrc.joblib'
     main(data_dir, model_path)
