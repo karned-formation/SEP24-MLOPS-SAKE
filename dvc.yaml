@@ -1,18 +1,24 @@
 stages:
-  ingest:
-    cmd: python3 steps/ingest.py
+  structure_raw:
+    cmd: python3 src/data/structure_raw.py
     deps:
-    - data/raw
-    - steps/ingest.py
+    - src/data/structure_raw.py
+    - data/raw/final
+    - data/working_dataset.csv
     outs:
-    - data/processed:
+    - data/raw_per_classes:
         persist: true
-    - data/ocr_raw:
+  ingest:
+    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json' -d '' "
+    deps:
+    - data/raw_per_classes
+    outs:
+    - data/ocr_raw_per_classes:
         persist: true
   clean:
-    cmd: python3 steps/clean_text.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json' -d '' "
     deps:
-    - data/processed
-    - steps/clean_text.py
+    - data/ocr_raw_per_classes
     outs:
-    - data/cleaned
+    - data/cleaned_per_classes:
+        persist: true

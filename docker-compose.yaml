@@ -2,6 +2,7 @@ services:
   # Service OCR
   ocr:
     image: killiankopp/ms-ocr-ia:1.1
+    container_name: ingest
     ports:
       - "8901:8901"
     networks:
@@ -13,15 +14,41 @@ services:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
-        DOCKERFILE_PATH: docker/clean_text  
+        SOURCE_DIR: src/data
+        DOCKERFILE_DIR: docker/clean_text  
       cache_from:
         - ms-sake-clean-text:cache  # pour force docker-compose à regarder le cache de ce docker (/!\ à utiliser avec `docker-compose up --build`)
-    image: ms-sake-clean-text:1.0  
+    image: ms-sake-clean-text:1.0 
+    container_name: clean 
     ports:
       - "8903:8903"
     networks:
       - sake
 
+  # Service ETL
+  ms-sake-etl:
+    build:
+      context: .  
+      dockerfile: docker/etl/Dockerfile  
+      args:
+        SOURCE_DIR: src
+        DOCKERFILE_DIR: docker/etl  
+      cache_from:
+        - ms-sake-etl:cache  
+    image: ms-sake-etl:1.0
+    container_name: etl
+    ports:
+      - "8907:8907"
+    networks:
+      - sake
+    volumes:
+      - ./data/raw_per_classes:/app/data/raw_per_classes
+      - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
+      - ./data/ocr_raw_per_classes:/app/data/ocr_raw_per_classes
+networks:
+  sake:
+    driver: bridge
+    
   # Service de prétraitement
   ms-sake-preprocessing:
     build:
@@ -85,3 +112,4 @@ services:
 networks:
   sake:
     driver: bridge
+

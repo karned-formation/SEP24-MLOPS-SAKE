@@ -1,37 +1,46 @@
 schema: '2.0'
 stages:
-  ingest:
-    cmd: python3 steps/ingest.py
+  structure_raw:
+    cmd: python3 src/data/structure_raw.py
     deps:
-    - path: data/raw
-      md5: 162423e418f3e2859e615633bd5614f6.dir
+    - path: data/raw/final
+      md5: 6c3622ff98294a528208aece1e7ede8b.dir
       size: 21954635
       nfiles: 183
-    - path: steps/ingest.py
-      md5: 8eb1b8ca3f71ea4fa8a0fac289548717
-      size: 3662
+    - path: data/working_dataset.csv
+      md5: 02086bf6991f01344eccc4aba1935f1e
+      size: 4542
+    - path: src/data/structure_raw.py
+      md5: bd6b38b3e507debde6dee3cc44377811
+      size: 3193
     outs:
-    - path: data/ocr_raw
-      md5: db2967c099e8c41e5d7863fdbfe25a76.dir
+    - path: data/raw_per_classes
+      md5: f649d221b593c31f1d3a432966a87f42.dir
+      size: 21954635
+      nfiles: 183
+  ingest:
+    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json'
+      -d '' "
+    deps:
+    - path: data/raw_per_classes
+      md5: f649d221b593c31f1d3a432966a87f42.dir
+      size: 21954635
+      nfiles: 183
+    outs:
+    - path: data/ocr_raw_per_classes
+      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
       size: 174192
       nfiles: 183
-    - path: data/processed
-      md5: 06701a83f9d841d4194ba58f5a0e3d1e.dir
-      size: 10787
-      nfiles: 1
-
   clean:
-    cmd: python3 steps/clean_text.py
+    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json'
+      -d '' "
     deps:
-    - path: data/processed
-      md5: 06701a83f9d841d4194ba58f5a0e3d1e.dir
-      size: 10787
-      nfiles: 1
-    - path: steps/clean_text.py
-      md5: 5c1c56e8577db8bb758ff7300131f4b7
-      size: 3378
+    - path: data/ocr_raw_per_classes
+      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
+      size: 174192
+      nfiles: 183
     outs:
-    - path: data/cleaned
-      md5: b0551145bffa656c7ce8f203dbddbc11.dir
-      size: 112925
-      nfiles: 1
+    - path: data/cleaned_per_classes
+      md5: 419bcc72e987c725e9b9c1bf644550e1.dir
+      size: 113393
+      nfiles: 3
