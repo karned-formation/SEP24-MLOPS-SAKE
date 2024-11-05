@@ -45,9 +45,6 @@ services:
       - ./data/raw_per_classes:/app/data/raw_per_classes
       - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
       - ./data/ocr_raw_per_classes:/app/data/ocr_raw_per_classes
-networks:
-  sake:
-    driver: bridge
     
   # Service de prétraitement
   ms-sake-preprocessing:
@@ -112,4 +109,3 @@ networks:
 networks:
   sake:
     driver: bridge
-
