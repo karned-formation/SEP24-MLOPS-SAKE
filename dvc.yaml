@@ -22,3 +22,10 @@ stages:
     outs:
     - data/cleaned_per_classes:
         persist: true
+  preprocessing:
+    cmd: 'curl -X "GET" "http://localhost:8904/process"'
+    deps:
+    - data/cleaned_per_classes
+    outs:
+    - data/processed:
+        persist: true

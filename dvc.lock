@@ -40,6 +40,20 @@ stages:
     outs:
     - path: data/cleaned_per_classes
       hash: md5
-      md5: 28c3958d72c5ec585426c73a57ebb2e1.dir
-      size: 113331
+      md5: 401ed7dab3f5253532754ceeab5e5256.dir
+      size: 113391
       nfiles: 3
+  preprocessing:
+    cmd: curl -X "GET" "http://localhost:8904/process"
+    deps:
+    - path: data/cleaned_per_classes
+      hash: md5
+      md5: 775f9508f5179e9c557283694ba74af5.dir
+      size: 113379
+      nfiles: 3
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: f5143226731524666ed86d116f0beea9.dir
+      size: 3121298
+      nfiles: 4
