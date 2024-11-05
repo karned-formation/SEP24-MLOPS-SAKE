@@ -9,7 +9,7 @@ stages:
       nfiles: 183
     - path: data/working_dataset.csv
       md5: 02086bf6991f01344eccc4aba1935f1e
-      size: 4542
+      size: 4726
     - path: src/data/structure_raw.py
       md5: bd6b38b3e507debde6dee3cc44377811
       size: 3193
@@ -19,8 +19,7 @@ stages:
       size: 21954635
       nfiles: 183
   ingest:
-    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json'
-      -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
     deps:
     - path: data/raw_per_classes
       md5: f649d221b593c31f1d3a432966a87f42.dir
@@ -32,8 +31,7 @@ stages:
       size: 174192
       nfiles: 183
   clean:
-    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json'
-      -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
     - path: data/ocr_raw_per_classes
       md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
@@ -41,6 +39,7 @@ stages:
       nfiles: 183
     outs:
     - path: data/cleaned_per_classes
-      md5: 419bcc72e987c725e9b9c1bf644550e1.dir
-      size: 113393
+      hash: md5
+      md5: 28c3958d72c5ec585426c73a57ebb2e1.dir
+      size: 113331
       nfiles: 3
