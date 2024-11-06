@@ -76,3 +76,25 @@ stages:
       md5: a5fb453fd118abd87c8bf8744b2f2ae3.dir
       size: 1682517
       nfiles: 1
+  eval:
+    cmd: curl -X "GET" "http://localhost:8906/eval"
+    deps:
+    - path: data/processed/test
+      hash: md5
+      md5: 42338e2cf8ac4d7cb7dc6eb07d230f1f.dir
+      size: 541253
+      nfiles: 2
+    - path: models/train
+      hash: md5
+      md5: a5fb453fd118abd87c8bf8744b2f2ae3.dir
+      size: 1682517
+      nfiles: 1
+    outs:
+    - path: metrics/confusion_matrix.json
+      hash: md5
+      md5: f576bad495523900c31298f19bebfccf
+      size: 75
+    - path: metrics/scores.json
+      hash: md5
+      md5: fcc40d96c499c49894e03a6555f8e2b9
+      size: 399

@@ -38,3 +38,13 @@ stages:
     outs:
     - models/train:
         persist: true
+  eval:
+    cmd: 'curl -X "GET" "http://localhost:8906/eval"'
+    deps:
+    - data/processed/test
+    - models/train
+    metrics:
+    - metrics/scores.json:
+        cache: false
+    - metrics/confusion_matrix.json:
+        cache: false
