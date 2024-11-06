@@ -2,12 +2,13 @@ stages:
   structure_raw:
     cmd: python3 src/data/structure_raw.py
     deps:
+    - data/raw
     - src/data/structure_raw.py
-    - data/raw/final
     - data/working_dataset.csv
     outs:
     - data/raw_per_classes:
         persist: true
+
   ingest:
     cmd: 'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
     deps:
@@ -15,6 +16,7 @@ stages:
     outs:
     - data/ocr_raw_per_classes:
         persist: true
+
   clean:
     cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
@@ -22,6 +24,7 @@ stages:
     outs:
     - data/cleaned_per_classes:
         persist: true
+
   preprocessing:
     cmd: 'curl -X "GET" "http://localhost:8904/process"'
     deps:
@@ -31,6 +34,7 @@ stages:
         persist: true
     - models/vectorizers:
         persist: true
+
   train:
     cmd: 'curl -X "GET" "http://localhost:8905/train"'
     deps:
@@ -38,6 +42,7 @@ stages:
     outs:
     - models/train:
         persist: true
+
   eval:
     cmd: 'curl -X "GET" "http://localhost:8906/eval"'
     deps:
