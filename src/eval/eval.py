@@ -3,7 +3,9 @@ import numpy as np
 from imblearn.metrics import classification_report_imbalanced
 import json
 import os
+import subprocess
 import joblib 
+from custom_logger import logger
 
 model_path = '../../models/train/ovrc.joblib'
 X_test_path = '../../data/processed/test/X_test.joblib'
@@ -68,6 +70,22 @@ def main(model_path, X_test_path, y_test_path, metrics_dir):
     metrics = get_metrics(model, X_test, y_test, y_pred)
     save_json_metrics(metrics, metrics_dir)
     save_confusion_matrix(confusion_matrix, metrics_dir)
+
+    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
+    host_uid = os.getenv("UID")
+    host_gid = os.getenv("GID")
+    if host_uid and host_gid: # si les valeurs sont bien récupérées
+        with open('/proc/mounts', 'r') as mounts_file:
+            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
+
+        for mount_point in app_mounts:
+            try:
+                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
+                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
+            except subprocess.CalledProcessError as e:
+                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+    else:
+        logger.info("UID ou GID de l'hôte non définis.")
 
 # Execute main function
 if __name__ == "__main__":

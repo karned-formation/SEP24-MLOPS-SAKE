@@ -3,11 +3,12 @@ from clean_all import clean_all
 from fastapi import FastAPI, HTTPException
 import os
 
-raw_dataset_dir = os.getenv("RAW_DATASET_DIR")
-ocr_text_dir = os.getenv("OCR_TEXT_DIR")
-ocr_endpoint = os.getenv("OCR_ENDPOINT")
-clean_endpoint = os.getenv("CLEAN_ENDPOINT")
-cleaned_datasets_dir = os.getenv("CLEANED_DATASETS_DIR")
+raw_dataset_dir = os.getenv("DATA_STRUCTURE_RAW_RAW_DATASET_DIR")
+ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
+ocr_endpoint = os.getenv("DATA_INGESTION_OCR_ENDPOINT")
+
+clean_endpoint = os.getenv("DATA_CLEANING_CLEAN_ENDPOINT")
+cleaned_datasets_dir = os.getenv("DATA_CLEANING_CLEANED_DATASETS_DIR")
 
 app = FastAPI()
 

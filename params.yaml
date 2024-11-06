@@ -3,30 +3,39 @@ data_structure_raw:
   image_dir: "data/raw/"
   raw_dataset_dir: "data/raw_per_classes/" 
 
-data_ingestion:
-  ocr_port: 8901
-  ocr_endpoint: "http://localhost:${data_ingestion.ocr_port}/txt/blocks-words"
-  raw_dataset_dir: "data/raw_per_classes/"
+data_ingestion: # => OCR
+  docker_service_ocr: ms-OCR # /!\ à synchroniser avec docker-compose.yaml
+  port_ocr: 8901
+  route_ocr: txt/blocks-words
+  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/${data_ingestion.route_ocr}"
+      # => endpoint_ocr
+  raw_dataset_dir: "data/raw_per_classes/" # to delete
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
-data_cleaning:
-  clean_endpoint: "http://localhost:8903/clean"
-  ocr_text_dir: "data/ocr_raw_per_classes/"
+data_cleaning: # => clean_text
+  docker_service_clean_text: ms-sake-clean-text # /!\ à synchroniser avec docker-compose.yaml
+  port_clean_text: 8903
+  route_clean_text: clean
+  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}:${data_cleaning.port_clean_text}/clean"
+      # => endpoint_clean_text
+  ocr_text_dir: "data/ocr_raw_per_classes/" # to delete
   cleaned_datasets_dir: "data/cleaned_per_classes/"
 
 data_preprocessing:
   cleaned_datasets_dir: "data/cleaned_per_classes/"
-  tfidf_vectorizer_path: "models/tfidf_vectorizer.joblib"
+  vectorizer_dir: "models/vectorizers/"
+  tfidf_vectorizer_path: "models/vectorizers/tfidf_vectorizer.joblib"
   train_data_dir: "data/processed/train/"
   test_data_dir: "data/processed/test/"
 
 model_training:
-  train_data_dir: "data/processed/train/"
-  model_path: "models/ovrc.joblib"
+  train_data_dir: "data/processed/train/" # to delete
+  model_dir: "models/train/"
+  model_path: "models/train/ovrc.joblib"
 
 model_evaluation:
-  test_data_dir: "data/processed/test/"
-  model_path: "models/ovrc.joblib"
+  test_data_dir: "data/processed/test/" # to delete
+  model_path: "models/ovrc.joblib" # to delete
   evaluation_results_dir: "metrics/"
 
 label_encoder_mapping:

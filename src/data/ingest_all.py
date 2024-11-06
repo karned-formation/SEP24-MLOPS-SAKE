@@ -1,6 +1,7 @@
 from pathlib import Path
 import requests
 import os
+import subprocess
 from typing import List
 import sys
 from custom_logger import logger
@@ -63,4 +64,27 @@ def ingest_all(ocr_endpoint: str, raw_dataset_dir: str, ocr_text_dir: str):
     except Exception as e:
         logger.error(f"An error occured during the ingest process: {e}")
         raise e
-    
+
+    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
+    host_uid = os.getenv("UID")
+    host_gid = os.getenv("GID")
+    if host_uid and host_gid: # si les valeurs sont bien récupérées
+        with open('/proc/mounts', 'r') as mounts_file:
+            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
+
+        for mount_point in app_mounts:
+            try:
+                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
+                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
+            except subprocess.CalledProcessError as e:
+                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+    else:
+        logger.info("UID ou GID de l'hôte non définis.")
+
+
+if __name__ == '__main__':
+    raw_dataset_dir = os.getenv("DATA_STRUCTURE_RAW_RAW_DATASET_DIR")
+    ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
+    ocr_endpoint = os.getenv("DATA_INGESTION_OCR_ENDPOINT")
+
+    ingest_all(ocr_endpoint, raw_dataset_dir, ocr_text_dir)

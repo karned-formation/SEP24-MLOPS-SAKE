@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import os
+import subprocess
 from typing import Optional, List, Dict
 from custom_logger import logger
 
@@ -69,7 +70,8 @@ def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     cleaned_dataset.to_csv(filepath, index=False)
 
 
-def clean_all(clean_endpoint: str, ocr_text_dir: str, cleaned_datasets_dir: str,) -> None:
+def clean_all(clean_endpoint: str, ocr_text_dir: str, cleaned_datasets_dir: str) -> None:
+
     try:        
         logger.info("Starting the cleaning process...")
         process_dir(ocr_text_dir, cleaned_datasets_dir, clean_endpoint)      
@@ -78,5 +80,26 @@ def clean_all(clean_endpoint: str, ocr_text_dir: str, cleaned_datasets_dir: str,
         logger.error(f"An error occurred during the cleaning process: {str(e)}")
         raise e
 
+    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
+    host_uid = os.getenv("UID")
+    host_gid = os.getenv("GID")
+    if host_uid and host_gid: # si les valeurs sont bien récupérées
+        with open('/proc/mounts', 'r') as mounts_file:
+            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
+
+        for mount_point in app_mounts:
+            try:
+                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
+                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
+            except subprocess.CalledProcessError as e:
+                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+    else:
+        logger.info("UID ou GID de l'hôte non définis.")
+
+
 if __name__ == '__main__':
-    clean_all()
+    ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
+    clean_endpoint = os.getenv("DATA_CLEANING_CLEAN_ENDPOINT")
+    cleaned_datasets_dir = os.getenv("DATA_CLEANING_CLEANED_DATASETS_DIR")
+
+    clean_all(clean_endpoint, ocr_text_dir, cleaned_datasets_dir)

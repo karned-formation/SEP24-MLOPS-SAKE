@@ -1,109 +1,137 @@
 services:
   # Service OCR
-  ocr:
+  ms-OCR:
+    env_file:
+    - path: ./.env_mlops_sake
     image: killiankopp/ms-ocr-ia:1.1
-    container_name: ingest
+    # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
+    # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
+    container_name: OCR
     ports:
-      - "8901:8901"
+      - ${DATA_INGESTION_PORT_OCR}:${DATA_INGESTION_PORT_OCR} # "8901:8901"
     networks:
       - sake
 
   # Service de nettoyage de texte
   ms-sake-clean-text:
+    env_file:
+    - path: ./.env_mlops_sake
     build:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/clean_text  
-      cache_from:
-        - ms-sake-clean-text:cache  # pour force docker-compose à regarder le cache de ce docker (/!\ à utiliser avec `docker-compose up --build`)
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - ms-sake-clean-text:cache  
     image: ms-sake-clean-text:1.0 
-    container_name: clean 
+    container_name: clean_text
     ports:
       - "8903:8903"
     networks:
       - sake
 
   # Service ETL
-  ms-sake-etl:
+  ms-sake-ETL:
+    env_file:
+    - path: ./.env_mlops_sake
     build:
       context: .  
       dockerfile: docker/etl/Dockerfile  
       args:
-        SOURCE_DIR: src
+        SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
-      cache_from:
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-etl:cache  
     image: ms-sake-etl:1.0
-    container_name: etl
+    container_name: ETL
+    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+      - ms-OCR
+      - ms-sake-clean-text
     ports:
       - "8907:8907"
     networks:
       - sake
-    volumes:
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./data/raw_per_classes:/app/data/raw_per_classes
       - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
       - ./data/ocr_raw_per_classes:/app/data/ocr_raw_per_classes
+      - ./logs:/app/logs
     
   # Service de prétraitement
   ms-sake-preprocessing:
+    env_file:
+    - path: ./.env_mlops_sake
     build:
       context: .  
       dockerfile: docker/preprocessing/Dockerfile  
       args:
         SOURCE_DIR: src/preprocessing
         DOCKERFILE_DIR: docker/preprocessing
-      cache_from:
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-preprocessing:cache
     image: ms-sake-preprocessing:1.0  
+    container_name: preprocessing
     ports:
       - "8904:8904"
     networks:
       - sake
-    volumes:
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
       - ./data/processed:/app/data/processed
-      - ./models/vectorizers:/app/models/vectorizers
+      - ./models:/app/models
+      - ./logs:/app/logs
 
   # Service d'entraînement
   ms-sake-train:
+    env_file:
+    - path: ./.env_mlops_sake
     build:
       context: .  
       dockerfile: docker/train/Dockerfile  
       args:
         SOURCE_DIR: src/train
         DOCKERFILE_DIR: docker/train
-      cache_from:
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-train:cache
     image: ms-sake-train:1.0  
+    container_name: train
     ports:
       - "8905:8905"
     networks:
       - sake
-    volumes:
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./data/processed/train:/app/data/processed/train
-      - ./models/train:/app/models/train
-  
+      - ./models:/app/models
+      - ./logs:/app/logs
+
   # Service d'évaluation
   ms-sake-eval:
+    env_file:
+    - path: ./.env_mlops_sake
     build:
       context: .  
       dockerfile: docker/eval/Dockerfile  
       args:
         SOURCE_DIR: src/eval
         DOCKERFILE_DIR: docker/eval
-      cache_from:
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-eval:cache
     image: ms-sake-eval:1.0  
+    container_name: eval
     ports:
       - "8906:8906"
     networks:
       - sake
-    volumes:
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./data/processed/test:/app/data/processed/test
-      - ./models/train:/app/models/train
+      - ./models:/app/models
       - ./metrics:/app/metrics
+      - ./logs:/app/logs
 
 networks:
   sake:
