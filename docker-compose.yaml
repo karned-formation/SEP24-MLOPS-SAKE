@@ -64,7 +64,7 @@ services:
     volumes:
       - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
       - ./data/processed:/app/data/processed
-      - ./models:/app/models
+      - ./models/vectorizers:/app/models/vectorizers
 
   # Service d'entraînement
   ms-sake-train:
@@ -83,7 +83,7 @@ services:
       - sake
     volumes:
       - ./data/processed/train:/app/data/processed/train
-      - ./models:/app/models
+      - ./models/train:/app/models/train
   
   # Service d'évaluation
   ms-sake-eval:
@@ -102,7 +102,7 @@ services:
       - sake
     volumes:
       - ./data/processed/test:/app/data/processed/test
-      - ./models:/app/models
+      - ./models/train:/app/models/train
       - ./metrics:/app/metrics
 
 networks:
