@@ -14,3 +14,4 @@ env_mlops/
 models/*
 !models/.gitkeep
 test_sarah.ipynb
+/models

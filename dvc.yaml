@@ -29,3 +29,12 @@ stages:
     outs:
     - data/processed:
         persist: true
+    - models/vectorizers:
+        persist: true
+  train:
+    cmd: 'curl -X "GET" "http://localhost:8905/train"'
+    deps:
+    - data/processed/train
+    outs:
+    - models/train:
+        persist: true

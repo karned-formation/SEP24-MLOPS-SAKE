@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from train import main
 
 DEFAULT_DATA_DIR = '/app/data/processed/train'
-DEFAULT_MODEL_PATH = '/app/models/ovrc.joblib'
+DEFAULT_MODEL_PATH = '/app/models/train/ovrc.joblib'
 
 app = FastAPI()
 

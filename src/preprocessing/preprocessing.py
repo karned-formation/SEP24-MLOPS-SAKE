@@ -13,7 +13,7 @@ X_train_path = "/app/data/processed/train/X_train.joblib"
 X_test_path = "/app/data/processed/test/X_test.joblib"
 y_train_path = "/app/data/processed/train/y_train.joblib"
 y_test_path = "/app/data/processed/test/y_test.joblib"
-tfidf_vectorizer_path = "/app/models/tfidf_vectorizer.joblib"
+tfidf_vectorizer_path = "/app/models/vectorizers/tfidf_vectorizer.joblib"
 
 
 import os
@@ -207,5 +207,5 @@ if __name__ == "__main__":
     X_test_path = "data/processed/test/X_test.joblib"
     y_train_path = "data/processed/train/y_train.joblib"
     y_test_path = "data/processed/test/y_test.joblib"
-    tfidf_vectorizer_path = "models/tfidf_vectorizer.joblib"
+    tfidf_vectorizer_path = "models/vectorizers/tfidf_vectorizer.joblib"
     main(clean_dir_path)
