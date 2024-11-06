@@ -9,7 +9,7 @@ stages:
       nfiles: 183
     - path: data/working_dataset.csv
       md5: 02086bf6991f01344eccc4aba1935f1e
-      size: 4542
+      size: 4726
     - path: src/data/structure_raw.py
       md5: bd6b38b3e507debde6dee3cc44377811
       size: 3193
@@ -19,8 +19,7 @@ stages:
       size: 21954635
       nfiles: 183
   ingest:
-    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json'
-      -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
     deps:
     - path: data/raw_per_classes
       md5: f649d221b593c31f1d3a432966a87f42.dir
@@ -32,8 +31,7 @@ stages:
       size: 174192
       nfiles: 183
   clean:
-    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json'
-      -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
     - path: data/ocr_raw_per_classes
       md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
@@ -41,6 +39,62 @@ stages:
       nfiles: 183
     outs:
     - path: data/cleaned_per_classes
-      md5: 419bcc72e987c725e9b9c1bf644550e1.dir
-      size: 113393
+      hash: md5
+      md5: 11565ccf86fe26c00fb5bf6c12e3f827.dir
+      size: 113343
       nfiles: 3
+  preprocessing:
+    cmd: curl -X "GET" "http://localhost:8904/process"
+    deps:
+    - path: data/cleaned_per_classes
+      hash: md5
+      md5: 11565ccf86fe26c00fb5bf6c12e3f827.dir
+      size: 113343
+      nfiles: 3
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: b2b3d94bcd74748947eb2748c648a7ee.dir
+      size: 3121194
+      nfiles: 4
+    - path: models/vectorizers
+      hash: md5
+      md5: 6c57770586a7044d04218eebe626b8b8.dir
+      size: 2528294
+      nfiles: 1
+  train:
+    cmd: curl -X "GET" "http://localhost:8905/train"
+    deps:
+    - path: data/processed/train
+      hash: md5
+      md5: 2156e9e11bf77630d6998153a310dd4d.dir
+      size: 2580061
+      nfiles: 2
+    outs:
+    - path: models/train
+      hash: md5
+      md5: a6f07926ec37b25f07f5ede7305d588d.dir
+      size: 1682517
+      nfiles: 1
+  eval:
+    cmd: curl -X "GET" "http://localhost:8906/eval"
+    deps:
+    - path: data/processed/test
+      hash: md5
+      md5: 884a93a1377d0443e0469695cd605894.dir
+      size: 541133
+      nfiles: 2
+    - path: models/train
+      hash: md5
+      md5: a6f07926ec37b25f07f5ede7305d588d.dir
+      size: 1682517
+      nfiles: 1
+    outs:
+    - path: metrics/confusion_matrix.json
+      hash: md5
+      md5: f576bad495523900c31298f19bebfccf
+      size: 75
+    - path: metrics/scores.json
+      hash: md5
+      md5: fcc40d96c499c49894e03a6555f8e2b9
+      size: 399

@@ -9,16 +9,42 @@ stages:
     - data/raw_per_classes:
         persist: true
   ingest:
-    cmd: "curl -X 'POST' 'http://localhost:8907/ingest' -H 'accept: application/json' -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
     deps:
     - data/raw_per_classes
     outs:
     - data/ocr_raw_per_classes:
         persist: true
   clean:
-    cmd: "curl -X 'POST' 'http://localhost:8907/clean' -H 'accept: application/json' -d '' "
+    cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
     - data/ocr_raw_per_classes
     outs:
     - data/cleaned_per_classes:
         persist: true
+  preprocessing:
+    cmd: 'curl -X "GET" "http://localhost:8904/process"'
+    deps:
+    - data/cleaned_per_classes
+    outs:
+    - data/processed:
+        persist: true
+    - models/vectorizers:
+        persist: true
+  train:
+    cmd: 'curl -X "GET" "http://localhost:8905/train"'
+    deps:
+    - data/processed/train
+    outs:
+    - models/train:
+        persist: true
+  eval:
+    cmd: 'curl -X "GET" "http://localhost:8906/eval"'
+    deps:
+    - data/processed/test
+    - models/train
+    metrics:
+    - metrics/scores.json:
+        cache: false
+    - metrics/confusion_matrix.json:
+        cache: false
