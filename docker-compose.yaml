@@ -62,9 +62,8 @@ services:
     networks:
       - sake
     volumes:
-      - ./data/processed/train:/app/data/processed/train
-      - ./data/processed/test:/app/data/processed/test
       - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
+      - ./data/processed:/app/data/processed
       - ./models:/app/models
 
   # Service d'entraînement
