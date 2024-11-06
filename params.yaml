@@ -1,6 +1,6 @@
 data_structure_raw:
   raw_dataset_path: "data/working_dataset.csv" 
-  image_dir: "data/raw/final/"
+  image_dir: "data/raw/"
   raw_dataset_dir: "data/raw_per_classes/" 
 
 data_ingestion:
