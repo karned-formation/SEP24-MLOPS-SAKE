@@ -4,7 +4,8 @@ data_structure_raw:
   raw_dataset_dir: "data/raw_per_classes/" 
 
 data_ingestion:
-  ocr_endpoint: "http://localhost:8901/txt/blocks-words"
+  ocr_port: 8901
+  ocr_endpoint: "http://localhost:${data_ingestion.ocr_port}/txt/blocks-words"
   raw_dataset_dir: "data/raw_per_classes/"
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
