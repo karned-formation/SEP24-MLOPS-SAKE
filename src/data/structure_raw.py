@@ -46,7 +46,7 @@ def structure_raw_data(input_raw_dataset_path,
     
         if os.path.exists(source_file):
             shutil.copy2(source_file, destination_file)
-            print(f"Copié {filename} dans {destination_dir}")
+            #print(f"Copié {filename} dans {destination_dir}")
         else:
             print(f"Le fichier {filename} n'existe pas dans {input_image_dir}")
 
