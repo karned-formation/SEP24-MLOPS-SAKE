@@ -66,8 +66,8 @@ def ingest_all(ocr_endpoint: str, raw_dataset_dir: str, ocr_text_dir: str):
         raise e
 
     # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
-    host_uid = os.getenv("UID")
-    host_gid = os.getenv("GID")
+    host_uid = os.getenv("HOST_UID")
+    host_gid = os.getenv("HOST_GID")
     if host_uid and host_gid: # si les valeurs sont bien récupérées
         with open('/proc/mounts', 'r') as mounts_file:
             app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]

@@ -45,13 +45,12 @@ def transform_YAML_as_Environnement_variable(param_yaml_path,
     gid = os.getgid()
     with open(env_path, "a") as env_file:
         env_file.write("# Ajout des 2 variables (pour définir le propriétaire hôte des volumes partagés):\n")
-        env_file.write(f"UID={uid}\n")
-        env_file.write(f"GID={gid}\n")
-        print(f"UID={uid}")
-        print(f"GID={gid}")
+        env_file.write(f"HOST_UID={uid}\n")
+        env_file.write(f"HOST_GID={gid}\n")
+        print(f"HOST_UID={uid}")
+        print(f"HOST_GID={gid}")
 
     print(f"=> Le fichier '{env_path}' contient toutes ces variables d'environnement")
-
 
     print("\nCréer les répertoires suivants si nécessaire:")
     for key, path in flat_params.items():
