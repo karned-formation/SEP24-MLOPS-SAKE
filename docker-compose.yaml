@@ -57,9 +57,9 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./data/raw_per_classes:/app/data/raw_per_classes
-      - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
-      - ./data/ocr_raw_per_classes:/app/data/ocr_raw_per_classes
+      - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
     
   # Service de prétraitement
@@ -82,9 +82,9 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./data/cleaned_per_classes:/app/data/cleaned_per_classes
-      - ./data/processed:/app/data/processed
-      - ./models:/app/models
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'entraînement
@@ -107,8 +107,8 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./data/processed/train:/app/data/processed/train
-      - ./models:/app/models
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/train:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/train
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'évaluation
@@ -131,8 +131,8 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./data/processed/test:/app/data/processed/test
-      - ./models:/app/models
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/test:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/test
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
       - ./metrics:/app/metrics
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
