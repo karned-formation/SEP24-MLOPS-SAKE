@@ -1,12 +1,21 @@
+import os
+import pandas as pd
 import numpy as np
+from typing import Tuple
+#from IPython.display import display
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from langdetect import detect
 import nltk
 nltk.download('wordnet')
 import spacy
-from custom_logger import logger
+from langdetect import detect
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+#import pytesseract
+#import cv2
+import re
 
 set_stop_words_french = set(stopwords.words('french'))
 set_stop_words_english = set(stopwords.words('english'))
@@ -17,7 +26,6 @@ def _stop_words_filtering(liste_mots, set_stop_words) :
 #------------------------------------------------------------------------
 nlp_fr = spacy.load('fr_core_news_sm')
 nlp_en = spacy.load('en_core_web_sm')
-
 
 def _tokenisation_et_lemmatisation(mots, nlp_for_language) :
     """
@@ -81,6 +89,20 @@ def token_lemmatization_and_remove_stop_words(text: str) -> str:
     
     return _text_remove_stop_words(text)
     
+#------------------------------------------------------------------------
+def lemmatization_and_remove_stop_words_in_dataframe (df_with_text: pd.DataFrame) -> pd.DataFrame:
+        """
+        Args:
+            df_filenames (pd.DataFrame): dataframe containing 
+                the list of 'filename' as index 
+                column 'text' the ocerised text
+            OCR_file_loaded_from_or_saved_to : the file with previous extracted features
+    
+        Returns:
+            pd.DataFrame: return the dataframe passed in argument completed with extracted OCR
+        """
+        df_with_text["text"] = df_with_text["text"].apply(lambda text: token_lemmatization_and_remove_stop_words(text))
+        return df_with_text
 
 #------------------------------------------------------------------------
 def clean_transform_ocerised_text(text: str) -> str:
@@ -99,94 +121,51 @@ def clean_transform_ocerised_text(text: str) -> str:
 
     # transform the string in lower cases
     x = (lambda row: str(row).lower()) (text)
+    
+    # replace specific keywords depending on classes
+    # ATTENTION : mis en commentaire car ne concerne pas les classes choisies pour le projet MLOPs 
+    # pour les classes 'email' et 'letter'
+    # x = (lambda row: re.sub(r"to:|to\s+:", " zztozz zztozz zztozz", row)) (x)    # email ou letter : traite le "to:"
+    # x = (lambda row: re.sub(r"from:|from\s+:", " zzfromzz zzfromzz zzfromzz", row)) (x) # email ou letter : traite le "from:"
+    # x = (lambda row: re.sub(r"cc:|cc\s+:", " zzcczz zzcczz zzcczz ", row)) (x) # email ou letter : traite le "cc:"
+    # x = (lambda row: re.sub(r"subject:|subject\s+:", " zzsubjectzz zzsubjectzz zzsubjectzz zzsubjectzz zzsubjectzz ", row)) (x) # email ou letter : traite le "subject:"
+    # x = (lambda row: re.sub(r"\?|dear", " zzdearzz zzdearzz zzdearzz zzdearzz zzdearzz ", row)) (x) # email ou letter : mot ou formule de politesse
+    # x = (lambda row: re.sub(r"\?|respectfully", " zzrespectfullyzz zzrespectfullyzz zzrespectfullyzz ", row)) (x) # email ou letter : mot ou formule de politesse
+    # pour le classe 'questionnaire'
+    # x = (lambda row: re.sub(r"\?|question", " zzquestionzz ", row)) (x) # questionnaire : traite le "?"
 
     # split as tokens
     x = (lambda row: word_tokenize(row)) (x)
-
     # remove word when too small
     minletters = 2
     x = (lambda row: [word for word in row if len(word) >= minletters])  (x)
-
     # remove word when too few
     minwords = 2
     x = (lambda row: row if len(row) > minwords else [])  (x)
-
     # collapse the token back in one string
     x = (lambda row: ' '.join(row))  (x)
-    
     # remove if final string less than 5 characters
     x = (lambda text: np.nan if (len(text) < 5) else text) (x)
     fct_clean = x
 
     return fct_clean 
 
-def tokenize_data(data: str) -> str:
-    STAGE_NAME = "Stage: clean_text"    
-    try:        
-        #logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
-        cleaned_data = clean_transform_ocerised_text(data)
-        tokenized_data = token_lemmatization_and_remove_stop_words(cleaned_data)
-        #logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
-        return tokenized_data
-    except Exception as e:
-        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
-        raise e
+#------------------------------------------------------------------------
+def clean_transform_dataframe_with_ocerised_text(df_with_text: pd.DataFrame) -> pd.DataFrame:
+    """
+    Args:
+        df_with_text (pd.DataFrame): dataframe containing 
+            the list of 'filename' as index 
+            column 'text' the ocerised text
+        OCR_file_loaded_from_or_saved_to : the file with previous extracted features
 
-txt_test = """
-FACTURE
+    Returns:
+        pd.DataFrame: return the dataframe passed in argument completed with extracted OCR
+    """
+    df_with_text["text"] = df_with_text["text"].apply(lambda text: clean_transform_ocerised_text(text))
+    df_with_text = df_with_text.dropna(subset=['text'])
+    return df_with_text
 
- 
-
- 
-
- 
-
-Joanna Binet
-48 Coubertin
-31400 Paris
-FACTURE A ENVOVE A FACTURE N° FR.001
-Cendrilon Ayot Cendrilon Ayot DATE 2901/2019
-69 rue Nations 46 Rue St Fertéol .
-22000 Paris 92360 Ile-de-France COMMANDE N ‘esoa0t9
-ECHEANCE 24/08/2019
-ae DESIGNATION PRIX UNIT. HT MONTANT HT
-1 Grand brun escargot pour manger 4100.00 100.00
-2 Petit mariniére uniforme en bleu 15.00 30.00
-3 Facile a jouer accordéon 5.00 15.00
-Total HT 145.00
-VA 20.0% 29.00
-TOTAL 174.006
-
-CONDITIONS ET MODALITES DE PAIEMENT
-
-Le paiement est d0 dans 15 jours
-
-Caisse d'Epargne
-IBAN: FR12 1234 5678
-‘SWIFTIBIC: ABCDFRP1XXX
-Joanna Binet
-
-48 Coubertin
-31400 Paris
-Facturé a Envoyé a
-Cendrilon Ayot Cendritlon Ayot
-69 rue Nations 46 Rue St Ferréol
-22000 Paris 92360 lle-de-France
-are DESIGNATION
-
-1. Grand brun escargot pour manger
-
-2 Petit mariniére uniforme en bleu
-
-3 Facile & jouer accordéon
-
-Conditions et modalités de paiement
-Le paiement est dd dans 15 jours
-
-Caisse d'Epargne
-IBAN: FR12 1234 5678
-SWIFT/BIC: ABCDFRP1XxX
-"""
 
 if __name__ == "__main__":
-    tokenize_data(txt_test) 
+    pass

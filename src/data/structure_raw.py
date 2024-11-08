@@ -46,21 +46,26 @@ def structure_raw_data(input_raw_dataset_path,
     
         if os.path.exists(source_file):
             shutil.copy2(source_file, destination_file)
-            print(f"Copié {filename} dans {destination_dir}")
+            #print(f"Copié {filename} dans {destination_dir}")
         else:
             print(f"Le fichier {filename} n'existe pas dans {input_image_dir}")
 
 
 def main():
-    try:
-        logger.info("Starting the Structure Raw process...")
+    STAGE_NAME = "Stage: Structure_raw"    
+    try:        
+        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+
+        #TODO: il faudrait utiliser les variables d'environnement à la place du config manager
         config_manager = ConfigurationManager()
         data_structure_raw = config_manager.get_data_structure_raw()
 
+        #TODO: il faudrait utiliser les variables d'environnement à la place du config manager
         input_raw_dataset_path = data_structure_raw.raw_dataset_path
         input_image_dir = data_structure_raw.image_dir
         output_raw_dataset_dir = data_structure_raw.raw_dataset_dir
 
+        #TODO: il faudrait utiliser les variables d'environnement à la place du config manager
         label_mapper = config_manager.get_label_encoding_config().__dict__
         print(label_mapper)
         structure_raw_data(input_raw_dataset_path, 
@@ -68,10 +73,9 @@ def main():
                         output_raw_dataset_dir,
                         label_mapper)
 
-        logger.info("Structure Raw process completed.")
+        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
     except Exception as e:
-        # VOIR avec Sarah : avoir un affichage dans la console aussi
-        logger.error(f"An error occured during the Structure Raw process: {e}")
+        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
 
 if __name__ == '__main__':

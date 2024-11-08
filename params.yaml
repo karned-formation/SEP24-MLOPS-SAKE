@@ -1,0 +1,55 @@
+data_general:
+  log_dir: "logs/"
+
+data_structure_raw:
+  raw_dataset_path: "data/working_dataset.csv" 
+  image_dir: "data/raw/"
+  raw_dataset_dir: "data/raw_per_classes/" 
+
+data_ingestion: # => OCR
+  docker_service_ocr: ms-OCR # /!\ à synchroniser avec docker-compose.yaml
+  port_ocr: 8901
+  route_ocr: txt/blocks-words
+  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/${data_ingestion.route_ocr}"
+      # => endpoint_ocr
+  ocr_text_dir: "data/ocr_raw_per_classes/"
+  
+data_cleaning: # => clean_text
+  docker_service_clean_text: ms-sake-clean-text # /!\ à synchroniser avec docker-compose.yaml
+  port_clean_text: 8903
+  route_clean_text: clean
+  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}/clean"
+      # => endpoint_clean_text
+  cleaned_datasets_dir: "data/cleaned_per_classes/"
+
+data_ETL:
+  docker_service_ETL: ms-sake-ETL
+  port_ETL: 8907
+  route_ETL_ingest_all: ingest
+  route_ETL_clean_all: clean
+  endpoint_ETL_ingest_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_ingest_all}"
+  endpoint_ETL_clean_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_clean_all}"
+
+data_preprocessing:
+  port_preprocessing: 8904
+  cleaned_datasets_dir: "data/cleaned_per_classes/"
+  models_dir: "models/"
+  vectorizer_dir: "${data_preprocessing.models_dir}/vectorizers/"
+  tfidf_vectorizer_path: "${data_preprocessing.vectorizer_dir}/tfidf_vectorizer.joblib"
+  preprocessed_data_dir: "data/processed/"
+  train_data_dir: "data/processed/train/"
+  test_data_dir: "data/processed/test/"
+
+model_train:
+  port_train: 8905
+  model_train_dir: "models/train/"
+  model_train_path: "${model_train.model_train_dir}/ovrc.joblib"
+
+model_eval:
+  port_eval: 8906
+  evaluation_results_dir: "metrics/"
+
+label_encoder_mapping:
+  facture: 0
+  id_pieces: 1
+  resume: 2

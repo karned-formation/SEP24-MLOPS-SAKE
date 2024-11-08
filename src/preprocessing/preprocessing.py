@@ -3,10 +3,11 @@ import numpy as np
 import joblib
 import sys
 import os
+import subprocess
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
-
+from custom_logger import logger
 
 # Paths
 X_train_path = "/app/data/processed/train/X_train.joblib"
@@ -200,6 +201,22 @@ def main(clean_dir_path: str) -> None:
 
     # Save the fitted TF-IDF vectorizer
     save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
+
+    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
+    host_uid = os.getenv("HOST_UID")
+    host_gid = os.getenv("HOST_GID")
+    if host_uid and host_gid: # si les valeurs sont bien récupérées
+        with open('/proc/mounts', 'r') as mounts_file:
+            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
+
+        for mount_point in app_mounts:
+            try:
+                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
+                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
+            except subprocess.CalledProcessError as e:
+                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+    else:
+        logger.info("UID ou GID de l'hôte non définis.")
 
 if __name__ == "__main__":
     clean_dir_path = "data/cleaned_per_classes"

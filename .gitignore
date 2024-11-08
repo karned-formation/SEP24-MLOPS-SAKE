@@ -15,3 +15,9 @@ models/*
 !models/.gitkeep
 test_sarah.ipynb
 /models
+
+.env
+.env_original
+.env_mlops_sake
+
+dockers_started.txt

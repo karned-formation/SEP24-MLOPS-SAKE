@@ -1,48 +1,84 @@
 stages:
+  env_mlops_sake:
+    cmd: 'python3 src/config_transform_as_env.py && 
+          python src/smart_merge_.env_.env_mlops_sake.py'
+    deps:
+    - params.yaml
+    - src/config_transform_as_env.py
+    - src/smart_merge_.env_.env_mlops_sake.py
+
+  start_docker:
+    cmd: 'source scripts/docker_clean_dangling_images.sh && 
+          docker-compose stop && 
+          docker-compose up --build -d && 
+          date > dockers_started.txt'
+    deps:
+    - .env_mlops_sake
+    - docker-compose.yaml
+    outs:
+    - dockers_started.txt
+
   structure_raw:
     cmd: python3 src/data/structure_raw.py
     deps:
     - src/data/structure_raw.py
-    - data/raw/final
+    - params.yaml
+    - dockers_started.txt
+    - ${data_structure_raw.image_dir}
     - data/working_dataset.csv
     outs:
-    - data/raw_per_classes:
+    - ${data_structure_raw.raw_dataset_dir}:
         persist: true
+
   ingest:
-    cmd: 'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
+    cmd:  'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
     deps:
-    - data/raw_per_classes
+    - params.yaml
+    - dockers_started.txt
+    - ${data_structure_raw.raw_dataset_dir}
     outs:
-    - data/ocr_raw_per_classes:
+    - ${data_ingestion.ocr_text_dir}:
         persist: true
+
   clean:
     cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
-    - data/ocr_raw_per_classes
+    - params.yaml
+    - dockers_started.txt
+    - ${data_ingestion.ocr_text_dir}
     outs:
-    - data/cleaned_per_classes:
+    - ${data_cleaning.cleaned_datasets_dir}:
         persist: true
+
   preprocessing:
     cmd: 'curl -X "GET" "http://localhost:8904/process"'
     deps:
-    - data/cleaned_per_classes
+    - params.yaml
+    - dockers_started.txt
+    - ${data_cleaning.cleaned_datasets_dir}
     outs:
     - data/processed:
         persist: true
     - models/vectorizers:
         persist: true
+
   train:
     cmd: 'curl -X "GET" "http://localhost:8905/train"'
     deps:
-    - data/processed/train
+    - params.yaml
+    - dockers_started.txt
+    - ${data_preprocessing.train_data_dir}
     outs:
-    - models/train:
+    - ${model_train.model_train_dir}:
         persist: true
+
   eval:
     cmd: 'curl -X "GET" "http://localhost:8906/eval"'
     deps:
-    - data/processed/test
-    - models/train
+    - params.yaml
+    - dockers_started.txt
+    - ${data_preprocessing.test_data_dir}
+    - ${model_train.model_train_dir}
     metrics:
     - metrics/scores.json:
         cache: false
