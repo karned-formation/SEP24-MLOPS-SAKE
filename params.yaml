@@ -21,6 +21,14 @@ data_cleaning: # => clean_text
   ocr_text_dir: "data/ocr_raw_per_classes/" # to delete
   cleaned_datasets_dir: "data/cleaned_per_classes/"
 
+data_ETL:
+  docker_service_ETL: ms-sake-ETL
+  port_ETL: 8907
+  route_ETL_ingest_all: ingest
+  route_ETL_clean_all: clean
+  endpoint_ETL_ingest_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_ingest_all}"
+  endpoint_ETL_clean_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_clean_all}"
+
 data_preprocessing:
   cleaned_datasets_dir: "data/cleaned_per_classes/"
   vectorizer_dir: "models/vectorizers/"
