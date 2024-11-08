@@ -17,4 +17,4 @@ test_sarah.ipynb
 /models
 .env
 .env_original
-dockers_ready.txt
+dockers_started.txt

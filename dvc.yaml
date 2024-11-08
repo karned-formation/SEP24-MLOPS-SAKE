@@ -7,7 +7,7 @@ stages:
     - src/smart_merge_.env_.env_mlops_sake.py
 
   start_docker:
-    cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers prêts" >> dockers_ready.txt
+    cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers démarrés" > dockers_started.txt
     deps:
     - .env_mlops_sake
     outs: []
@@ -16,7 +16,7 @@ stages:
     cmd: python3 src/data/structure_raw.py
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/raw
     - src/data/structure_raw.py
     - data/working_dataset.csv
@@ -31,7 +31,7 @@ stages:
     #'curl -X "POST" "http://${data_ETL.docker_service_ETL}:${data_ETL.port_ETL}/${data_ETL.route_ETL_ingest_all}" -H "accept: application/json"'
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/raw_per_classes
     outs:
     - data/ocr_raw_per_classes:
@@ -41,7 +41,7 @@ stages:
     cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/ocr_raw_per_classes
     outs:
     - data/cleaned_per_classes:
@@ -51,7 +51,7 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8904/process"'
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/cleaned_per_classes
     outs:
     - data/processed:
@@ -63,7 +63,7 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8905/train"'
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/processed/train
     outs:
     - models/train:
@@ -73,7 +73,7 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8906/eval"'
     deps:
     - params.yaml
-    - dockers_ready.txt
+    - dockers_started.txt
     - data/processed/test
     - models/train
     metrics:

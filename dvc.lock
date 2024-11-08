@@ -12,10 +12,10 @@ stages:
       hash: md5
       md5: 02086bf6991f01344eccc4aba1935f1e
       size: 4542
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -38,10 +38,10 @@ stages:
       md5: f649d221b593c31f1d3a432966a87f42.dir
       size: 21954635
       nfiles: 183
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -60,10 +60,10 @@ stages:
       md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
       size: 174192
       nfiles: 183
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -71,8 +71,8 @@ stages:
     outs:
     - path: data/cleaned_per_classes
       hash: md5
-      md5: 56db52c888c3d419a30d9ae0ced23e91.dir
-      size: 113340
+      md5: ce53fac85e025ea31994569da275d29a.dir
+      size: 113344
       nfiles: 3
   preprocessing:
     cmd: curl -X "GET" "http://localhost:8904/process"
@@ -82,10 +82,10 @@ stages:
       md5: 56db52c888c3d419a30d9ae0ced23e91.dir
       size: 113340
       nfiles: 3
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -109,10 +109,10 @@ stages:
       md5: 41d34acae42ef8e0ef3302a623a79b12.dir
       size: 2666701
       nfiles: 2
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -131,10 +131,10 @@ stages:
       md5: 0606915671ceb28a175e8e06324cdb25.dir
       size: 442997
       nfiles: 2
-    - path: dockers_ready.txt
+    - path: dockers_started.txt
       hash: md5
-      md5: 3e7a36cc4f8e7635502398667482052a
-      size: 30
+      md5: bf02e5cfed758f0ffc9bafb40bfd8622
+      size: 19
     - path: models/train
       hash: md5
       md5: c82cbe230a8e5f77416eb63d7ee630fd.dir
@@ -169,8 +169,8 @@ stages:
       md5: b414ccb85a884e0568fe5ffbb3d3c766
       size: 1216
   start_docker:
-    cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers prêts"
-      >> dockers_ready.txt
+    cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers démarrés"
+      > dockers_started.txt
     deps:
     - path: .env_mlops_sake
       hash: md5
