@@ -2,6 +2,7 @@ FROM python:3.11
 
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
+ARG LOG_DIR
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -24,6 +25,7 @@ RUN python3 -m spacy download en_core_web_sm
 COPY $DOCKERFILE_DIR/app.py ./
 COPY $DOCKERFILE_DIR/download_contents.py ./
 COPY $SOURCE_DIR/clean_text.py ./
+COPY $LOG_DIR/custom_logger.py ./custom_logger.py
 
 RUN python3 download_contents.py
 
