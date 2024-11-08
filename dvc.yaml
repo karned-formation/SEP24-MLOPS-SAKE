@@ -10,6 +10,7 @@ stages:
     cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers démarrés" > dockers_started.txt
     deps:
     - .env_mlops_sake
+    - docker-compose.yaml
     outs: []
 
   structure_raw:

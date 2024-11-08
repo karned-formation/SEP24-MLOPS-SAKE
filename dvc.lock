@@ -176,3 +176,7 @@ stages:
       hash: md5
       md5: e473f0d0d4da2b0bc9c97f09058e9c29
       size: 1872
+    - path: docker-compose.yaml
+      hash: md5
+      md5: 53566377532d6d6f07ff56de5383f70c
+      size: 4488

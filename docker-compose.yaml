@@ -8,7 +8,7 @@ services:
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
     container_name: OCR
     ports:
-      - ${DATA_INGESTION_PORT_OCR}:${DATA_INGESTION_PORT_OCR} # "8901:8901"
+      - ${DATA_INGESTION_PORT_OCR}:80
     networks:
       - sake
 
@@ -27,7 +27,7 @@ services:
     image: ms-sake-clean-text:1.0 
     container_name: clean_text
     ports:
-      - "8903:8903"
+      - "8903:80"
     networks:
       - sake
 
@@ -50,7 +50,7 @@ services:
       - ms-OCR
       - ms-sake-clean-text
     ports:
-      - "8907:8907"
+      - "${DATA_ETL_PORT_ETL}:80"
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
@@ -75,7 +75,7 @@ services:
     image: ms-sake-preprocessing:1.0  
     container_name: preprocessing
     ports:
-      - "8904:8904"
+      - "8904:80"
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
@@ -100,7 +100,7 @@ services:
     image: ms-sake-train:1.0  
     container_name: train
     ports:
-      - "8905:8905"
+      - "8905:80"
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
@@ -124,7 +124,7 @@ services:
     image: ms-sake-eval:1.0  
     container_name: eval
     ports:
-      - "8906:8906"
+      - "8906:80"
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes

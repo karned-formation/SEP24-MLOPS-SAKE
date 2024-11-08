@@ -7,16 +7,8 @@ ARG LOG_DIR
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV APP_HOME /app
-ENV PORT 8907
-
-# Variables to be used in the app to access the data and store the results
-# Endpoints url use container names 'ingest' and 'clean' to communicate with the other services inside the docker network
-ENV OCR_ENDPOINT http://ingest:8901/txt/blocks-words 
-ENV RAW_DATASET_DIR data/raw_per_classes/
-ENV OCR_TEXT_DIR data/ocr_raw_per_classes/
-ENV CLEAN_ENDPOINT http://clean:8903/clean
-ENV CLEANED_DATASETS_DIR data/cleaned_per_classes/
+ENV APP_HOME=/app
+ENV PORT=80
 
 EXPOSE $PORT
 
