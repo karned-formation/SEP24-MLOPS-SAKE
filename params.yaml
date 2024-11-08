@@ -1,3 +1,6 @@
+data_general:
+  log_dir: "logs/"
+
 data_structure_raw:
   raw_dataset_path: "data/working_dataset.csv" 
   image_dir: "data/raw/"
@@ -31,18 +34,21 @@ data_ETL:
   endpoint_ETL_clean_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_clean_all}"
 
 data_preprocessing:
+  port_preprocessing: 8904
   cleaned_datasets_dir: "data/cleaned_per_classes/"
   vectorizer_dir: "models/vectorizers/"
   tfidf_vectorizer_path: "models/vectorizers/tfidf_vectorizer.joblib"
   train_data_dir: "data/processed/train/"
   test_data_dir: "data/processed/test/"
 
-model_training:
+model_train:
+  port_train: 8905
   train_data_dir: "data/processed/train/" # to delete
   model_dir: "models/train/"
   model_path: "models/train/ovrc.joblib"
 
-model_evaluation:
+model_eval:
+  port_eval: 8906
   test_data_dir: "data/processed/test/" # to delete
   model_path: "models/ovrc.joblib" # to delete
   evaluation_results_dir: "metrics/"
