@@ -35,6 +35,7 @@ def transform_YAML_as_Environnement_variable(param_yaml_path,
 
     print("Les variables d'environnement suivantes sont déclarées")
     with open(env_path, "w") as env_file:
+        env_file.write("\n# /!\ à ne pas éditer => modifier params.yaml")
         env_file.write("\n# Variables d'environnement pour le projet MLOps-SAKE\n")
         for key, value in flat_params.items():
             env_file.write(f"{key}={value}\n")

@@ -15,7 +15,8 @@ stages:
     deps:
     - .env_mlops_sake
     - docker-compose.yaml
-    outs: []
+    outs:
+    - dockers_started.txt
 
   structure_raw:
     cmd: python3 src/data/structure_raw.py

@@ -123,10 +123,10 @@ def clean_transform_ocerised_text(text: str) -> str:
 def tokenize_data(data: str) -> str:
     STAGE_NAME = "Stage: clean_text"    
     try:        
-        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+        #logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
         cleaned_data = clean_transform_ocerised_text(data)
         tokenized_data = token_lemmatization_and_remove_stop_words(cleaned_data)
-        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+        #logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
         return tokenized_data
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
