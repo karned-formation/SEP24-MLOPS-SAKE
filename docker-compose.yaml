@@ -22,6 +22,7 @@ services:
       args:
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/clean_text  
+        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-clean-text:cache  
     image: ms-sake-clean-text:1.0 
@@ -30,6 +31,8 @@ services:
       - "8903:80"
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./logs:/app/logs
 
   # Service ETL
   ms-sake-ETL:
@@ -50,7 +53,7 @@ services:
       - ms-OCR
       - ms-sake-clean-text
     ports:
-      - "${DATA_ETL_PORT_ETL}:80"
+      - ${DATA_ETL_PORT_ETL}:80
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes

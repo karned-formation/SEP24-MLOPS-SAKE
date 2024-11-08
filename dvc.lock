@@ -14,7 +14,7 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: params.yaml
       hash: md5
@@ -22,8 +22,8 @@ stages:
       size: 2026
     - path: src/data/structure_raw.py
       hash: md5
-      md5: 4083265122fda0173c9fcef0bce6d65e
-      size: 3194
+      md5: 913a67d14af30d19176c2eeb4a6f6c88
+      size: 3467
     outs:
     - path: data/raw_per_classes
       hash: md5
@@ -40,7 +40,7 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: params.yaml
       hash: md5
@@ -62,7 +62,7 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: params.yaml
       hash: md5
@@ -71,20 +71,20 @@ stages:
     outs:
     - path: data/cleaned_per_classes
       hash: md5
-      md5: 7fdb9f68f4f5d43d0a4c770ba5a89307.dir
-      size: 113376
+      md5: efb8c813e3ce200e4321e0167bf16008.dir
+      size: 113351
       nfiles: 3
   preprocessing:
     cmd: curl -X "GET" "http://localhost:8904/process"
     deps:
     - path: data/cleaned_per_classes
       hash: md5
-      md5: 7fdb9f68f4f5d43d0a4c770ba5a89307.dir
-      size: 113376
+      md5: efb8c813e3ce200e4321e0167bf16008.dir
+      size: 113351
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: params.yaml
       hash: md5
@@ -93,25 +93,25 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 11ba391e3bd264ae677e2a0f4c983e90.dir
-      size: 3108658
+      md5: 6e30e593fefab7e629df8560a9c6d108.dir
+      size: 3109250
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: a032fddfe18491a4c3631aa3c7393645.dir
-      size: 2528831
+      md5: 15943b6923eda607f90bc35fa1597ba4.dir
+      size: 2528878
       nfiles: 1
   train:
     cmd: curl -X "GET" "http://localhost:8905/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: 02944596f788b559478388011660ec5f.dir
-      size: 2665933
+      md5: 4f9ad0b404eea9763ee48727382de319.dir
+      size: 2666301
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: params.yaml
       hash: md5
@@ -120,7 +120,7 @@ stages:
     outs:
     - path: models/train
       hash: md5
-      md5: a609bbca1a59764b6abb7b4f4b01e3be.dir
+      md5: 01bb925f82b3bd0b365bdf2eff78b7db.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -128,16 +128,16 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: c81e690ef32bd3f302eec13e3b120fe9.dir
-      size: 442725
+      md5: 64c27963b6d00ca4bf484dbe668e39fb.dir
+      size: 442949
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 1ea9680867c7a769c4277fa713883f97
+      md5: 58b625103240fd303b2f2307da5e7ad2
       size: 29
     - path: models/train
       hash: md5
-      md5: a609bbca1a59764b6abb7b4f4b01e3be.dir
+      md5: 01bb925f82b3bd0b365bdf2eff78b7db.dir
       size: 1682517
       nfiles: 1
     - path: params.yaml
@@ -177,5 +177,5 @@ stages:
       size: 1867
     - path: docker-compose.yaml
       hash: md5
-      md5: 53566377532d6d6f07ff56de5383f70c
-      size: 4488
+      md5: c0ed34d61149ba692e96be90d5be20b2
+      size: 4669

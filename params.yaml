@@ -16,7 +16,8 @@ data_cleaning: # => clean_text
   docker_service_clean_text: ms-sake-clean-text # /!\ à synchroniser avec docker-compose.yaml
   port_clean_text: 8903
   route_clean_text: clean
-  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}:${data_cleaning.port_clean_text}/clean"
+  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}/clean"
+  #clean_endpoint: "http://${data_cleaning.docker_service_clean_text}:${data_cleaning.port_clean_text}/clean"
       # => endpoint_clean_text
   ocr_text_dir: "data/ocr_raw_per_classes/" # to delete
   cleaned_datasets_dir: "data/cleaned_per_classes/"
