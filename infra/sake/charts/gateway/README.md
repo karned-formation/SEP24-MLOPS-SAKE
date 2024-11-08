@@ -2,7 +2,7 @@
 
 **Déploiement**
 ```sh
- helm install gateway ./gateway -f gateway/values_sample.yaml
+ helm install gateway ./gateway -f gateway/values.yaml
 ```
 
 **Suppression**

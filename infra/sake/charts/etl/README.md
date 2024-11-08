@@ -2,7 +2,7 @@
 
 **Déploiement**
 ```sh
- helm install etl ./etl -f etl/values_sample.yaml
+ helm install etl ./etl -f etl/values.yaml
 ```
 
 **Suppression**
