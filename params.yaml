@@ -37,12 +37,12 @@ data_preprocessing:
   vectorizer_dir: "${data_preprocessing.models_dir}/vectorizers/"
   tfidf_vectorizer_path: "${data_preprocessing.vectorizer_dir}/tfidf_vectorizer.joblib"
   preprocessed_data_dir: "data/processed/"
-  train_data_dir: "${data_preprocessing.preprocessed_data_dir}/train/"
-  test_data_dir: "${data_preprocessing.preprocessed_data_dir}/test/"
+  train_data_dir: "data/processed/train/"
+  test_data_dir: "data/processed/test/"
 
 model_train:
   port_train: 8905
-  model_train_dir: "${data_preprocessing.models_dir}/train/"
+  model_train_dir: "models/train/"
   model_train_path: "${model_train.model_train_dir}/ovrc.joblib"
 
 model_eval:

@@ -20,26 +20,23 @@ stages:
   structure_raw:
     cmd: python3 src/data/structure_raw.py
     deps:
+    - src/data/structure_raw.py
     - params.yaml
     - dockers_started.txt
-    - data/raw
-    - src/data/structure_raw.py
+    - ${data_structure_raw.image_dir}
     - data/working_dataset.csv
     outs:
-    - data/raw_per_classes:
+    - ${data_structure_raw.raw_dataset_dir}:
         persist: true
 
   ingest:
     cmd:  'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
-    #docker-compose run --rm ${data_ETL.docker_service_ETL} bash -c './scripts/ingest.sh'
-    #curl -X POST ${data_ETL.endpoint_ETL_ingest_all} -H "accept: application/json"
-    #'curl -X "POST" "http://${data_ETL.docker_service_ETL}:${data_ETL.port_ETL}/${data_ETL.route_ETL_ingest_all}" -H "accept: application/json"'
     deps:
     - params.yaml
     - dockers_started.txt
-    - data/raw_per_classes
+    - ${data_structure_raw.raw_dataset_dir}
     outs:
-    - data/ocr_raw_per_classes:
+    - ${data_ingestion.ocr_text_dir}:
         persist: true
 
   clean:
@@ -47,9 +44,9 @@ stages:
     deps:
     - params.yaml
     - dockers_started.txt
-    - data/ocr_raw_per_classes
+    - ${data_ingestion.ocr_text_dir}
     outs:
-    - data/cleaned_per_classes:
+    - ${data_cleaning.cleaned_datasets_dir}:
         persist: true
 
   preprocessing:
@@ -57,7 +54,7 @@ stages:
     deps:
     - params.yaml
     - dockers_started.txt
-    - data/cleaned_per_classes
+    - ${data_cleaning.cleaned_datasets_dir}
     outs:
     - data/processed:
         persist: true
@@ -69,9 +66,9 @@ stages:
     deps:
     - params.yaml
     - dockers_started.txt
-    - data/processed/train
+    - ${data_preprocessing.train_data_dir}
     outs:
-    - models/train:
+    - ${model_train.model_train_dir}:
         persist: true
 
   eval:
@@ -79,8 +76,8 @@ stages:
     deps:
     - params.yaml
     - dockers_started.txt
-    - data/processed/test
-    - models/train
+    - ${data_preprocessing.test_data_dir}
+    - ${model_train.model_train_dir}
     metrics:
     - metrics/scores.json:
         cache: false
