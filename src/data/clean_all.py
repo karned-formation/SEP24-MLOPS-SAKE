@@ -5,7 +5,6 @@ import subprocess
 from typing import Optional, List, Dict
 from custom_logger import logger
 
-
 def load_processed_dataset(filepath: str) -> pd.DataFrame:
     return pd.read_csv(filepath)
 
@@ -31,7 +30,13 @@ def make_dataset(ocr_txts: List[str], cleaned_txts: List[str]) -> pd.DataFrame:
         'category': [ocr_txt.split('/')[0] for ocr_txt in ocr_txts]
     })
 
-def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> None:
+def check_input_dir(ocr_text_dir):
+    if not os.path.exists(ocr_text_dir):
+        raise Exception("OCR text directory not found")
+
+def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str,
+                host_uid, host_gid) -> None:
+    check_input_dir(ocr_text_dir)
     for root, _, files in os.walk(ocr_text_dir):
         logger.info(f"Cleaning directory {root}")
         ocr_images = []
@@ -53,7 +58,7 @@ def process_dir(ocr_text_dir: str, cleaned_datasets_dir: str, api_url: str) -> N
         dataset = make_dataset(ocr_images, cleaned_txts)
         class_folder = os.path.basename(os.path.dirname(ocr_images[0]))
         save_cleaned_dataset(dataset, f"{cleaned_datasets_dir}{class_folder}/cleaned_dataset.csv")
-
+    set_permissions_of_host_volume_owner(host_uid, host_gid)
 
 def encode_labels(ocr_txts: List[str], mapper: Dict[str, int]) -> List[int]:
     labels = []
@@ -69,20 +74,11 @@ def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     cleaned_dataset.to_csv(filepath, index=False)
 
-
-def clean_all(clean_endpoint: str, ocr_text_dir: str, cleaned_datasets_dir: str) -> None:
-
-    try:        
-        logger.info("Starting the cleaning process...")
-        process_dir(ocr_text_dir, cleaned_datasets_dir, clean_endpoint)      
-        logger.info("Cleaning process completed successfully.")
-    except Exception as e:
-        logger.error(f"An error occurred during the cleaning process: {str(e)}")
-        raise e
-
-    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
-    host_uid = os.getenv("HOST_UID")
-    host_gid = os.getenv("HOST_GID")
+def set_permissions_of_host_volume_owner(host_uid, host_gid):
+    """ pour mettre en place les permissions du propriétaire hôte des volumes 
+        - sur chacun des volumes montés dans "/app/"
+        - pour tous les dossiers et fichiers dans ces volumes
+    """
     if host_uid and host_gid: # si les valeurs sont bien récupérées
         with open('/proc/mounts', 'r') as mounts_file:
             app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
@@ -92,14 +88,26 @@ def clean_all(clean_endpoint: str, ocr_text_dir: str, cleaned_datasets_dir: str)
                 subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
                 logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
             except subprocess.CalledProcessError as e:
-                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+                logger.error(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
     else:
-        logger.info("UID ou GID de l'hôte non définis.")
+        logger.error("UID ou GID de l'hôte non définis.")
 
+def clean_all():
 
-if __name__ == '__main__':
     ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
     clean_endpoint = os.getenv("DATA_CLEANING_CLEAN_ENDPOINT")
     cleaned_datasets_dir = os.getenv("DATA_CLEANING_CLEANED_DATASETS_DIR")
+    host_uid = os.getenv("HOST_UID")
+    host_gid = os.getenv("HOST_GID")
 
-    clean_all(clean_endpoint, ocr_text_dir, cleaned_datasets_dir)
+    STAGE_NAME = "Stage: clean_all"    
+    try:        
+        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+        process_dir(ocr_text_dir, cleaned_datasets_dir, clean_endpoint, host_uid, host_gid)      
+        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+    except Exception as e:
+        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
+        raise e
+
+if __name__ == '__main__':
+    clean_all()

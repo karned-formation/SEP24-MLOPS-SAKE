@@ -6,6 +6,7 @@ from langdetect import detect
 import nltk
 nltk.download('wordnet')
 import spacy
+from custom_logger import logger
 
 set_stop_words_french = set(stopwords.words('french'))
 set_stop_words_english = set(stopwords.words('english'))
@@ -120,12 +121,16 @@ def clean_transform_ocerised_text(text: str) -> str:
     return fct_clean 
 
 def tokenize_data(data: str) -> str:
-    cleaned_data = clean_transform_ocerised_text(data)
-    tokenized_data = token_lemmatization_and_remove_stop_words(cleaned_data)
-    return tokenized_data
-
-def main(data: str):
-    return tokenize_data(data)
+    STAGE_NAME = "Stage: clean_text"    
+    try:        
+        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+        cleaned_data = clean_transform_ocerised_text(data)
+        tokenized_data = token_lemmatization_and_remove_stop_words(cleaned_data)
+        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+        return tokenized_data
+    except Exception as e:
+        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
+        raise e
 
 txt_test = """
 FACTURE
@@ -184,4 +189,4 @@ SWIFT/BIC: ABCDFRP1XxX
 """
 
 if __name__ == "__main__":
-    main(txt_test) # test the function
+    tokenize_data(txt_test) 
