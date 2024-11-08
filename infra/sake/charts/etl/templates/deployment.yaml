@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: {{ .Values.AppName }}
-        image: killiankopp/ms-sake-etl:1.0
+        image: {{ .Values.DockerImage }}
         ports:
         - containerPort: 80
