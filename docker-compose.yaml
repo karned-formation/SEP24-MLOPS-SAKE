@@ -59,7 +59,6 @@ services:
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
-      - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
     
   # Service de prétraitement
@@ -107,7 +106,7 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/train:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/train
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
       - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
@@ -131,9 +130,9 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/test:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}/test
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
       - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
-      - ./metrics:/app/metrics
+      - ./${MODEL_EVAL_EVALUATION_RESULTS_DIR}:/app/${MODEL_EVAL_EVALUATION_RESULTS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
 networks:
