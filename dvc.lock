@@ -14,8 +14,8 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -40,8 +40,8 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -62,8 +62,8 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -84,8 +84,8 @@ stages:
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -111,8 +111,8 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 0ed90e1e2ae4e12a9405678f1fa3b734
@@ -133,8 +133,8 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: bf02e5cfed758f0ffc9bafb40bfd8622
-      size: 19
+      md5: 3debbce998b19146083755f7a53bbd48
+      size: 29
     - path: models/train
       hash: md5
       md5: 79e59b9f7398795a89fd560996119d70.dir
@@ -169,8 +169,7 @@ stages:
       md5: b414ccb85a884e0568fe5ffbb3d3c766
       size: 1216
   start_docker:
-    cmd: docker-compose stop && docker-compose up --build -d && echo "Dockers démarrés"
-      > dockers_started.txt
+    cmd: docker-compose stop && docker-compose up --build -d && date > dockers_started.txt
     deps:
     - path: .env_mlops_sake
       hash: md5
