@@ -5,14 +5,14 @@ import os
 
 app = FastAPI()
 
-@app.post("/ingest")
+@app.get("/ingest")
 def ingest():
     try:
         ingest_all()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/clean")
+@app.get("/clean")
 def clean():
     try:
         clean_all()

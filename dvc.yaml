@@ -31,7 +31,7 @@ stages:
         persist: true
 
   ingest:
-    cmd:  'curl -X "POST" "http://localhost:8907/ingest" -H "accept: application/json"'
+    cmd:  'curl -X "GET" "http://localhost:8907/ingest"'
     deps:
     - params.yaml
     - dockers_started.txt
@@ -41,7 +41,7 @@ stages:
         persist: true
 
   clean:
-    cmd: 'curl -X "POST" "http://localhost:8907/clean" -H "accept: application/json"'
+    cmd: 'curl -X "GET" "http://localhost:8907/clean"'
     deps:
     - params.yaml
     - dockers_started.txt
