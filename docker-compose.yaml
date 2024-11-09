@@ -8,7 +8,7 @@ services:
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
     container_name: OCR
     ports:
-      - ${DATA_INGESTION_PORT_OCR}:80
+      - ${DATA_INGESTION_PORT_OCR}:8901
     networks:
       - sake
 
@@ -57,6 +57,7 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
@@ -118,7 +119,7 @@ services:
       context: .  
       dockerfile: docker/eval/Dockerfile  
       args:
-        SOURCE_DIR: src/eval
+        SOURCE_DIR: src/
         DOCKERFILE_DIR: docker/eval
         LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
@@ -132,9 +133,10 @@ services:
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
       - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
-      - ./${MODEL_EVAL_EVALUATION_RESULTS_DIR}:/app/${MODEL_EVAL_EVALUATION_RESULTS_DIR}
+      - ./${MODEL_EVAL_METRICS_DIR}:/app/${MODEL_EVAL_METRICS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
-
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      
 networks:
   sake:
     driver: bridge

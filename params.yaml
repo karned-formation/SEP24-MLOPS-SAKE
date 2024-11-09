@@ -44,12 +44,23 @@ model_train:
   port_train: 8905
   model_train_dir: "models/train/"
   model_train_path: "${model_train.model_train_dir}/ovrc.joblib"
+  X_train_path: "${data_preprocessing.train_data_dir}/X_train.joblib"
+  y_train_path: "${data_preprocessing.train_data_dir}/y_train.joblib"
 
 model_eval:
   port_eval: 8906
-  evaluation_results_dir: "metrics/"
+  metrics_dir: "metrics/"
+  model_path: "${model_train.model_train_path}"
+  X_test_path: "${data_preprocessing.test_data_dir}/X_test.joblib"
+  y_test_path: "${data_preprocessing.test_data_dir}/y_test.joblib"
 
 label_encoder_mapping:
   facture: 0
   id_pieces: 1
   resume: 2
+
+mlflow:
+  tracking_uri: "NOT_USED_FOR_DAGSHUB"
+  experiment_id: "BAG_OF_WORDS"
+  model_name: "BAG_OF_WORDS_MODEL"
+  model_version: "1.0"
