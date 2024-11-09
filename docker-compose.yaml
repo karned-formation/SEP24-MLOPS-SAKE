@@ -8,7 +8,7 @@ services:
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
     container_name: OCR
     ports:
-      - ${DATA_INGESTION_PORT_OCR}:80
+      - ${DATA_INGESTION_PORT_OCR}:8901
     networks:
       - sake
 
@@ -57,6 +57,7 @@ services:
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
