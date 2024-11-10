@@ -1,0 +1,5 @@
+NameSpace: sake
+AppName: gateway
+DockerImage: killiankopp/ms-sake-gateway:0.3
+
+HostName: sake.karned.bzh
