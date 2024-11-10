@@ -20,7 +20,11 @@ COPY $DOCKERFILE_DIR/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY $DOCKERFILE_DIR/app.py ./
-COPY $SOURCE_DIR/eval.py ./
+COPY $SOURCE_DIR/eval/eval.py ./
 COPY $LOG_DIR/custom_logger.py ./custom_logger.py
+
+COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
+RUN chmod +x private_conn_dagshub.sh
+RUN ./private_conn_dagshub.sh
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}

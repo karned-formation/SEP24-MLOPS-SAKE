@@ -5,6 +5,5 @@ from clean_text import tokenize_data
 app = FastAPI()
 
 @app.post("/clean", response_class = PlainTextResponse)
-def clean(text: str):    
-
+def clean(text: str):
     return tokenize_data(text)
