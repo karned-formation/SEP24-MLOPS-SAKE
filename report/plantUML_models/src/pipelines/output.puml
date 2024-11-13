@@ -1,4 +1,0 @@
-
-@startuml
-[data/processed/] --> [data/working_dataset.csv]
-@enduml
