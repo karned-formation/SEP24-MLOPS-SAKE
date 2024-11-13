@@ -15,10 +15,12 @@ models/*
 !models/.gitkeep
 
 /models
+/mlruns
 
 .env
 .env_original
 .env_mlops_sake
+.env_plantUML
 
 dockers_started.txt
 

@@ -15,12 +15,13 @@
     ```sh
     docker-compose up --build
     ```
-
-    To access to the docker documentationss, please open the following links :
-    - OCR : http://localhost:8901/docs
-    - clean_text (remove stop words, small words, etc...) : http://localhost:8903/docs
-    - PreProcessing (vectorize): http://localhost:8904/docs
-    - Training : http://localhost:8905/docs
+    To access to the docker through FastAPI, please open the following links :
+    - ms-sake-ETL : http://localhost:8907/docs
+        - ms-OCR : http://localhost:8901/docs
+        - ms-sake-clean_text (remove stop words, small words, etc...) : http://localhost:8903/docs
+    - ms-sake-preprocessing (vectorize): http://localhost:8904/docs
+    - ms-sake-train : http://localhost:8905/docs
+    - ms-sake-eval : http://localhost:8906/docs
 
 # Run ML_Experiment_Pipeline
 
@@ -53,6 +54,5 @@
     dvc repro
     ```
 
-![alt text](pipeline_ingestion_and_clean.png)
 
 

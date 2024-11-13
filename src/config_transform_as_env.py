@@ -13,7 +13,8 @@ def flatten_dict(d, parent_key='', sep='_'):
     return dict(items)
 
 def transform_YAML_as_Environnement_variable(param_yaml_path, 
-                                             env_path):
+                                             env_path,
+                                             env_plantUML_path):
 
     # Charger le fichier YAML et aplatir la structure
     with open(param_yaml_path, "r") as file:
@@ -35,11 +36,15 @@ def transform_YAML_as_Environnement_variable(param_yaml_path,
 
     print("Les variables d'environnement suivantes sont déclarées")
     with open(env_path, "w") as env_file:
-        env_file.write("\n# /!\ à ne pas éditer => modifier params.yaml")
-        env_file.write("\n# Variables d'environnement pour le projet MLOps-SAKE\n")
-        for key, value in flat_params.items():
-            env_file.write(f"{key}={value}\n")
-            print(f"{key}={value}")
+        with open(env_plantUML_path, "w") as env_plantUML_file:
+            env_file.write("\n# /!\ à ne pas éditer => modifier params.yaml")
+            env_file.write("\n# Variables d'environnement pour le projet MLOps-SAKE\n")
+            env_plantUML_file.write("\n' /!\ à ne pas éditer => modifier params.yaml")
+            env_plantUML_file.write("\n' Variables d'environnement pour le projet MLOps-SAKE\n")
+            for key, value in flat_params.items():
+                env_file.write(f"{key}={value}\n")
+                env_plantUML_file.write(f'!define {key}="{value}"\n')
+                print(f"{key}={value}")
 
     print("\nAjout des 2 variables (pour définir le propriétaire hôte des volumes partagés):")
     uid = os.getuid()
@@ -51,7 +56,7 @@ def transform_YAML_as_Environnement_variable(param_yaml_path,
         print(f"HOST_UID={uid}")
         print(f"HOST_GID={gid}")
 
-    print(f"=> Le fichier '{env_path}' contient toutes ces variables d'environnement")
+    print(f"=> Les fichiers '{env_path}' et '{env_plantUML_path}' contiennent toutes ces variables d'environnement")
 
     print("\nCréer les répertoires suivants si nécessaire:")
     for key, path in flat_params.items():
@@ -62,6 +67,8 @@ def transform_YAML_as_Environnement_variable(param_yaml_path,
 if __name__ == "__main__":
     param_yaml_path = './params.yaml'
     env_path = './.env_mlops_sake'
+    env_plantUML_path = './.env_plantUML'
     transform_YAML_as_Environnement_variable(param_yaml_path, 
-                                             env_path)
+                                             env_path,
+                                             env_plantUML_path)
     

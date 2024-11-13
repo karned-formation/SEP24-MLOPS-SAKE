@@ -31,28 +31,45 @@ data_ETL:
   endpoint_ETL_clean_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_clean_all}"
 
 data_preprocessing:
+  docker_service_preprocessing: ms-sake-preprocessing
   port_preprocessing: 8904
-  cleaned_datasets_dir: "data/cleaned_per_classes/"
-  models_dir: "models/"
-  vectorizer_dir: "${data_preprocessing.models_dir}/vectorizers/"
-  tfidf_vectorizer_path: "${data_preprocessing.vectorizer_dir}/tfidf_vectorizer.joblib"
-  preprocessed_data_dir: "data/processed/"
-  train_data_dir: "data/processed/train/"
-  test_data_dir: "data/processed/test/"
+  route_preprocessing: process
+  endpoint_preprocessing: "http://${data_preprocessing.docker_service_preprocessing}/${data_preprocessing.route_preprocessing}"
+  cleaned_datasets_dir: "data/cleaned_per_classes"
+  models_dir: "models"
+  vectorizer_dir: "${data_preprocessing.models_dir}/vectorizers"
+  vectorizer_file : "tfidf_vectorizer.joblib"
+  tfidf_vectorizer_path: "${data_preprocessing.vectorizer_dir}/${data_preprocessing.vectorizer_file}"
+  preprocessed_data_dir: "data/processed"
+  train_data_dir: "data/processed/train"
+  test_data_dir: "data/processed/test"
+  X_train_file: "X_train.joblib"
+  X_train_path: "${data_preprocessing.train_data_dir}/${data_preprocessing.X_train_file}"
+  y_train_file: "y_train.joblib"
+  y_train_path: "${data_preprocessing.train_data_dir}/${data_preprocessing.y_train_file}"
+  X_test_file: "X_test.joblib"
+  X_test_path: "${data_preprocessing.test_data_dir}/${data_preprocessing.X_test_file}"
+  y_test_file: "y_test.joblib"
+  y_test_path: "${data_preprocessing.test_data_dir}/${data_preprocessing.y_test_file}"
 
 model_train:
+  docker_service_train: ms-sake-train
   port_train: 8905
-  model_train_dir: "models/train/"
-  model_train_path: "${model_train.model_train_dir}/ovrc.joblib"
-  X_train_path: "${data_preprocessing.train_data_dir}/X_train.joblib"
-  y_train_path: "${data_preprocessing.train_data_dir}/y_train.joblib"
+  route_train: train
+  endpoint_train: "http://${model_train.docker_service_train}/${model_train.route_train}"
+  model_train_dir: "models/train"
+  model_train_file: "ovrc.joblib"
+  model_train_path: "${model_train.model_train_dir}/${model_train.model_train_file}"
 
 model_eval:
+  docker_service_eval: ms-sake-eval
   port_eval: 8906
-  metrics_dir: "metrics/"
+  route_eval: eval
+  endpoint_eval: "http://${model_eval.docker_service_eval}/${model_eval.route_eval}"
+  metrics_dir: "metrics"
+  metrics_score_file: "scores.json"
+  metrics_confusion_matrix_file: "confusion_matrix.json"
   model_path: "${model_train.model_train_path}"
-  X_test_path: "${data_preprocessing.test_data_dir}/X_test.joblib"
-  y_test_path: "${data_preprocessing.test_data_dir}/y_test.joblib"
 
 label_encoder_mapping:
   facture: 0

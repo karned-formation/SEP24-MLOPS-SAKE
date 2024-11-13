@@ -8,9 +8,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
 from custom_logger import logger
 
-# Paths
-train_data_path = "/app/data/processed/train/"
-model_path = "/app/models/train/ovrc.joblib"
+def get_env_var(name):
+    value = os.getenv(name)
+    if not value:
+        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
+    return value
 
 
 def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
@@ -75,33 +77,16 @@ def save_model(model, model_path: str):
     # Save the model to the specified path
     try:
         joblib.dump(model, model_path)
-        print(f"Model saved to {model_path}")
+        logger.info(f"Model saved to {model_path}")
     except Exception as e:
+        logger.error(f"Error saving model: {e}")
         raise IOError(f"Error saving model: {e}")
 
-def main(data_dir: str, model_path: str):
+def set_permissions_of_host_volume_owner(host_uid, host_gid):
+    """ pour mettre en place les permissions du propriétaire hôte des volumes 
+        - sur chacun des volumes montés dans "/app/"
+        - pour tous les dossiers et fichiers dans ces volumes
     """
-    Main function to load data, create model, train it, and save it.
-    """
-    # Load data
-    X_train, y_train = load_data(data_dir)
-    print("Data loaded successfully.")
-
-    # Create model
-    model = create_model()
-    print("Model created.")
-
-    # Train model
-    model = train_model(model, X_train, y_train)
-    print("Model trained.")
-
-    # Save model
-    save_model(model, model_path)
-    print("Model saved successfully.")
-
-    # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
-    host_uid = os.getenv("HOST_UID")
-    host_gid = os.getenv("HOST_GID")
     if host_uid and host_gid: # si les valeurs sont bien récupérées
         with open('/proc/mounts', 'r') as mounts_file:
             app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
@@ -111,12 +96,54 @@ def main(data_dir: str, model_path: str):
                 subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
                 logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
             except subprocess.CalledProcessError as e:
-                logger.info(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+                logger.error(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
     else:
-        logger.info("UID ou GID de l'hôte non définis.")
+        logger.error("UID ou GID de l'hôte non définis.")
+
+def main():
+    """
+    Main function to load data, create model, train it, and save it.
+    """
+
+    STAGE_NAME = "Stage: Train"    
+    try:        
+        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+
+        data_dir = get_env_var("DATA_PREPROCESSING_TRAIN_DATA_DIR")
+        model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+
+        host_uid = get_env_var("HOST_UID")
+        host_gid = get_env_var("HOST_GID")
+
+        # Check if the input exists
+        if not os.path.exists(data_dir):
+            logger.error(f"Train Dataset not found: {data_dir}")
+            raise Exception("Dataset not found")
+
+        # Load data
+        X_train, y_train = load_data(data_dir)
+        logger.info("Data loaded successfully.")
+
+        # Create model
+        model = create_model()
+        logger.info("Model created.")
+
+        # Train model
+        model = train_model(model, X_train, y_train)
+        logger.info("Model trained.")
+
+        # Save model
+        save_model(model, model_path)
+        logger.info("Model saved successfully.")
+
+        set_permissions_of_host_volume_owner(host_uid, host_gid)
+
+        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+    except Exception as e:
+        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
+        raise e
 
 # Execute main function
 if __name__ == "__main__":
-    data_dir = 'data/processed/train'
-    model_path = 'models/train/ovrc.joblib'
-    main(data_dir, model_path)
+
+    main()

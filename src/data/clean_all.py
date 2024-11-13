@@ -5,6 +5,12 @@ import subprocess
 from typing import Optional, List, Dict
 from custom_logger import logger
 
+def get_env_var(name):
+    value = os.getenv(name)
+    if not value:
+        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
+    return value
+
 def load_processed_dataset(filepath: str) -> pd.DataFrame:
     return pd.read_csv(filepath)
 
@@ -94,11 +100,11 @@ def set_permissions_of_host_volume_owner(host_uid, host_gid):
 
 def clean_all():
 
-    ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
-    clean_endpoint = os.getenv("DATA_CLEANING_CLEAN_ENDPOINT")
-    cleaned_datasets_dir = os.getenv("DATA_CLEANING_CLEANED_DATASETS_DIR")
-    host_uid = os.getenv("HOST_UID")
-    host_gid = os.getenv("HOST_GID")
+    ocr_text_dir = get_env_var("DATA_INGESTION_OCR_TEXT_DIR")
+    clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT")
+    cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+    host_uid = get_env_var("HOST_UID")
+    host_gid = get_env_var("HOST_GID")
 
     STAGE_NAME = "Stage: clean_all"    
     try:        

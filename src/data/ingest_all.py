@@ -6,6 +6,11 @@ from typing import List
 import sys
 from custom_logger import logger
 
+def get_env_var(name):
+    value = os.getenv(name)
+    if not value:
+        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
+    return value
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
@@ -64,11 +69,11 @@ def save_text_to_file(text:str, path: str):
 
 def ingest_all():
 
-    raw_dataset_dir = os.getenv("DATA_STRUCTURE_RAW_RAW_DATASET_DIR")
-    ocr_text_dir = os.getenv("DATA_INGESTION_OCR_TEXT_DIR")
-    ocr_endpoint = os.getenv("DATA_INGESTION_OCR_ENDPOINT")
-    host_uid = os.getenv("HOST_UID")
-    host_gid = os.getenv("HOST_GID")
+    raw_dataset_dir = get_env_var("DATA_STRUCTURE_RAW_RAW_DATASET_DIR")
+    ocr_text_dir = get_env_var("DATA_INGESTION_OCR_TEXT_DIR")
+    ocr_endpoint = get_env_var("DATA_INGESTION_OCR_ENDPOINT")
+    host_uid = get_env_var("HOST_UID")
+    host_gid = get_env_var("HOST_GID")
 
     STAGE_NAME = "Stage: ingest_all"    
     try:        
