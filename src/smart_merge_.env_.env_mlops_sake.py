@@ -20,9 +20,12 @@ env_path = Path(".env")
 env_original_path = Path(".env_original")
 env_mlops_path = Path(".env_mlops_sake")
 
+if not env_path.exists():
+    Path(env_path).touch()
+
 if not env_original_path.exists():
     shutil.copy(env_path, env_original_path)
-    print(f"Copie de sauvegarde créée : {env_original_path}")
+    print(f"Copie de sauvegarde de {env_path} créée : {env_original_path}")
 
 env_original_vars = load_env_file(env_original_path)
 env_mlops_vars = load_env_file(env_mlops_path)
