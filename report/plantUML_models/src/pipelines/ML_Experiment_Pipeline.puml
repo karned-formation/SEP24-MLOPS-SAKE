@@ -1,116 +1,218 @@
 @startuml
 
-' left to right direction 
+'left to right direction 
 
-folder data  #green {
-  file "raw.dc" #lightgreen
-  file raw_dataset_path #lightgreen  
+!include ../../../../.env_plantUML
+
+'##################################
+' Déclaration des données externes
+'##################################
+file "params.yaml" as file_config_params #lightgreen
+note right of file_config_params
+  Git
+end note
+
+file "data/raw.dvc" as FILE_RAW_DVC #lightgreen
+note right of FILE_RAW_DVC
+  Git
+end note
+
+file "DATA_STRUCTURE_RAW_RAW_DATASET_PATH" as PATH_RAW_DATASET #lightgreen 
+note right of PATH_RAW_DATASET
+  Git
+end note
+
+folder "DATA_STRUCTURE_RAW_IMAGE_DIR" as DIR_RAW_IMAGE <<DVC>> #green {
+  file "Fichiers image (*.jpg|png|tif)"  #lightgreen 
 }
-file "config.yaml" #lightgreen
 
-[ML_Experiment_Pipeline]
-component ML_Experiment_Pipeline #lightblue {
-  folder image_dir #green
+
+'###############################
+' Déclaration de la pipeline
+'###############################
+component "ML_Experiment Pipeline (gérée avec DVC)" as ML_Experiment_Pipeline #lightblue {
+
+  '___________________________________________
+  ' Déclaration des étapes (steps)
+  '___________________________________________
+  component "env_mlops_sake" as step_env_mlops_sake <<step>> #LightGrey
+  note right of step_env_mlops_sake
+    Met à jour les environnements des dockers 
+    Met à jour la paramètre de la pipeline DVC
+  end note
+
+  component "structure_raw" as step_structure_raw <<step>> #LightGrey {
+    component structure_raw.py as script_structure_raw
+  }
+
+  component "start_dockers" as step_start_dockers <<step>> #LightGrey
+  note right of step_start_dockers
+    Build & démarre les dockers 
+    en cas de modification de la config
+    (les étapes ci-après sont toutes 
+     dépendantes de cette étape)
+  end note
   
-  folder processed_dir #green {
-    file processed_dataset_path #lightgreen
+  component "ingest" as step_ingest <<step>> #LightGrey
+
+  component "clean" as step_clean <<step>> #LightGrey
+
+  component "preprocessing" as step_preprocessing <<step>> #LightGrey
+
+  component "train" as step_train <<step>> #LightGrey
+
+  component "eval" as step_eval <<step>> #LightGrey
+
+  '___________________________________________
+  ' Déclaration des répertoires et fichiers
+  '___________________________________________
+  folder "DATA_STRUCTURE_RAW_RAW_DATASET_DIR" as DIR_RAW_DATASET <<Volume DVC>> #green {
+    file "<classe>/Fichiers image (*.jpg|png|tif)"  #lightgreen 
   }
   
-  folder clean_dir #green {
-    file clean_dataset_path  #lightgreen
-    ' file X_train_path #lightgreen
-    ' file X_test_path #lightgreen
-    ' file y_train_path #lightgreen
-    ' file y_test_path #lightgreen
-    ' file X_test_path #lightgreen
-    ' file y_test_path #lightgreen
+  folder "DATA_PREPROCESSING_VECTORIZER_DIR" as DIR_VECTORIZER <<Volume DVC>> #green {
+      file "DATA_PREPROCESSING_VECTORIZER_FILE" as FILE_VECTORIZER #lightgreen
+  }
+
+  folder "DATA_PREPROCESSING_TRAIN_DATA_DIR" as TRAIN_DATA_DIR <<Volume DVC>> #green {
+      file "DATA_PREPROCESSING_X_TRAIN_FILE" as FILE_X_TRAIN #lightgreen
+      file "DATA_PREPROCESSING_Y_TRAIN_FILE" as FILE_Y_TRAIN #lightgreen
+  }
+
+  folder "DATA_PREPROCESSING_TEST_DATA_DIR" as TEST_DATA_DIR <<Volume DVC>> #green {
+      file "DATA_PREPROCESSING_X_TEST_FILE" as FILE_X_TEST #lightgreen
+      file "DATA_PREPROCESSING_Y_TEST_FILE" as FILE_Y_TEST #lightgreen
+  }
+
+  folder "MODEL_TRAIN_MODEL_TRAIN_DIR" as DIR_MODEL_TRAIN <<Volume DVC>> #green {
+      file "MODEL_TRAIN_MODEL_TRAIN_FILE" as FILE_MODEL_TRAIN #lightgreen
+  }
+
+  folder "MODEL_EVAL_METRICS_DIR" as DIR_METRICS <<Volume DVC>> #green {
+      file "MODEL_EVAL_METRICS_SCORE_FILE" as FILE_METRICS_SCORE #lightgreen
+      file "MODEL_EVAL_METRICS_CONFUSION_MATRIX_FILE" as FILE_METRICS_CONFUSION_MATRIX #lightgreen
+  }
+
+  '___________________________________________
+  ' Déclaration des dockers
+  '___________________________________________
+  component "DATA_ETL_DOCKER_SERVICE_ETL" as docker_ETL <<docker>> #pink {
+    portin "DATA_ETL_ENDPOINT_ETL_INGEST_ALL" as port_ETL_ingest
+    portin "DATA_ETL_ENDPOINT_ETL_CLEAN_ALL" as port_ETL_clean
+
+    component ingest_all.py as script_ingest_all
+  
+    folder "DATA_INGESTION_OCR_TEXT_DIR" as DIR_OCR_TEXT  <<Volume DVC>> #green {
+      file "<classe>/<image filename>.txt"  #lightgreen 
     }
 
-  ' file tfidf_vectorizer_path #lightgreen
+    component clean_all.py as script_clean_all
 
-  ' file model_path #lightgreen
-  ' file evaluation_results_path #lightgreen
-
-  [ingest]
-  component ingest  <<Script>> {
+  folder "DATA_CLEANING_CLEANED_DATASETS_DIR" as DIR_CLEANED_DATASETS <<Volume DVC>> #green {
+    file "<classe>/cleaned_dataset.csv"  #lightgreen 
   }
 
-  [ocr] 
-  component ocr <<Container>> #pink {
-    portin 8901
   }
 
-  [clean_all_images]
-  component clean_all_images  <<Script>> {
+  component "DATA_INGESTION_DOCKER_SERVICE_OCR" as docker_ocr <<docker>> #pink {
+    portin "DATA_INGESTION_OCR_ENDPOINT" as port_ocr
   }
 
-  [clean_text]
-  component clean_text <<Container>> #pink {
-    port 8903
+  component "DATA_CLEANING_DOCKER_SERVICE_CLEAN_TEXT" as docker_clean_text <<docker>> #pink {
+    port "DATA_CLEANING_CLEAN_ENDPOINT" as port_clean_text
+    component "clean_text.py" as script_clean_text
   }
 
-  ' [preprocessing]
-  ' component preprocessing {
-  ' }
+  component "DATA_PREPROCESSING_DOCKER_SERVICE_PREPROCESSING" as docker_preprocessing <<docker>> #pink {
+    portin "DATA_PREPROCESSING_ENDPOINT_PREPROCESSING" as port_preprocessing
+    component "preprocessing.py" as script_preprocessing
+  }
 
-  ' [preprocessing]
-  ' component preprocessing  #pink {
-  '   port 8904
-  ' }
+  component "MODEL_TRAIN_DOCKER_SERVICE_TRAIN" as docker_train <<docker>> #pink {
+    portin "MODEL_TRAIN_ENDPOINT_TRAIN" as port_train
+    component "train.py" as script_train
+  }
 
-  ' [train]
-  ' component train {
-  ' }
-
-  ' [train]
-  ' component train  #pink {
-  '   port 8905
-  ' }
-
-  ' [evaluate]
-  ' component evaluate {
-  ' }
-
-  ' [evaluate]
-  ' component evaluate  #pink {
-  '   port 8906
-  ' }
+  component "MODEL_EVAL_DOCKER_SERVICE_EVAL" as docker_eval <<docker>> #pink {
+    portin "MODEL_EVAL_ENDPOINT_EVAL" as port_eval
+    component "eval.py" as script_eval
+  }
 
 }
 
-[raw.dc] --> image_dir : fetch
-[raw_dataset_path] --> ingest : noms des fichiers images
-image_dir --> ingest : fichier images
-ingest --> 8901 : image
-ingest <-- 8901 : texte océrisé brut
-ingest --> processed_dataset_path : textes océrisés brut
+'________________________________
+' Définition des entrées globales
+file_config_params --> step_env_mlops_sake : configuration
 
-processed_dataset_path --> clean_all_images
-clean_all_images --> 8903 : texte océrisé brut
-clean_all_images <-- 8903 : texte océrisé nettoyé
-clean_all_images --> clean_dataset_path : textes océrisés nettoyés
+FILE_RAW_DVC --> DIR_RAW_IMAGE : **dvc pull**
+DIR_RAW_IMAGE --> script_structure_raw : toutes les images
+PATH_RAW_DATASET -left-> script_structure_raw : noms des fichiers images
 
-' clean_dataset_path --> preprocessing
-' preprocessing --> 8904
-' preprocessing <-- 8904
-' preprocessing --> tfidf_vectorizer_path : vectorizer
-' preprocessing --> X_train_path
-' preprocessing --> y_train_path
-' preprocessing --> X_test_path
-' preprocessing --> y_test_path
+'________________________________
+' Enchainement des steps
+step_env_mlops_sake --> step_start_dockers
+step_start_dockers --> step_structure_raw
+step_structure_raw -left-> step_ingest
+step_ingest -left-> step_clean
+step_clean -left-> step_preprocessing
+step_preprocessing --> step_train
+step_train -left-> step_eval
 
-' tfidf_vectorizer_path --> train
-' X_train_path --> train
-' y_train_path --> train
-' train --> 8905
-' train <-- 8905
-' train --> model_path
+'________________________________
+' Step structure_raw
 
-' X_test_path --> evaluate
-' y_test_path --> evaluate
-' model_path --> evaluate
-' evaluate --> 8906
-' evaluate <-- 8906
-' evaluate --> evaluation_results_path
+script_structure_raw --> DIR_RAW_DATASET
+
+'________________________________
+' Step ingest
+DIR_RAW_DATASET --> script_ingest_all : toutes les images
+
+step_ingest ..> port_ETL_ingest
+port_ETL_ingest ..> script_ingest_all
+
+script_ingest_all --> port_ocr  : une image
+script_ingest_all <-- port_ocr : son texte océrisé brut
+script_ingest_all --> DIR_OCR_TEXT : tous les textes océrisés brut
+
+'________________________________
+' Step clean
+step_clean .right.> port_ETL_clean
+port_ETL_clean ..> script_clean_all
+
+DIR_OCR_TEXT --> script_clean_all
+script_clean_all --> port_clean_text : texte océrisé brut
+script_clean_all <-- port_clean_text : texte océrisé nettoyé
+script_clean_all --> DIR_CLEANED_DATASETS : tous les textes océrisés nettoyés
+
+'________________________________
+' Step preprocessing
+step_preprocessing ..> port_preprocessing
+port_preprocessing ..> script_preprocessing
+
+DIR_CLEANED_DATASETS --> script_preprocessing
+script_preprocessing --> DIR_VECTORIZER : vectorizer
+script_preprocessing --> TRAIN_DATA_DIR : train split
+script_preprocessing --> TEST_DATA_DIR : test split
+
+'________________________________
+' Step train
+step_train ..> port_train
+port_train ..> script_train
+
+TRAIN_DATA_DIR --> script_train
+script_train --> DIR_MODEL_TRAIN : model
+
+'________________________________
+' Step evaluate
+step_eval ..> port_eval
+port_eval ..> script_eval
+
+DIR_VECTORIZER --> script_eval
+DIR_MODEL_TRAIN --> script_eval
+TEST_DATA_DIR --> script_eval
+' TRAIN_DATA_DIR --> script_eval
+' DIR_RAW_DATASET --> script_eval
+script_eval --> DIR_METRICS : metrics
+
 
 @enduml
