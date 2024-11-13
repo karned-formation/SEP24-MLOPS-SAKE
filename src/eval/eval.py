@@ -10,17 +10,23 @@ import mlflow
 import dagshub
 import traceback
 
+def get_env_var(name):
+    value = os.getenv(name)
+    if not value:
+        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
+    return value
+
 def get_env_variables():
     """Get environment variables."""
-    model_path = os.getenv("MODEL_EVAL_MODEL_PATH")
-    X_train_path = os.getenv("MODEL_TRAIN_X_TRAIN_PATH")
-    y_train_path = os.getenv("MODEL_TRAIN_Y_TRAIN_PATH")
-    X_test_path = os.getenv("MODEL_EVAL_X_TEST_PATH")
-    y_test_path = os.getenv("MODEL_EVAL_Y_TEST_PATH")
-    metrics_dir = os.getenv("MODEL_EVAL_METRICS_DIR")
-    cleaned_dir = os.getenv("DATA_CLEANING_CLEANED_DATASETS_DIR")
-    host_uid = os.getenv("HOST_UID")
-    host_gid = os.getenv("HOST_GID")
+    model_path = get_env_var("MODEL_EVAL_MODEL_PATH")
+    X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
+    y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
+    X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
+    y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+    metrics_dir = get_env_var("MODEL_EVAL_METRICS_DIR")
+    cleaned_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+    host_uid = get_env_var("HOST_UID")
+    host_gid = get_env_var("HOST_GID")
     return model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, host_uid, host_gid
 
 def load_variables(model_path, X_test_path, y_test_path):
@@ -65,13 +71,13 @@ def save_json_metrics(metrics, metrics_dir):
         os.makedirs(metrics_dir)
     with open(file_path, 'w') as json_file:
         json.dump(metrics, json_file)
-    print(f"Metrics saved successfully to {file_path}.")
+    logger.info(f"Metrics saved successfully to {file_path}.")
 
 
 def save_confusion_matrix(confusion_matrix, confusion_matrix_path):
     """Save the confusion matrix to a JSON file."""
     confusion_matrix.to_json(confusion_matrix_path)
-    print(f"Confusion matrix saved successfully to {confusion_matrix_path}.")
+    logger.info(f"Confusion matrix saved successfully to {confusion_matrix_path}.")
 
 
 def flatten_dict(d, parent_key='', sep='_'):
@@ -98,7 +104,7 @@ def create_mlflow_run(experiment_id, metrics, artifacts, model):
         for key, value in artifacts.items():
             mlflow.log_artifact(value)
         
-        mlflow.sklearn.log_model(model, os.getenv("MLFLOW_MODEL_NAME"))
+        mlflow.sklearn.log_model(model, get_env_var("MLFLOW_MODEL_NAME"))
         
         logger.info(f"Eval metrics and artifacts successfully logged to MLflow.")
     return run.info.run_id
@@ -108,9 +114,9 @@ def register_model(run_id: int):
     try: 
         logger.info(f"Registering model in MLflow registry...")
         mlflow.register_model(
-            model_uri=f"runs:/{run_id}/{os.getenv('MLFLOW_MODEL_NAME')}",
-            #version=os.getenv("MLFLOW_MODEL_VERSION"),
-            name=os.getenv("MLFLOW_MODEL_NAME"),
+            model_uri=f"runs:/{run_id}/{get_env_var('MLFLOW_MODEL_NAME')}",
+            #version=get_env_var("MLFLOW_MODEL_VERSION"),
+            name=get_env_var("MLFLOW_MODEL_NAME"),
             await_registration_for=600
         )
         logger.info(f"Model successfully registered in MLflow registry. Run ID: {run_id}")
@@ -171,7 +177,7 @@ def main():
         
 
         # Update MLflow with the evaluation metrics and artifacts
-        run_id = create_mlflow_run(experiment_id=os.getenv("MLFLOW_EXPERIMENT_ID"), 
+        run_id = create_mlflow_run(experiment_id=get_env_var("MLFLOW_EXPERIMENT_ID"), 
                                     metrics=flatten_dict(metrics), 
                                     model=model,
                                     artifacts={
