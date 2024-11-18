@@ -3,7 +3,7 @@ import requests
 import os
 import subprocess
 from typing import Optional, List, Dict
-from custom_logger import logger
+from src.custom_logger import logger
 
 def get_env_var(name):
     value = os.getenv(name)
