@@ -17,7 +17,7 @@ def get_env_var(name):
         raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
     return value
 
-def lister_fichiers_images(chemin_dossier):
+def lister_fichiers_images(chemin_dossier, recurse=True):
     extensions_images = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp']
     dossier = Path(chemin_dossier)
 
@@ -35,7 +35,7 @@ def lister_fichiers_images(chemin_dossier):
 
     try:
         fichiers_images = [
-            fichier for fichier in dossier.iterdir()
+            fichier for fichier in (dossier.rglob('*') if recurse else dossier.iterdir())
             if fichier.is_file() and fichier.suffix.lower() in extensions_images
         ]
         logger.info(f"{len(fichiers_images)} fichier(s) image(s) trouvé(s) dans le dossier {chemin_dossier}")
@@ -92,12 +92,12 @@ def save_text_to_file(text: str, path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding='utf8')
 
-def lister_fichiers_txt(chemin_dossier):
+def lister_fichiers_txt(chemin_dossier, recurse=True):
     """
     Liste tous les fichiers .txt dans un dossier donné.
  
     """
-    logger.info(f"Recherche des images dans le dossier : {chemin_dossier}")
+    logger.info(f"Recherche des textes dans le dossier : {chemin_dossier}")
     extensions_txt = ['.txt']
     dossier = Path(chemin_dossier)
 
@@ -114,7 +114,7 @@ def lister_fichiers_txt(chemin_dossier):
     try:
         logger.debug("Recherche récursive des fichiers .txt...")
         fichiers_txt = [
-            fichier for fichier in dossier.rglob("*")
+            fichier for fichier in (dossier.rglob("*") if recurse else dossier.iterdir())
             if fichier.is_file() and fichier.suffix.lower() in extensions_txt
         ]
         logger.info(f"{len(fichiers_txt)} fichier(s) texte(s) trouvé(s) dans le dossier {chemin_dossier}")
@@ -154,7 +154,7 @@ def clean_ocr_files(api_url: str, ocr_text_files: list) -> list:
     return cleaned_texts
 
 
-def generate_cleaned_dataset(ocr_text_files, cleaned_texts, output_csv_path=None):
+def generate_cleaned_dataset(ocr_text_files, cleaned_texts, images_to_predict_path, output_csv_path=None):
     """
     Génère un fichier CSV contenant les textes nettoyés et les informations associées.
 
@@ -166,8 +166,10 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, output_csv_path=None
         raise ValueError("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
     
     # Création du DataFrame
+    print(ocr_text_files[0])
+    print(str(ocr_text_files[0]))
     dataset = pd.DataFrame({
-        'filename': [file.name for file in ocr_text_files],  # Nom sans extension
+        'filename': ['.'+str(file)[len(images_to_predict_path):] for file in ocr_text_files],  # Nom sans extension
         'cleaned_text': cleaned_texts  # Texte nettoyé
     })
     logger.info("DataFrame créé avec succès.")
@@ -364,7 +366,7 @@ def main() -> None:
 if __name__ == "__main__":
     # main()
      
-    images_to_predict_path = 'data/images_to_predict/1000' # TODO
+    images_to_predict_path = 'data/images_to_predict' # TODO
     tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
     model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
 
@@ -393,7 +395,7 @@ if __name__ == "__main__":
     # Text Cleaning
     ocr_text_files = lister_fichiers_txt(images_to_predict_path)
     cleaned_texts = clean_ocr_files(clean_endpoint, ocr_text_files)
-    cleaned_df = generate_cleaned_dataset(images, cleaned_texts)
+    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, images_to_predict_path)
 
     #Vectorization
     vectorized_data = transform_with_tfidf(fitted_vectorizer, cleaned_df)
