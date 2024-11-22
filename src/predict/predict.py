@@ -147,10 +147,12 @@ def clean_text(api_url: str, text: str) -> Optional[str]:
 def clean_ocr_files(api_url: str, ocr_text_files: list) -> list:
     cleaned_texts = []
     for file in ocr_text_files:
+        file = file.with_suffix(".txt")
         logger.info(f"Cleaning  file: {file}")
         file_content = file.read_text(encoding='utf-8')  # Lecture du contenu du fichier
         cleaned_text = clean_text(api_url, file_content)
         cleaned_texts.append(cleaned_text)
+        print(cleaned_texts)
     return cleaned_texts
 
 
@@ -166,8 +168,6 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, images_to_predict_pa
         raise ValueError("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
     
     # Création du DataFrame
-    print(ocr_text_files[0])
-    print(str(ocr_text_files[0]))
     dataset = pd.DataFrame({
         'filename': ['.'+str(file)[len(images_to_predict_path):] for file in ocr_text_files],  # Nom sans extension
         'cleaned_text': cleaned_texts  # Texte nettoyé
@@ -188,6 +188,7 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, images_to_predict_pa
 
     
     # Sauvegarde en CSV
+    dataset = dataset.sort_values(by='filename')
     try:
         dataset.to_csv(output_csv_path, index=False)
         logger.info(f"Fichier CSV généré avec succès : {output_csv_path}")
@@ -250,16 +251,21 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
 
     # Effectuer les prédictions avec le modèle
     try:
-        predictions = model.predict(vectorized_data)
-        logger.info("Prédictions effectuées avec succès.")
+        # Probabilités pour chaque classe
+        probabilities = model.predict_proba(vectorized_data)
+        # Ordre des classes
+        class_order = model.classes_ 
+        logger.info("probabilités récupérées avec succès.")
     except Exception as e:
-        logger.error(f"Erreur lors de la génération des prédictions avec le modèle : {e}")
+        logger.error(f"Erreur lors de la récupération de la probablité des classes : {e}")
         raise
 
     # Ajouter les prédictions au DataFrame
-    logger.info("Ajout des prédictions au DataFrame.")
-    cleaned_data['prediction'] = predictions
-    cleaned_data = cleaned_data[['filename', 'prediction']]
+    logger.info("Ajout des probabilités au DataFrame.")
+    for class_ in class_order:
+        cleaned_data[f'Prob_class_{class_}'] = probabilities[:, class_]
+    cleaned_data = cleaned_data.drop(columns='cleaned_text') 
+    cleaned_data = cleaned_data.set_index('filename')
 
     # Afficher les prédictions si demandé
     if display_predictions:
@@ -269,6 +275,7 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
     # Définir le chemin de sortie par défaut si non fourni
     if output_csv_path is None:
         output_csv_path = Path(cleaned_csv_path) / "predictions.csv"
+        output_json_path = Path(cleaned_csv_path) / "predictions.json"
     
     # Création des répertoires si nécessaire
     output_csv_path = Path(output_csv_path)
@@ -280,7 +287,8 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
 
     # Sauvegarder le DataFrame avec les prédictions en CSV
     try:
-        cleaned_data.to_csv(output_csv_path, index=False)
+        cleaned_data.to_csv(output_csv_path)
+        cleaned_data.to_json(output_json_path, orient='index')
         logger.info(f"Fichier CSV des prédictions généré avec succès : {output_csv_path}")
     except Exception as e:
         logger.error(f"Erreur lors de la sauvegarde des prédictions : {e}")
@@ -366,7 +374,7 @@ def main() -> None:
 if __name__ == "__main__":
     # main()
      
-    images_to_predict_path = 'data/images_to_predict' # TODO
+    images_to_predict_path = 'data/images_to_predict/1002' # TODO
     tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
     model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
 
@@ -390,15 +398,17 @@ if __name__ == "__main__":
         full_text = get_full_text(image, ocr_endpoint)
         text_file_path = image.with_suffix('.txt')
         save_text_to_file(full_text, text_file_path)
-        pass
-    
-    # Text Cleaning
-    ocr_text_files = lister_fichiers_txt(images_to_predict_path)
-    cleaned_texts = clean_ocr_files(clean_endpoint, ocr_text_files)
-    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, images_to_predict_path)
 
+   
+    # Text Cleaning
+    # ocr_text_files = lister_fichiers_txt(images_to_predict_path) TODO
+    cleaned_texts = clean_ocr_files(clean_endpoint, images) # TODO: Check function
+    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, images_to_predict_path)
+  
     #Vectorization
     vectorized_data = transform_with_tfidf(fitted_vectorizer, cleaned_df)
     
     #Predition
     make_predictions(images_to_predict_path, model, vectorized_data, display_predictions=False) 
+    print(len(images))
+    print(images)
