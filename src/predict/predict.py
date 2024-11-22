@@ -4,10 +4,6 @@ import os
 import requests
 from typing import Optional
 from src.custom_logger import logger
-
-
-
-
 import pandas as pd
 import joblib
 import subprocess
@@ -21,12 +17,11 @@ def get_env_var(name):
         raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
     return value
 
-
 def lister_fichiers_images(chemin_dossier):
     extensions_images = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp']
     dossier = Path(chemin_dossier)
 
-    logger.info(f"Démarrage de la liste des fichiers images dans le dossier : {chemin_dossier}")
+    logger.info(f"Recherche des images dans le dossier : {chemin_dossier}")
 
     # Vérifier si le chemin existe
     if not dossier.exists():
@@ -54,16 +49,45 @@ def lister_fichiers_images(chemin_dossier):
 
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
-    """Envoi une image à l'API d'océrisation et retourne le texte."""
-    logger.info(f"Ocerizing {image}...")
-    with open(image, "rb") as file:
-        files = {"file": file}
-        response = requests.post(ocr_endpoint, files=files)
-        return response.text
+    """
+    Envoie une image à l'API d'OCR et retourne le texte.
+
+    """
+    logger.info(f"Commencing OCR process for image: {image}")
+    
+    try:
+        # Log the API endpoint
+        logger.debug(f"Using OCR endpoint: {ocr_endpoint}")
+        
+        # Open the file and send it to the OCR API
+        with open(image, "rb") as file:
+            files = {"file": file}
+            logger.info(f"Sending image {image} to OCR endpoint...")
+            
+            response = requests.post(ocr_endpoint, files=files)
+            logger.info(f"Received response with status code: {response.status_code}")
+            
+            # Log response details in case of an issue
+            if response.status_code != 200:
+                logger.warning(f"OCR API returned a non-200 status code: {response.status_code}")
+                logger.debug(f"Response content: {response.text}")
+                response.raise_for_status()
+            
+            logger.info("OCR process completed successfully.")
+            return response.text
+    
+    except FileNotFoundError:
+        logger.error(f"Image file not found: {image}")
+        raise
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred during the OCR API request: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"An unexpected error occurred: {e}")
+        raise
 
 def save_text_to_file(text: str, path: Path):
     """Enregistre le texte océrisé dans un fichier .txt"""
-    print(f"Enregistrement du texte OCR dans le fichier : {path}")
     logger.info(f"Enregistrement du texte OCR dans le fichier : {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding='utf8')
@@ -73,34 +97,46 @@ def lister_fichiers_txt(chemin_dossier):
     Liste tous les fichiers .txt dans un dossier donné.
  
     """
+    logger.info(f"Recherche des images dans le dossier : {chemin_dossier}")
     extensions_txt = ['.txt']
     dossier = Path(chemin_dossier)
 
     # Vérifier si le chemin existe
     if not dossier.exists():
+        logger.error(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
         raise FileNotFoundError(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
 
     # Vérifier si le chemin est un dossier
     if not dossier.is_dir():
+        logger.error(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
         raise NotADirectoryError(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
 
     try:
+        logger.debug("Recherche récursive des fichiers .txt...")
         fichiers_txt = [
             fichier for fichier in dossier.rglob("*")
             if fichier.is_file() and fichier.suffix.lower() in extensions_txt
         ]
+        logger.info(f"{len(fichiers_txt)} fichier(s) texte(s) trouvé(s) dans le dossier {chemin_dossier}")
         return fichiers_txt
-    except PermissionError as e:
-        raise PermissionError(f"Permission refusée pour accéder au dossier : {chemin_dossier}") from e
-    except Exception as e:
-        raise Exception(f"Une erreur inattendue est survenue : {e}") from e
 
+    except PermissionError as e:
+        logger.error(f"Permission refusée pour accéder au dossier : {chemin_dossier}")
+        raise PermissionError(f"Permission refusée pour accéder au dossier : {chemin_dossier}") from e
+
+    except Exception as e:
+        logger.error(f"Une erreur inattendue est survenue lors de la recherche : {e}")
+        raise Exception(f"Une erreur inattendue est survenue : {e}") from e
 
 def clean_text(api_url: str, text: str) -> Optional[str]:
     headers = {'Content-Type': 'text/plain'}
     params = {
         "text": text
     }
+
+    logger.debug(f"Request headers: {headers}")
+    logger.info(f"Sending request to API: {api_url}")
+    logger.debug(f"Request params: {params}")
 
     response = requests.post(api_url, params=params, headers=headers)
     if response.status_code == 200:
@@ -111,6 +147,7 @@ def clean_text(api_url: str, text: str) -> Optional[str]:
 def clean_ocr_files(api_url: str, ocr_text_files: list) -> list:
     cleaned_texts = []
     for file in ocr_text_files:
+        logger.info(f"Cleaning  file: {file}")
         file_content = file.read_text(encoding='utf-8')  # Lecture du contenu du fichier
         cleaned_text = clean_text(api_url, file_content)
         cleaned_texts.append(cleaned_text)
@@ -122,8 +159,10 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, output_csv_path=None
     Génère un fichier CSV contenant les textes nettoyés et les informations associées.
 
     """
+    logger.info("Démarrage de la génération du dataset nettoyé.")
     # Vérifier si les listes d'entrée sont cohérentes
     if len(ocr_text_files) != len(cleaned_texts):
+        logger.error("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
         raise ValueError("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
     
     # Création du DataFrame
@@ -131,18 +170,28 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, output_csv_path=None
         'filename': [file.name for file in ocr_text_files],  # Nom sans extension
         'cleaned_text': cleaned_texts  # Texte nettoyé
     })
-    
+    logger.info("DataFrame créé avec succès.")
+
     # Définir le chemin de sortie par défaut si non fourni
     if output_csv_path is None:
         output_csv_path = ocr_text_files[0].parent / "cleaned_dataset.csv"
     
     # Création des répertoires si nécessaire
     output_csv_path = Path(output_csv_path)
-    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        logger.error(f"Erreur lors de la création du répertoire de sortie : {e}")
+        raise
+
     
     # Sauvegarde en CSV
-    dataset.to_csv(output_csv_path, index=False)
-    print(f"Fichier CSV généré : {output_csv_path}")
+    try:
+        dataset.to_csv(output_csv_path, index=False)
+        logger.info(f"Fichier CSV généré avec succès : {output_csv_path}")
+    except Exception as e:
+        logger.error(f"Erreur lors de la sauvegarde du fichier CSV : {e}")
+        raise
     return dataset
 
 
@@ -153,6 +202,7 @@ def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame,
     """
     # Vérification de la colonne
     if 'cleaned_text' not in data.columns:
+        logger.error(f"The DataFrame does not contain a 'cleaned_text' column.")
         raise KeyError("The DataFrame does not contain a 'cleaned_text' column.")
     
     # Transformation avec TF-IDF
@@ -174,41 +224,68 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
     """
     Génère un fichier CSV contenant les prédictions pour chaque texte nettoyé.
     """
+    
+    logger.info("Début de la génération des prédictions.")
+    logger.debug(f"Chemin du fichier cleaned_dataset.csv : {cleaned_csv_path}/cleaned_dataset.csv")
 
-
-    # Charger le CSV avec les textes nettoyés
-    cleaned_data = pd.read_csv(cleaned_csv_path+'/cleaned_dataset.csv')
+    try:
+        # Charger le CSV avec les textes nettoyés
+        logger.info("Chargement des données nettoyées depuis le fichier CSV.")
+        cleaned_data = pd.read_csv(cleaned_csv_path + '/cleaned_dataset.csv')
+    except FileNotFoundError:
+        logger.error(f"Le fichier cleaned_dataset.csv est introuvable dans le dossier : {cleaned_csv_path}")
+        raise
+    except Exception as e:
+        logger.error(f"Erreur lors du chargement du fichier CSV : {e}")
+        raise
 
     # Vérifier si les données vectorisées et les textes nettoyés ont la même longueur
     if vectorized_data.shape[0] != len(cleaned_data):
+        logger.error("Le nombre de données vectorisées ne correspond pas au nombre de textes nettoyés.")
         raise ValueError("Le nombre de données vectorisées ne correspond pas au nombre de textes nettoyés dans le CSV.")
+    
+    logger.info("Validation de la correspondance entre les données vectorisées et les textes nettoyés réussie.")
 
     # Effectuer les prédictions avec le modèle
-    predictions = model.predict(vectorized_data)
+    try:
+        predictions = model.predict(vectorized_data)
+        logger.info("Prédictions effectuées avec succès.")
+    except Exception as e:
+        logger.error(f"Erreur lors de la génération des prédictions avec le modèle : {e}")
+        raise
 
     # Ajouter les prédictions au DataFrame
+    logger.info("Ajout des prédictions au DataFrame.")
     cleaned_data['prediction'] = predictions
     cleaned_data = cleaned_data[['filename', 'prediction']]
 
     # Afficher les prédictions si demandé
     if display_predictions:
+        logger.info("Affichage des prédictions.")
         print(cleaned_data[['filename', 'prediction']])
 
     # Définir le chemin de sortie par défaut si non fourni
     if output_csv_path is None:
         output_csv_path = Path(cleaned_csv_path) / "predictions.csv"
-
+    
     # Création des répertoires si nécessaire
     output_csv_path = Path(output_csv_path)
-    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        logger.error(f"Erreur lors de la création des répertoires de sortie : {e}")
+        raise
 
     # Sauvegarder le DataFrame avec les prédictions en CSV
-    cleaned_data.to_csv(output_csv_path, index=False)
-    print(f"Fichier CSV des prédictions généré : {output_csv_path}")
+    try:
+        cleaned_data.to_csv(output_csv_path, index=False)
+        logger.info(f"Fichier CSV des prédictions généré avec succès : {output_csv_path}")
+    except Exception as e:
+        logger.error(f"Erreur lors de la sauvegarde des prédictions : {e}")
+        raise
 
+    logger.info("Génération des prédictions terminée.")
     return cleaned_data
-
-
 
 def set_permissions_of_host_volume_owner(host_uid, host_gid):
     """ pour mettre en place les permissions du propriétaire hôte des volumes 
@@ -240,12 +317,6 @@ def main() -> None:
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
         clean_dir_path = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
-
-        X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
-        X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
-        y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
-        y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
-
         tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
 
         host_uid = get_env_var("HOST_UID")
@@ -293,7 +364,7 @@ def main() -> None:
 if __name__ == "__main__":
     # main()
      
-    images_to_predict_path = 'data/images_to_predict' # TODO
+    images_to_predict_path = 'data/images_to_predict/1000' # TODO
     tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
     model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
 
@@ -312,16 +383,17 @@ if __name__ == "__main__":
     # OCR
     images = lister_fichiers_images(images_to_predict_path)
     for image in images:
-        # full_text = get_full_text(image, ocr_endpoint)
-        # text_file_path = image.with_suffix('.txt')
-        # save_text_to_file(full_text, text_file_path)
-        # print("text saved")
+        if (image.with_suffix(".txt").exists()):
+            continue
+        full_text = get_full_text(image, ocr_endpoint)
+        text_file_path = image.with_suffix('.txt')
+        save_text_to_file(full_text, text_file_path)
         pass
     
     # Text Cleaning
     ocr_text_files = lister_fichiers_txt(images_to_predict_path)
     cleaned_texts = clean_ocr_files(clean_endpoint, ocr_text_files)
-    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, output_csv_path=None)
+    cleaned_df = generate_cleaned_dataset(images, cleaned_texts)
 
     #Vectorization
     vectorized_data = transform_with_tfidf(fitted_vectorizer, cleaned_df)
