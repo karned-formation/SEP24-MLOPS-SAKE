@@ -19,10 +19,13 @@ src/data/clean_all.py
 src/data/clean_text.py
 src/data/ingest_all.py
 src/data/structure_raw.py
+src/predict/__init__.py
+src/predict/predict.py
 src/preprocessing/__init__.py
 src/preprocessing/preprocessing.py
 tests/__init__.py
 tests/test_clean.py
+tests/test_clean_all.py
 tests/test_cleantext.py
 tests/test_ingest.py
 tests/test_predict.py
