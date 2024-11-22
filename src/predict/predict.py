@@ -2,18 +2,17 @@ from pathlib import Path
 from typing import List
 import os
 import requests
+from typing import Optional
+from src.custom_logger import logger
 
 
 
 
 import pandas as pd
-import numpy as np
 import joblib
-import sys
 import subprocess
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from typing import Tuple
+
 
 
 def get_env_var(name):
@@ -27,16 +26,16 @@ def lister_fichiers_images(chemin_dossier):
     extensions_images = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp']
     dossier = Path(chemin_dossier)
 
-    # logger.info(f"Démarrage de la liste des fichiers images dans le dossier : {chemin_dossier}")
+    logger.info(f"Démarrage de la liste des fichiers images dans le dossier : {chemin_dossier}")
 
     # Vérifier si le chemin existe
     if not dossier.exists():
-        # logger.error(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
+        logger.error(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
         raise FileNotFoundError(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
 
     # Vérifier si le chemin est un dossier
     if not dossier.is_dir():
-        # logger.error(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
+        logger.error(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
         raise NotADirectoryError(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
 
     try:
@@ -44,19 +43,19 @@ def lister_fichiers_images(chemin_dossier):
             fichier for fichier in dossier.iterdir()
             if fichier.is_file() and fichier.suffix.lower() in extensions_images
         ]
-        # logger.info(f"{len(fichiers_images)} fichier(s) image(s) trouvé(s) dans le dossier {chemin_dossier}")
+        logger.info(f"{len(fichiers_images)} fichier(s) image(s) trouvé(s) dans le dossier {chemin_dossier}")
         return fichiers_images
     except PermissionError as e:
-        # logger.exception(f"Permission refusée pour accéder au dossier : {chemin_dossier}")
+        logger.exception(f"Permission refusée pour accéder au dossier : {chemin_dossier}")
         raise PermissionError(f"Permission refusée pour accéder au dossier : {chemin_dossier}") from e
     except Exception as e:
-        # logger.exception(f"Une erreur inattendue est survenue lors de la lecture du dossier : {chemin_dossier}")
+        logger.exception(f"Une erreur inattendue est survenue lors de la lecture du dossier : {chemin_dossier}")
         raise Exception(f"Une erreur inattendue est survenue : {e}") from e
 
 
 def get_full_text(image: str, ocr_endpoint: str) -> str:
     """Envoi une image à l'API d'océrisation et retourne le texte."""
-    # logger.info(f"Ocerizing {image}...")
+    logger.info(f"Ocerizing {image}...")
     with open(image, "rb") as file:
         files = {"file": file}
         response = requests.post(ocr_endpoint, files=files)
@@ -65,175 +64,150 @@ def get_full_text(image: str, ocr_endpoint: str) -> str:
 def save_text_to_file(text: str, path: Path):
     """Enregistre le texte océrisé dans un fichier .txt"""
     print(f"Enregistrement du texte OCR dans le fichier : {path}")
-    # logger.info(f"Enregistrement du texte OCR dans le fichier : {path}")
+    logger.info(f"Enregistrement du texte OCR dans le fichier : {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding='utf8')
 
-def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame) -> pd.DataFrame:
+def lister_fichiers_txt(chemin_dossier):
     """
-    Transform the 'cleaned_text' column of the given DataFrame using a fitted TF-IDF vectorizer.
-
-    Args:
-        fitted_vectorizer (TfidfVectorizer): The fitted TF-IDF vectorizer.
-        data (pd.DataFrame): The DataFrame containing a 'cleaned_text' column to be transformed.
-
-    Returns:
-        pd.DataFrame: Transformed data as a sparse matrix.
+    Liste tous les fichiers .txt dans un dossier donné.
+ 
     """
-    vectorized_data = fitted_vectorizer.transform(data['cleaned_text'])
-    logger.info("Data transformed using TF-IDF vectorizer.")
-    return vectorized_data
+    extensions_txt = ['.txt']
+    dossier = Path(chemin_dossier)
+
+    # Vérifier si le chemin existe
+    if not dossier.exists():
+        raise FileNotFoundError(f"Le chemin spécifié n'existe pas : {chemin_dossier}")
+
+    # Vérifier si le chemin est un dossier
+    if not dossier.is_dir():
+        raise NotADirectoryError(f"Le chemin spécifié n'est pas un dossier : {chemin_dossier}")
+
+    try:
+        fichiers_txt = [
+            fichier for fichier in dossier.rglob("*")
+            if fichier.is_file() and fichier.suffix.lower() in extensions_txt
+        ]
+        return fichiers_txt
+    except PermissionError as e:
+        raise PermissionError(f"Permission refusée pour accéder au dossier : {chemin_dossier}") from e
+    except Exception as e:
+        raise Exception(f"Une erreur inattendue est survenue : {e}") from e
 
 
-
-def fusionner_csv(chemin_dossier, inclure_racine=False):
-    # Vérifie si le dossier existe
-    if not os.path.isdir(chemin_dossier):
-        # logger.error(f"Le dossier {chemin_dossier} n'existe pas.")
-        return None
-
-    # Liste pour stocker les DataFrames de tous les fichiers CSV
-    dataframes = []
-
-    # Fonction pour lire un fichier CSV et l'ajouter à la liste
-    def ajouter_csv(chemin_fichier):
-        try:
-            df = pd.read_csv(chemin_fichier)
-            # Vérifie que le fichier CSV contient exactement 3 colonnes
-            if df.shape[1] == 3:
-                dataframes.append(df)
-            else:
-                logger.info(f"Avertissement : Le fichier {chemin_fichier} a {df.shape[1]} colonnes au lieu de 3. Il ne sera pas ajouté.")
-        except Exception as e:
-            logger.error(f"Erreur lors de la lecture de {chemin_fichier} : {e}")
-
-    # Inclure les fichiers CSV à la racine du dossier si demandé
-    if inclure_racine:
-        racine_csv = [f for f in os.listdir(chemin_dossier) if f.endswith('.csv')]
-        if len(racine_csv) > 1:
-            logger.error(f"Erreur : La racine contient plus d'un fichier CSV.")
-            return None
-        for fichier in racine_csv:
-            chemin_fichier = os.path.join(chemin_dossier, fichier)
-            if os.path.isfile(chemin_fichier):
-                ajouter_csv(chemin_fichier)
-
-    # Parcourir les sous-dossiers pour trouver les fichiers CSV
-    for sous_dossier, _, fichiers in os.walk(chemin_dossier):
-        # Filtrer pour obtenir uniquement les fichiers CSV dans le sous-dossier en cours
-        fichiers_csv = [f for f in fichiers if f.endswith('.csv')]
-        
-        # Vérifier s'il y a plus d'un fichier CSV dans le sous-dossier
-        if len(fichiers_csv) > 1:
-            logger.erreur(f"Erreur : Le sous-dossier '{sous_dossier}' contient plus d'un fichier CSV.")
-            return None
-        
-        # Ajouter le fichier CSV s'il n'y en a qu'un seul
-        for fichier in fichiers_csv:
-            chemin_fichier = os.path.join(sous_dossier, fichier)
-            ajouter_csv(chemin_fichier)
-
-    # Fusionner tous les DataFrames trouvés
-    if dataframes:
-        fusion = pd.concat(dataframes, ignore_index=True)
-        logger.info(fusion.shape)
-        return fusion
-    else:
-        logger.error("Aucun fichier CSV valide trouvé.")
-        return None
-
-
-def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
-    """
-    Save a trained TF-IDF vectorizer to the specified path, 
-    along with metadata about Python and Joblib versions.
-
-    Args:
-        vectorizer (TfidfVectorizer): The trained TF-IDF vectorizer to save.
-        tfidf_vectorizer_path (str): The file path where the vectorizer will be saved.
-    """
-    # Ensure the directory exists
-    directory = os.path.dirname(tfidf_vectorizer_path)
-    os.makedirs(directory, exist_ok=True)
-
-    # Prepare metadata about the environment
-    metadata = {
-        'python_version': sys.version,
-        'joblib_version': joblib.__version__
+def clean_text(api_url: str, text: str) -> Optional[str]:
+    headers = {'Content-Type': 'text/plain'}
+    params = {
+        "text": text
     }
-    logger.info(metadata)
 
-    # Save vectorizer with metadata
-    joblib.dump({'vectorizer': vectorizer, 'metadata': metadata}, tfidf_vectorizer_path)
-    logger.info(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
+    response = requests.post(api_url, params=params, headers=headers)
+    if response.status_code == 200:
+        return response.text
+    return None
 
-def save_variables_in_directories(variables: dict) -> None:
+
+def clean_ocr_files(api_url: str, ocr_text_files: list) -> list:
+    cleaned_texts = []
+    for file in ocr_text_files:
+        file_content = file.read_text(encoding='utf-8')  # Lecture du contenu du fichier
+        cleaned_text = clean_text(api_url, file_content)
+        cleaned_texts.append(cleaned_text)
+    return cleaned_texts
+
+
+def generate_cleaned_dataset(ocr_text_files, cleaned_texts, output_csv_path=None):
     """
-    Serialize and save multiple variables using Joblib.
+    Génère un fichier CSV contenant les textes nettoyés et les informations associées.
 
-    Args:
-        variables (dict): A dictionary where keys are variable names, and values are
-                          tuples containing (variable, directory_path).
     """
-    # Iterate over the dictionary and save each variable in its respective directory
-    for var_name, (var_value, file_path) in variables.items():
-        # Ensure the directory exists
-        directory = os.path.dirname(file_path)
-        os.makedirs(directory, exist_ok=True)
-
-        # Save the variable
-        joblib.dump(var_value, file_path)
-        logger.info(f"Variable '{var_name}' saved to {file_path}")
-
-
-def split_dataset(clean_dir_path: str, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
-    """
-    Split the dataset into training and testing sets
-    """
-    # Load dataset
-    df = fusionner_csv(clean_dir_path, inclure_racine=False)
-    X = df.drop(['category'], axis=1)
-    y = df['category']
-
-    # Split dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-    logger.info("Dataset split into training and testing sets.")
-    return X_train, X_test, pd.Series(y_train), pd.Series(y_test)
+    # Vérifier si les listes d'entrée sont cohérentes
+    if len(ocr_text_files) != len(cleaned_texts):
+        raise ValueError("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
+    
+    # Création du DataFrame
+    dataset = pd.DataFrame({
+        'filename': [file.name for file in ocr_text_files],  # Nom sans extension
+        'cleaned_text': cleaned_texts  # Texte nettoyé
+    })
+    
+    # Définir le chemin de sortie par défaut si non fourni
+    if output_csv_path is None:
+        output_csv_path = ocr_text_files[0].parent / "cleaned_dataset.csv"
+    
+    # Création des répertoires si nécessaire
+    output_csv_path = Path(output_csv_path)
+    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Sauvegarde en CSV
+    dataset.to_csv(output_csv_path, index=False)
+    print(f"Fichier CSV généré : {output_csv_path}")
+    return dataset
 
 
-def fit_tfidf_vectorizer(X_train: pd.DataFrame, max_features: int = 70000, ngram_range: Tuple[int, int] = (1, 11), max_df: float = 0.3) -> TfidfVectorizer:
-    """
-    Fit a TF-IDF vectorizer on the training data's 'cleaned_text' column.
-
-    Args:
-        X_train (pd.DataFrame): Training feature set containing a 'cleaned_text' column.
-        max_features (int): Maximum number of features to include in the vectorizer.
-        ngram_range (Tuple[int, int]): The range of n-grams to include.
-        max_df (float): Maximum document frequency for the n-grams.
-
-    Returns:
-        TfidfVectorizer: The fitted TF-IDF vectorizer.
-    """
-    tfidf_vectorizer = TfidfVectorizer(analyzer='char_wb', max_features=max_features, ngram_range=ngram_range, max_df=max_df)
-    tfidf_vectorizer.fit(X_train['cleaned_text'])
-    logger.info("TF-IDF vectorizer fitted on training data.")
-    return tfidf_vectorizer
-
-
-def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame) -> pd.DataFrame:
+def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame, return_as_dataframe=False) -> pd.DataFrame:
     """
     Transform the 'cleaned_text' column of the given DataFrame using a fitted TF-IDF vectorizer.
 
-    Args:
-        fitted_vectorizer (TfidfVectorizer): The fitted TF-IDF vectorizer.
-        data (pd.DataFrame): The DataFrame containing a 'cleaned_text' column to be transformed.
-
-    Returns:
-        pd.DataFrame: Transformed data as a sparse matrix.
     """
+    # Vérification de la colonne
+    if 'cleaned_text' not in data.columns:
+        raise KeyError("The DataFrame does not contain a 'cleaned_text' column.")
+    
+    # Transformation avec TF-IDF
     vectorized_data = fitted_vectorizer.transform(data['cleaned_text'])
-    logger.info("Data transformed using TF-IDF vectorizer.")
+    logger.info(f"Data transformed using TF-IDF vectorizer. Shape: {vectorized_data.shape}")
+    
+    # Retour en DataFrame si demandé
+    if return_as_dataframe:
+        return pd.DataFrame(
+            vectorized_data.toarray(),
+            columns=fitted_vectorizer.get_feature_names_out(),
+            index=data.index  # Conserve les index du DataFrame original
+        )
+    
     return vectorized_data
+
+
+def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=None, display_predictions=False):
+    """
+    Génère un fichier CSV contenant les prédictions pour chaque texte nettoyé.
+    """
+
+
+    # Charger le CSV avec les textes nettoyés
+    cleaned_data = pd.read_csv(cleaned_csv_path+'/cleaned_dataset.csv')
+
+    # Vérifier si les données vectorisées et les textes nettoyés ont la même longueur
+    if vectorized_data.shape[0] != len(cleaned_data):
+        raise ValueError("Le nombre de données vectorisées ne correspond pas au nombre de textes nettoyés dans le CSV.")
+
+    # Effectuer les prédictions avec le modèle
+    predictions = model.predict(vectorized_data)
+
+    # Ajouter les prédictions au DataFrame
+    cleaned_data['prediction'] = predictions
+    cleaned_data = cleaned_data[['filename', 'prediction']]
+
+    # Afficher les prédictions si demandé
+    if display_predictions:
+        print(cleaned_data[['filename', 'prediction']])
+
+    # Définir le chemin de sortie par défaut si non fourni
+    if output_csv_path is None:
+        output_csv_path = Path(cleaned_csv_path) / "predictions.csv"
+
+    # Création des répertoires si nécessaire
+    output_csv_path = Path(output_csv_path)
+    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Sauvegarder le DataFrame avec les prédictions en CSV
+    cleaned_data.to_csv(output_csv_path, index=False)
+    print(f"Fichier CSV des prédictions généré : {output_csv_path}")
+
+    return cleaned_data
+
 
 
 def set_permissions_of_host_volume_owner(host_uid, host_gid):
@@ -318,22 +292,39 @@ def main() -> None:
 
 if __name__ == "__main__":
     # main()
+     
     images_to_predict_path = 'data/images_to_predict' # TODO
-    tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+    tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
     model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
 
-    clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT") 
+    clean_endpoint = 'http://localhost:8903/clean' # TODO get_env_var("DATA_CLEANING_CLEAN_ENDPOINT") 
     ocr_endpoint = 'http://localhost:8901/txt/blocks-words' # TODO URL not working while get_env_var("DATA_INGESTION_OCR_ENDPOINT")
+    
+    fitted_vectorizer =  joblib.load(tfidf_vectorizer_path)
+    model = joblib.load(model_path)
+
 
     host_uid = get_env_var("HOST_UID")
     host_gid = get_env_var("HOST_GID")
 
 
 
+    # OCR
     images = lister_fichiers_images(images_to_predict_path)
     for image in images:
-        full_text = get_full_text(image, ocr_endpoint)
-        text_file_path = image.with_suffix('.txt')
-        save_text_to_file(full_text, text_file_path)
-        print("text saved")
+        # full_text = get_full_text(image, ocr_endpoint)
+        # text_file_path = image.with_suffix('.txt')
+        # save_text_to_file(full_text, text_file_path)
+        # print("text saved")
+        pass
+    
+    # Text Cleaning
+    ocr_text_files = lister_fichiers_txt(images_to_predict_path)
+    cleaned_texts = clean_ocr_files(clean_endpoint, ocr_text_files)
+    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, output_csv_path=None)
 
+    #Vectorization
+    vectorized_data = transform_with_tfidf(fitted_vectorizer, cleaned_df)
+    
+    #Predition
+    make_predictions(images_to_predict_path, model, vectorized_data, display_predictions=False) 
