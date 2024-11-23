@@ -42,7 +42,7 @@ services:
       context: .  
       dockerfile: docker/etl/Dockerfile  
       args:
-        SOURCE_DIR: src/data
+        SOURCE_DIR: src/
         DOCKERFILE_DIR: docker/etl  
         LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)

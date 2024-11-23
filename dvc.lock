@@ -14,12 +14,12 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     - path: src/data/structure_raw.py
       hash: md5
       md5: 913a67d14af30d19176c2eeb4a6f6c88
@@ -40,12 +40,12 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -62,12 +62,12 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -84,16 +84,16 @@ stages:
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     outs:
     - path: data/processed
       hash: md5
-      md5: 3c77b32c4be35add0dd4871a7b18e4f9.dir
+      md5: 265ce453de865ddbf5a5d00ddc8cfe61.dir
       size: 3109250
       nfiles: 4
     - path: models/vectorizers
@@ -106,17 +106,17 @@ stages:
     deps:
     - path: data/processed/train
       hash: md5
-      md5: cdbafd4568817ff2aac275b0d4bf0907.dir
+      md5: 65766964878c4999a33eb9dbb8b54e9d.dir
       size: 2666253
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     outs:
     - path: models/train
       hash: md5
@@ -128,12 +128,12 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: 7a7f3706b78214c90a364a25921b81bf.dir
+      md5: 237698a0c114eb785957a916492c0eed.dir
       size: 442997
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
     - path: models/train
       hash: md5
@@ -142,8 +142,8 @@ stages:
       nfiles: 1
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
@@ -158,8 +158,8 @@ stages:
     deps:
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: 15bc4ca9fd690accb71d37d3c31ba417
+      size: 3565
     - path: src/config_transform_as_env.py
       hash: md5
       md5: d0ac128f1cc32185ebfd4bf959cf5c5f
@@ -191,14 +191,14 @@ stages:
     deps:
     - path: .env_mlops_sake
       hash: md5
-      md5: 776596d2261abe1b4b67767b11fd5029
-      size: 3145
+      md5: ad1671c26dbbee9392f19b78606ce91d
+      size: 3412
     - path: docker-compose.yaml
       hash: md5
-      md5: f37199e1292c0ab4441dc2be39068619
-      size: 5500
+      md5: 91efc2e1c731a9a6462ac8269c04836a
+      size: 5496
     outs:
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 39acf0901a80f10043b3896331b7ff4a
       size: 29
