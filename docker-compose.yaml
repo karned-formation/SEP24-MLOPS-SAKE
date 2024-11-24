@@ -2,7 +2,7 @@ services:
   # Service OCR
   ms-OCR:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     image: killiankopp/ms-ocr-ia:1.1
     # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
@@ -15,7 +15,7 @@ services:
   # Service de nettoyage de texte
   ms-sake-clean-text:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     build:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
@@ -37,7 +37,7 @@ services:
   # Service ETL
   ms-sake-ETL:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     build:
       context: .  
       dockerfile: docker/etl/Dockerfile  
@@ -65,7 +65,7 @@ services:
   # Service de prétraitement
   ms-sake-preprocessing:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     build:
       context: .  
       dockerfile: docker/preprocessing/Dockerfile  
@@ -90,7 +90,7 @@ services:
   # Service d'entraînement
   ms-sake-train:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     build:
       context: .  
       dockerfile: docker/train/Dockerfile  
@@ -114,7 +114,7 @@ services:
   # Service d'évaluation
   ms-sake-eval:
     env_file:
-    - path: ./.env_mlops_sake
+    - path: ./.env
     build:
       context: .  
       dockerfile: docker/eval/Dockerfile  
