@@ -1,7 +1,5 @@
 [core]
-    remote = datascientest-mlops-classif
+    remote = origin
 ['remote "origin"']
     url = s3://dvc
     endpointurl = https://dagshub.com/Belwen/SEP24-MLOPS-SAKE.s3
-['remote "datascientest-mlops-classif"']
-    url = s3://datascientest-mlops-classif
