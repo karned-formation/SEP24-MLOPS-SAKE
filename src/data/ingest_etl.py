@@ -39,7 +39,22 @@ def set_permissions_of_host_volume_owner(host_uid, host_gid):
     else:
         logger.error("UID ou GID de l'hôte non définis.")
 
-def get_new_images_to_ocerize(raw_dataset_dir: Path, ocr_text_dir: Path) -> List[str]:
+def delete_old_ocr(ocr_to_delete: List[str], ocr_path: str) -> None:
+    for file_path in ocr_to_delete:
+        # Ensure the path has .txt extension
+        txt_path = f"{ocr_path}{file_path}.txt" 
+        
+        try:
+            if os.path.exists(txt_path):
+                os.remove(txt_path)
+                logger.info(f"{txt_path}: removed.")
+                
+        except PermissionError as e:
+            logger.error(f"{txt_path}: Permission denied")
+        except OSError as e:
+            logger.error(f"{txt_path}: {str(e)}")
+
+def get_new_images_to_ocerize(raw_dataset_dir: Path, ocr_text_dir: Path):
     """
     Compare les arborescences et renvoie seulement les images qui ne sont pas déjà océrisées.
     """
@@ -58,8 +73,11 @@ def get_new_images_to_ocerize(raw_dataset_dir: Path, ocr_text_dir: Path) -> List
             if file.endswith('.txt'):
                 relative_path = os.path.relpath(os.path.join(root, file), ocr_text_dir)
                 ocr_images.append(relative_path.replace(".txt", ""))
-
-    return [image for image in raw_images if image not in ocr_images]
+    
+    
+    ocrs_to_delete = [image for image in ocr_images if image not in raw_images]
+    images_to_ocerize = [image for image in raw_images if image not in ocr_images]
+    return ocrs_to_delete, images_to_ocerize
 
 def ensure_utf8_text(text):
     if isinstance(text, bytes):
@@ -97,8 +115,10 @@ def ingest_train():
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
         
         # On récupère les images qui n'ont pas encore été océrisées
-        images_to_ocerize = get_new_images_to_ocerize(raw_dataset_dir, ocr_text_dir)
+        ocrs_to_delete, images_to_ocerize = get_new_images_to_ocerize(raw_dataset_dir, ocr_text_dir)
         logger.info(f"{len(images_to_ocerize)} new image(s) to ocerize")
+
+        delete_old_ocr(ocrs_to_delete, ocr_text_dir )
 
         # On océrise les images et on enregistre le texte dans un fichier .txt dans e répertoire correspondant à son répertoire d'origine
         for image in images_to_ocerize:
