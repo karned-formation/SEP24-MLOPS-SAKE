@@ -144,39 +144,40 @@ def clean_text(api_url: str, text: str) -> Optional[str]:
     return None
 
 
-def clean_ocr_files(api_url: str, ocr_text_files: list) -> list:
-    cleaned_texts = []
-    for file in ocr_text_files:
-        file = file.with_suffix(".txt")
+def clean_ocr_files(api_url: str, images: list) -> list:
+
+    df = pd.DataFrame({
+        'txt_path': [img.with_suffix(".txt") for img in images],
+        'img_path': images
+        })
+    
+    clean_text_column = []
+
+    for file in df['txt_path']:
         logger.info(f"Cleaning  file: {file}")
         file_content = file.read_text(encoding='utf-8')  # Lecture du contenu du fichier
         cleaned_text = clean_text(api_url, file_content)
-        cleaned_texts.append(cleaned_text)
-        print(cleaned_texts)
-    return cleaned_texts
+        clean_text_column.append(cleaned_text)
+    
+    df['cleaned_text'] = clean_text_column
+    return df
 
 
-def generate_cleaned_dataset(ocr_text_files, cleaned_texts, images_to_predict_path, output_csv_path=None):
+def generate_cleaned_dataset(df, images_to_predict_path, output_csv_path=None):
     """
     Génère un fichier CSV contenant les textes nettoyés et les informations associées.
 
     """
     logger.info("Démarrage de la génération du dataset nettoyé.")
     # Vérifier si les listes d'entrée sont cohérentes
-    if len(ocr_text_files) != len(cleaned_texts):
+    if df['txt_path'].count() != df['cleaned_text'].count():
         logger.error("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
         raise ValueError("Le nombre de fichiers OCR et de textes nettoyés ne correspond pas.")
     
-    # Création du DataFrame
-    dataset = pd.DataFrame({
-        'filename': ['.'+str(file)[len(images_to_predict_path):] for file in ocr_text_files],  # Nom sans extension
-        'cleaned_text': cleaned_texts  # Texte nettoyé
-    })
-    logger.info("DataFrame créé avec succès.")
 
     # Définir le chemin de sortie par défaut si non fourni
     if output_csv_path is None:
-        output_csv_path = ocr_text_files[0].parent / "cleaned_dataset.csv"
+        output_csv_path = Path(df['img_path'][0]).parent / "cleaned_dataset.csv"
     
     # Création des répertoires si nécessaire
     output_csv_path = Path(output_csv_path)
@@ -188,28 +189,29 @@ def generate_cleaned_dataset(ocr_text_files, cleaned_texts, images_to_predict_pa
 
     
     # Sauvegarde en CSV
-    dataset = dataset.sort_values(by='filename')
+    df = df.drop(columns='txt_path')
+    df = df.sort_values(by='img_path')
     try:
-        dataset.to_csv(output_csv_path, index=False)
+        df.to_csv(output_csv_path, index=False)
         logger.info(f"Fichier CSV généré avec succès : {output_csv_path}")
     except Exception as e:
         logger.error(f"Erreur lors de la sauvegarde du fichier CSV : {e}")
         raise
-    return dataset
+    return df
 
 
-def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame, return_as_dataframe=False) -> pd.DataFrame:
+def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, df: pd.DataFrame, return_as_dataframe=False) -> pd.DataFrame:
     """
     Transform the 'cleaned_text' column of the given DataFrame using a fitted TF-IDF vectorizer.
 
     """
     # Vérification de la colonne
-    if 'cleaned_text' not in data.columns:
+    if 'cleaned_text' not in df.columns:
         logger.error(f"The DataFrame does not contain a 'cleaned_text' column.")
         raise KeyError("The DataFrame does not contain a 'cleaned_text' column.")
     
     # Transformation avec TF-IDF
-    vectorized_data = fitted_vectorizer.transform(data['cleaned_text'])
+    vectorized_data = fitted_vectorizer.transform(df['cleaned_text'])
     logger.info(f"Data transformed using TF-IDF vectorizer. Shape: {vectorized_data.shape}")
     
     # Retour en DataFrame si demandé
@@ -221,7 +223,6 @@ def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, data: pd.DataFrame,
         )
     
     return vectorized_data
-
 
 def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=None, display_predictions=False):
     """
@@ -264,9 +265,10 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
     logger.info("Ajout des probabilités au DataFrame.")
     for class_ in class_order:
         cleaned_data[f'Prob_class_{class_}'] = probabilities[:, class_]
+    
+    cleaned_data.to_csv(f'{cleaned_csv_path}/a.CSV') # TODO
     cleaned_data = cleaned_data.drop(columns='cleaned_text') 
-    cleaned_data = cleaned_data.set_index('filename')
-
+   
     # Afficher les prédictions si demandé
     if display_predictions:
         logger.info("Affichage des prédictions.")
@@ -287,6 +289,7 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, output_csv_path=N
 
     # Sauvegarder le DataFrame avec les prédictions en CSV
     try:
+        cleaned_data.set_index('img_path', drop=True, inplace=True)
         cleaned_data.to_csv(output_csv_path)
         cleaned_data.to_json(output_json_path, orient='index')
         logger.info(f"Fichier CSV des prédictions généré avec succès : {output_csv_path}")
@@ -402,13 +405,11 @@ if __name__ == "__main__":
    
     # Text Cleaning
     # ocr_text_files = lister_fichiers_txt(images_to_predict_path) TODO
-    cleaned_texts = clean_ocr_files(clean_endpoint, images) # TODO: Check function
-    cleaned_df = generate_cleaned_dataset(images, cleaned_texts, images_to_predict_path)
+    df = clean_ocr_files(clean_endpoint, images) # TODO: Check function
+    df = generate_cleaned_dataset(df, images_to_predict_path)
   
     #Vectorization
-    vectorized_data = transform_with_tfidf(fitted_vectorizer, cleaned_df)
+    vectorized_data = transform_with_tfidf(fitted_vectorizer, df)
     
     #Predition
-    make_predictions(images_to_predict_path, model, vectorized_data, display_predictions=False) 
-    print(len(images))
-    print(images)
+    make_predictions(images_to_predict_path, model, vectorized_data, display_predictions=False)
