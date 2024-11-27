@@ -1,0 +1,15 @@
+.
+├── data
+├── doc_classification.egg-info
+├── docs.md
+├── env_mlops
+├── export_requirements
+├── notebooks
+├── references
+├── report
+├── src
+├── steps
+├── tests
+└── venv
+
+12 directories
