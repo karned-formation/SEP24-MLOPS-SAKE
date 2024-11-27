@@ -1,0 +1,3 @@
+NameSpace: sake
+AppName: keycloak
+DockerImage: killiankopp/ms-keycloack_auth:1.0

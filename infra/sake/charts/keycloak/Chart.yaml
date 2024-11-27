@@ -1,0 +1,6 @@
+apiVersion: v2
+name: sake-keycloak
+description: Keycloak
+type: application
+version: 1.0.0
+appVersion: "WIP"
