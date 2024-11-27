@@ -81,3 +81,11 @@ mlflow:
   experiment_id: "BAG_OF_WORDS"
   model_name: "BAG_OF_WORDS_MODEL"
   model_version: "1.0"
+
+predict:
+  original_dir: 'original_raw/'
+  ocr_dir: 'ocerized_raw/'
+  cleaned_dir: 'cleaned/'
+  predictions: 'predictions/'
+
+  

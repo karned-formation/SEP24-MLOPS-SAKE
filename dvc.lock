@@ -5,21 +5,21 @@ stages:
     deps:
     - path: data/raw/
       hash: md5
-      md5: 6c3622ff98294a528208aece1e7ede8b.dir
-      size: 21954635
-      nfiles: 183
+      md5: ff10d1240d51d4c2bfc21c05e65d72c5.dir
+      size: 21840025
+      nfiles: 181
     - path: data/working_dataset.csv
       hash: md5
       md5: 02086bf6991f01344eccc4aba1935f1e
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     - path: src/data/structure_raw.py
       hash: md5
       md5: 913a67d14af30d19176c2eeb4a6f6c88
@@ -27,100 +27,100 @@ stages:
     outs:
     - path: data/raw_per_classes/
       hash: md5
-      md5: f649d221b593c31f1d3a432966a87f42.dir
-      size: 21954635
-      nfiles: 183
+      md5: d05bce6a3eb958a15eee345239477c50.dir
+      size: 21895182
+      nfiles: 182
   ingest:
     cmd: curl -X "GET" "http://localhost:8907/ingest"
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: f649d221b593c31f1d3a432966a87f42.dir
-      size: 21954635
-      nfiles: 183
+      md5: d05bce6a3eb958a15eee345239477c50.dir
+      size: 21895182
+      nfiles: 182
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
-      size: 174192
-      nfiles: 183
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
   clean:
     cmd: curl -X "GET" "http://localhost:8907/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
-      size: 174192
-      nfiles: 183
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 9635cb757ef9d45e43574569851cb46e.dir
-      size: 113332
+      md5: 7caf4e99e2bd84fb5af58cdaaa20baf8.dir
+      size: 112841
       nfiles: 3
   preprocessing:
     cmd: curl -X "GET" "http://localhost:8904/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 9635cb757ef9d45e43574569851cb46e.dir
-      size: 113332
+      md5: 7caf4e99e2bd84fb5af58cdaaa20baf8.dir
+      size: 112841
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     outs:
     - path: data/processed
       hash: md5
-      md5: 3c77b32c4be35add0dd4871a7b18e4f9.dir
-      size: 3109250
+      md5: 9b99022b64760ddb2a80b1d3307020ea.dir
+      size: 3097922
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 5ff29f12f4c93d4f2376e20ef3f7f23d.dir
-      size: 2528897
+      md5: fa87d641290d53e105a10a346f2be8e6.dir
+      size: 2528658
       nfiles: 1
   train:
     cmd: curl -X "GET" "http://localhost:8905/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: cdbafd4568817ff2aac275b0d4bf0907.dir
-      size: 2666253
+      md5: 1a5505fed1f6cce119405d2e06d13457.dir
+      size: 2582301
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     outs:
     - path: models/train
       hash: md5
-      md5: d94db5734e4395619982e619eb54e76e.dir
+      md5: fdd105e1ff0e6fe67e016cd101ec830a.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -128,22 +128,22 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: 7a7f3706b78214c90a364a25921b81bf.dir
-      size: 442997
+      md5: 2bd95f4ec5f70f857288640e670b9490.dir
+      size: 515621
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: models/train
       hash: md5
-      md5: d94db5734e4395619982e619eb54e76e.dir
+      md5: fdd105e1ff0e6fe67e016cd101ec830a.dir
       size: 1682517
       nfiles: 1
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
@@ -158,8 +158,8 @@ stages:
     deps:
     - path: params.yaml
       hash: md5
-      md5: 9a2bfe877aee137b1aa1028c18870c13
-      size: 3270
+      md5: a97732e2394ca5182247ec5768501b74
+      size: 3407
     - path: src/config_transform_as_env.py
       hash: md5
       md5: d0ac128f1cc32185ebfd4bf959cf5c5f
@@ -191,14 +191,14 @@ stages:
     deps:
     - path: .env_mlops_sake
       hash: md5
-      md5: 776596d2261abe1b4b67767b11fd5029
-      size: 3145
+      md5: a6186028308dd83cd7e3b8c79b28bd8f
+      size: 3266
     - path: docker-compose.yaml
       hash: md5
-      md5: f37199e1292c0ab4441dc2be39068619
-      size: 5500
+      md5: 576be42b06fe6a9eab81b4e3ca6656d2
+      size: 5485
     outs:
     - path: dockers_started.txt
       hash: md5
-      md5: 6622b1617b4f3bba4080db80dc3ae17c
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29

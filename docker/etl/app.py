@@ -1,20 +1,26 @@
-from ingest_all import ingest_all
-from clean_all import clean_all
+from ingest_etl import ingest_train, ingest_prediction
+from clean_etl import clean_train, clean_prediction
 from fastapi import FastAPI, HTTPException
-import os
+from starlette.responses import PlainTextResponse
 
 app = FastAPI()
 
-@app.get("/ingest")
-def ingest():
+@app.post("/ingest", response_class = PlainTextResponse)
+def ingest(prediction_folder:str = None):
     try:
-        ingest_all()
+        if prediction_folder:
+            ingest_prediction(prediction_folder)
+        else :
+            ingest_train()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/clean")
-def clean():
+@app.post("/clean", response_class = PlainTextResponse)
+def clean(prediction_folder:str = None):
     try:
-        clean_all()
+        if prediction_folder:
+            clean_prediction(prediction_folder)
+        else :
+            clean_train()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

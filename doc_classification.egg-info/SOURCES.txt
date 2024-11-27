@@ -18,6 +18,7 @@ src/data/__init__.py
 src/data/clean_all.py
 src/data/clean_text.py
 src/data/ingest_all.py
+src/data/s3handler.py
 src/data/structure_raw.py
 src/preprocessing/__init__.py
 src/preprocessing/preprocessing.py
@@ -26,3 +27,4 @@ tests/test_clean.py
 tests/test_cleantext.py
 tests/test_ingest.py
 tests/test_predict.py
+tests/test_s3handler.py

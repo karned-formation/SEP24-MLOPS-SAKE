@@ -3,7 +3,9 @@ import requests
 import os
 import subprocess
 from typing import Optional, List, Dict
-from src.custom_logger import logger
+from custom_logger import logger
+from s3handler import S3Handler
+from fastapi import HTTPException
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -123,7 +125,26 @@ def save_cleaned_dataset(cleaned_dataset: pd.DataFrame, filepath: str) -> None:
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     cleaned_dataset.to_csv(filepath, index=False)
 
-def clean_all():
+def set_permissions_of_host_volume_owner(host_uid, host_gid):
+    """ pour mettre en place les permissions du propriétaire hôte des volumes 
+        - sur chacun des volumes montés dans "/app/"
+        - pour tous les dossiers et fichiers dans ces volumes
+    """
+    if host_uid and host_gid: # si les valeurs sont bien récupérées
+        with open('/proc/mounts', 'r') as mounts_file:
+            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
+
+        for mount_point in app_mounts:
+            try:
+                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
+                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
+    else:
+        logger.error("UID ou GID de l'hôte non définis.")
+
+def clean_train():
+
     ocr_text_dir = get_env_var("DATA_INGESTION_OCR_TEXT_DIR")
     clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT")
     cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
@@ -139,5 +160,54 @@ def clean_all():
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
 
+def make_dataset_prediction(ocr_txts: List[str], cleaned_txts: List[str]) -> pd.DataFrame:
+    return pd.DataFrame({
+        'filename': [ocr_txt.replace('.txt', '') for ocr_txt in ocr_txts],
+        'cleaned_text': cleaned_txts
+    })
+
+def clean_prediction(remote_directory_name: str):
+    """ 
+    Dans le dossier S3 fourni, on récupère les textes de ocr_raw/, on les océrise et on place le résultat (fichier csv) dans cleaned/
+    """
+    try:       
+        logger.info(f">>>>> CLEAN PREDICTION/ START <<<<<")
+
+        bucket_name = get_env_var('AWS_BUCKET_NAME')
+        clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT")
+        ocr_dir = get_env_var("PREDICT_OCR_DIR")
+        cleaned_dir = get_env_var("PREDICT_CLEANED_DIR")
+        
+        # Initialisation de la connexion au bucket              
+        handler = S3Handler(bucket_name)
+        
+        # On vérifie que le dossier est bien créé et qu'il contient ocr_dir/
+        if not handler.folder_exists(f"{remote_directory_name}{ocr_dir}"):
+            raise HTTPException(status_code=404, detail="Le dossier fourni n'existe pas sur le bucket.")
+
+        # On télécharge le dossier en local
+        ocr_texts = handler.download_directory(remote_directory_name=f"{remote_directory_name}{ocr_dir}")
+        logger.info(f"{len(ocr_texts)} texts to clean")
+
+        # On nettoie chaque texte et on stocke le résultat dans un fichier csv 
+        cleaned_txts =[]
+        for text in ocr_texts:
+            file_content = read_file_content(text)
+            cleaned_text = clean_text(clean_endpoint, file_content)
+            cleaned_txts.append(cleaned_text)
+
+        dataset = make_dataset_prediction(ocr_texts, cleaned_txts)
+        save_cleaned_dataset(dataset, f"{remote_directory_name}{cleaned_dir}/cleaned.csv")
+
+        # On upload le dossier cleaned/ vers le bucket s3
+        handler.upload_directory(f"{remote_directory_name}{cleaned_dir}", f"{remote_directory_name}{cleaned_dir}")
+        logger.info(f">>>>> CLEAN PREDICTION / END successfully <<<<<")
+    
+    except Exception as e:
+        logger.error(f"CLEAN PREDICTION / An error occurred : {str(e)}")
+        raise e
+
 if __name__ == '__main__':
-    clean_all()
+    clean_train()
+    # Pour tester, le bucket contient quelques données de test
+    # clean_prediction(remote_directory_name="prediction_1731849628.762522/")
