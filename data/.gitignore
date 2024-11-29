@@ -8,3 +8,4 @@ dataset.csv
 /raw_per_classes
 /ocr_raw_per_classes
 /cleaned_per_classes
+/images_to_predict

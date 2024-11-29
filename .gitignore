@@ -17,6 +17,7 @@ models/*
 
 /models
 /mlruns
+/predict
 
 .env
 .env_original
