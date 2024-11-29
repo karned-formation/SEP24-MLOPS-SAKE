@@ -12,12 +12,15 @@ __pycache__
 logs/
 env_mlops/
 
+/predict
+/env_predict
+
 models/*
 !models/.gitkeep
 
 /models
 /mlruns
-/predict
+
 
 .env
 .env_original
