@@ -27,17 +27,17 @@ stages:
     outs:
     - path: data/raw_per_classes/
       hash: md5
-      md5: 2a253b9e215de4cfc035d2f33f94df26.dir
-      size: 21840025
-      nfiles: 181
+      md5: d05bce6a3eb958a15eee345239477c50.dir
+      size: 21895182
+      nfiles: 182
   ingest:
     cmd: curl -X "POST" "http://localhost:8907/ingest"
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: d05bce6a3eb958a15eee345239477c50.dir
-      size: 21895182
-      nfiles: 182
+      md5: d9991db9bc5d92cacbfcac0c21da6b92.dir
+      size: 21797772
+      nfiles: 180
     - path: dockers_started.txt
       hash: md5
       md5: 3752aadb534ab43ffcdff77892f5a134
