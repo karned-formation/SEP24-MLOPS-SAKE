@@ -49,7 +49,7 @@ def main():
             dvc_repro_output, dvc_repro_err = run_command("dvc repro")
             print(dvc_repro_output)
             if dvc_repro_err:
-                st.error("Errors during reproduction:", dvc_repro_err)
+                st.write("Errors during reproduction:", dvc_repro_err)
             else:
                 st.write("Training completed. Results:")
     with col2:

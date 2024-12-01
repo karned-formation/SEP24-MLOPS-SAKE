@@ -27,9 +27,9 @@ stages:
     outs:
     - path: data/raw_per_classes/
       hash: md5
-      md5: d05bce6a3eb958a15eee345239477c50.dir
-      size: 21895182
-      nfiles: 182
+      md5: 2a253b9e215de4cfc035d2f33f94df26.dir
+      size: 21840025
+      nfiles: 181
   ingest:
     cmd: curl -X "POST" "http://localhost:8907/ingest"
     deps:
