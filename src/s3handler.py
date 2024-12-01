@@ -3,7 +3,8 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from typing import List, Optional, Dict
-from custom_logger import logger
+from src.custom_logger import logger #TODO Check imports
+
 class S3Handler:
     def __init__(self, bucket_name: str):
         self.s3_client = boto3.client(
@@ -33,6 +34,7 @@ class S3Handler:
             )
             return f"s3://{self.bucket_name}/{folder_path}"
         except ClientError as e:
+            print("error")
             logger.error(f"Erreur lors de la création du dossier: {e}")
             return None
 
@@ -144,3 +146,12 @@ class S3Handler:
             return 'Contents' in response
         except ClientError:
             return False
+    
+    def file_exists(self, file_path: str, prefix: str = '') -> bool:
+        """
+        Vérifie si un fichier existe dans le bucket.
+
+        """
+        response = self.s3_client.list_objects_v2(Bucket=self.bucket_name, Prefix=prefix)
+        files = [r['Key'] for r in response.get('Contents', [])]
+        return file_path in files
