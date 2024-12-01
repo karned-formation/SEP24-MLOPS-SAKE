@@ -31,20 +31,18 @@ stages:
   #       persist: true
 
   ingest:
-    cmd:  'curl -X "GET" "http://localhost:8907/ingest"'
+    cmd:  'curl -X "POST" "http://localhost:8907/ingest"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_structure_raw.raw_dataset_dir}
     outs:
     - ${data_ingestion.ocr_text_dir}:
         persist: true
 
   clean:
-    cmd: 'curl -X "GET" "http://localhost:8907/clean"'
+    cmd: 'curl -X "POST" "http://localhost:8907/clean"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_ingestion.ocr_text_dir}
     outs:
     - ${data_cleaning.cleaned_datasets_dir}:
@@ -54,7 +52,6 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8904/process"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_cleaning.cleaned_datasets_dir}
     outs:
     - data/processed:
@@ -66,7 +63,6 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8905/train"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_preprocessing.train_data_dir}
     outs:
     - ${model_train.model_train_dir}:
@@ -76,7 +72,6 @@ stages:
     cmd: 'curl -X "GET" "http://localhost:8906/eval"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_preprocessing.test_data_dir}
     - ${model_train.model_train_dir}
     metrics:
