@@ -73,12 +73,34 @@ def main():
     # Use column layout to create a main area and an output log area
     main_col, log_col = st.columns([3, 1])
 
-    with main_col:
-        
-        st.header("Launch a new training")
-        
-        # DVC and Git commit buttons
-        col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("Train Model (DVC Reproduce)"):
+            # Run DVC reproduce
+            st.write("Training...")
+            dvc_repro_output, dvc_repro_err = run_command("dvc repro")
+            print(dvc_repro_output)
+            if dvc_repro_err:
+                st.write("Errors during reproduction:", dvc_repro_err)
+            else:
+                st.write("Training completed. Results:")
+    with col2:
+        if st.button("Commit Data (DVC & Git)"):         
+            # Git add and commit
+            git_add_output, git_add_err = run_command("git add dvc.lock")
+            git_commit_output, git_commit_err = run_command('git commit -m "Update dataset"')
+            
+            # Display results
+            st.write("Git Add Output:", git_add_output)
+            st.write("Git Commit Output:", git_commit_output)
+            
+            # Get commit hash
+            commit_hash_output, commit_hash_err = run_command("git rev-parse HEAD")
+            st.success(f"Commit Hash: {commit_hash_output}")
+    
+    with col3:
+        if st.button("Save run in MLflow"):         
+            # Git add and commit
+            st.write("to implement")
 
         with col1:
             if st.button("Train Model (DVC Reproduce)"):
