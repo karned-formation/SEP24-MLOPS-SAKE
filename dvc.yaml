@@ -10,7 +10,7 @@ stages:
   start_dockers:
     cmd: 'source scripts/docker_clean_dangling_images.sh && 
           docker-compose stop && 
-          docker-compose --profile training up --build -d && 
+          docker-compose up --build -d && 
           date > dockers_started.txt'
     deps:
     - .env_mlops_sake
