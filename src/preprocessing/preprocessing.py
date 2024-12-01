@@ -96,7 +96,7 @@ def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     logger.info(metadata)
 
     # Save vectorizer with metadata
-    joblib.dump({'vectorizer': vectorizer, 'metadata': metadata}, tfidf_vectorizer_path)
+    joblib.dump(vectorizer, tfidf_vectorizer_path)
     logger.info(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
 
 def save_variables_in_directories(variables: dict) -> None:
