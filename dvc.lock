@@ -31,7 +31,7 @@ stages:
       size: 21840025
       nfiles: 181
   ingest:
-    cmd: curl -X "POST" "http://localhost:8907/ingest"
+    cmd: curl -X "GET" "http://localhost:8907/ingest"
     deps:
     - path: data/raw_per_classes/
       hash: md5
@@ -45,17 +45,21 @@ stages:
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: d751713988987e9331980363e24189ce.dir
-      size: 0
-      nfiles: 0
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
   clean:
-    cmd: curl -X "POST" "http://localhost:8907/clean"
+    cmd: curl -X "GET" "http://localhost:8907/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: d751713988987e9331980363e24189ce.dir
-      size: 0
-      nfiles: 0
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
+    - path: dockers_started.txt
+      hash: md5
+      md5: cc72867581029d08025a87c527baf24e
+      size: 29
     - path: params.yaml
       hash: md5
       md5: a97732e2394ca5182247ec5768501b74
