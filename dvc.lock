@@ -49,9 +49,9 @@ stages:
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
-      size: 174192
-      nfiles: 183
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
   clean:
     cmd: curl -X "POST" "http://localhost:8907/clean"
     deps:
