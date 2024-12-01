@@ -65,7 +65,7 @@ def run_command(command):
 
 def main():
     st.set_page_config(layout='wide')
- 
+  
     # Initialize session state for command outputs if not exists
     if 'command_outputs' not in st.session_state:
         st.session_state.command_outputs = []
@@ -73,34 +73,39 @@ def main():
     # Use column layout to create a main area and an output log area
     main_col, log_col = st.columns([3, 1])
 
-    with col1:
-        if st.button("Train Model (DVC Reproduce)"):
-            # Run DVC reproduce
-            st.write("Training...")
-            dvc_repro_output, dvc_repro_err = run_command("dvc repro")
-            print(dvc_repro_output)
-            if dvc_repro_err:
-                st.write("Errors during reproduction:", dvc_repro_err)
-            else:
-                st.write("Training completed. Results:")
-    with col2:
-        if st.button("Commit Data (DVC & Git)"):         
-            # Git add and commit
-            git_add_output, git_add_err = run_command("git add dvc.lock")
-            git_commit_output, git_commit_err = run_command('git commit -m "Update dataset"')
-            
-            # Display results
-            st.write("Git Add Output:", git_add_output)
-            st.write("Git Commit Output:", git_commit_output)
-            
-            # Get commit hash
-            commit_hash_output, commit_hash_err = run_command("git rev-parse HEAD")
-            st.success(f"Commit Hash: {commit_hash_output}")
+    with main_col:
+        
+    # Initialize session state for command outputs if not exists
+    if 'command_outputs' not in st.session_state:
+            st.session_state.command_outputs = []
     
-    with col3:
-        if st.button("Save run in MLflow"):         
-            # Git add and commit
-            st.write("to implement")
+        # Use column layout to create a main area and an output log area
+        main_col, log_col = st.columns([3, 1])
+
+        with col1:
+            if st.button("Train Model (DVC Reproduce)"):
+                # Run DVC reproduce
+                st.write("Training...")
+                dvc_repro_output, dvc_repro_err = run_command("dvc repro")
+                st.session_state.command_outputs.append(f"DVC REPRO : {dvc_repro_output}")
+
+        with col2:
+            if st.button("Commit Data (DVC & Git)"):         
+                # Git add and commit
+                git_add_output, git_add_err = run_command("git add dvc.lock")          
+                st.session_state.command_outputs.append(f"GIT ADD : {git_add_output}")
+
+                git_commit_output, git_commit_err = run_command('git commit -m "Training completed."')
+                st.session_state.command_outputs.append(f"GIT COMMIT : {git_commit_output}")
+
+                # Get commit hash
+                commit_hash_output, commit_hash_err = run_command("git rev-parse HEAD")
+                st.success(f"Commit Hash: {commit_hash_output}")
+        
+        with col3:
+            if st.button("Save run in MLflow"):         
+                # Git add and commit
+                st.write("to implement")
 
         with col1:
             if st.button("Train Model (DVC Reproduce)"):
