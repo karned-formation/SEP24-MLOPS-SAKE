@@ -35,9 +35,9 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: d9991db9bc5d92cacbfcac0c21da6b92.dir
-      size: 21797772
-      nfiles: 180
+      md5: d05bce6a3eb958a15eee345239477c50.dir
+      size: 21895182
+      nfiles: 182
     - path: dockers_started.txt
       hash: md5
       md5: 3752aadb534ab43ffcdff77892f5a134
