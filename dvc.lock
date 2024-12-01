@@ -35,9 +35,13 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: bc355dd286d1543ae429bef59a77eba0.dir
-      size: 21652545
-      nfiles: 178
+      md5: d05bce6a3eb958a15eee345239477c50.dir
+      size: 21895182
+      nfiles: 182
+    - path: dockers_started.txt
+      hash: md5
+      md5: 3752aadb534ab43ffcdff77892f5a134
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 8f3115d6562c1bd11cd06d45ba7e50df
@@ -53,9 +57,13 @@ stages:
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 5a21a67e39f46347b7c0a58761108972.dir
-      size: 171201
-      nfiles: 178
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
+    - path: dockers_started.txt
+      hash: md5
+      md5: 3752aadb534ab43ffcdff77892f5a134
+      size: 29
     - path: params.yaml
       hash: md5
       md5: 8f3115d6562c1bd11cd06d45ba7e50df
