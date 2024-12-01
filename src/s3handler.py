@@ -155,3 +155,17 @@ class S3Handler:
         response = self.s3_client.list_objects_v2(Bucket=self.bucket_name, Prefix=prefix)
         files = [r['Key'] for r in response.get('Contents', [])]
         return file_path in files
+    
+    def download_file(self, file_path: str, prefix: str = ''):
+        """Télécharge un fichier depuis la bucket S3 vers la machine locale"""
+        local_dir = Path('./tmp')  
+        local_dir.mkdir(parents=True, exist_ok=True)  
+        local_file_path = local_dir / Path(file_path).name 
+
+        print(local_file_path)
+
+        if self.file_exists(file_path, prefix):
+            self.s3_client.download_file(self.bucket_name, file_path, str(local_file_path))
+            return str(local_file_path)
+        else:
+            return None
