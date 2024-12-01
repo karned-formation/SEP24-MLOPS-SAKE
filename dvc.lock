@@ -31,7 +31,7 @@ stages:
       size: 21840025
       nfiles: 181
   ingest:
-    cmd: curl -X "POST" "http://localhost:8907/ingest"
+    cmd: curl -X "GET" "http://localhost:8907/ingest"
     deps:
     - path: data/raw_per_classes/
       hash: md5
@@ -49,7 +49,7 @@ stages:
       size: 170818
       nfiles: 177
   clean:
-    cmd: curl -X "POST" "http://localhost:8907/clean"
+    cmd: curl -X "GET" "http://localhost:8907/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
