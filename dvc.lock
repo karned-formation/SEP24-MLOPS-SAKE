@@ -45,21 +45,17 @@ stages:
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 93c4eecbc2a7ac2375ff75fd5dc4f854.dir
-      size: 170818
-      nfiles: 177
+      md5: cdfde88443b5b21954654ff45546c15b.dir
+      size: 173572
+      nfiles: 182
   clean:
     cmd: curl -X "POST" "http://localhost:8907/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: cdfde88443b5b21954654ff45546c15b.dir
-      size: 173572
-      nfiles: 182
-    - path: dockers_started.txt
-      hash: md5
-      md5: cc72867581029d08025a87c527baf24e
-      size: 29
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
     - path: params.yaml
       hash: md5
       md5: 8f3115d6562c1bd11cd06d45ba7e50df
