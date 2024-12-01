@@ -107,6 +107,12 @@ def main():
                 # Git add and commit
                 st.write("to implement")
 
+        st.header("""
+                  1. Train : afficher les métriques et la matrice de confusion
+                  2. Sortir l'enregistrement du run MLflow de EVAL et le mettre ici : enregistrer le commit hash dans les artefacts
+                  3. Ajouter un bouton "Save model in registry and promote"
+                  4. Lister les experiences MLflow et pouvoir sélectionner un hash et revenir à l'état de ces données.
+        """)
         with col1:
             if st.button("Train Model (DVC Reproduce)"):
                 # Run DVC reproduce
