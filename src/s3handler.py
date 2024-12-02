@@ -162,8 +162,6 @@ class S3Handler:
         local_dir.mkdir(parents=True, exist_ok=True)  
         local_file_path = local_dir / Path(file_path).name 
 
-        print(local_file_path)
-
         if self.file_exists(file_path, prefix):
             self.s3_client.download_file(self.bucket_name, file_path, str(local_file_path))
             return str(local_file_path)
