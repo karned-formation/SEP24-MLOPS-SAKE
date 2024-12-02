@@ -2,7 +2,8 @@ FROM python:3.11-slim
 EXPOSE 80
 WORKDIR /app
 
-ENV URL_BACKEND=https://sake.karned.bzh
+ENV URL_BACKEND=https://sake.karned.bzh \
+    PORT=80
 
 COPY requirements.txt requirements.txt
 COPY frontend.py frontend.py
