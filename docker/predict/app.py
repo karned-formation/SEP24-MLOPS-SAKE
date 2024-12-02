@@ -1,18 +1,29 @@
 from fastapi import FastAPI, HTTPException
-import os
+from pydantic import BaseModel
 from predict import main
 
 app = FastAPI()
-@app.get("/process")
-async def process_data():
+
+class PredictionRequest(BaseModel):
+    prediction_folder: str
+
+@app.post("/predict")
+async def predict_folder(request: PredictionRequest):
+    """
+    Endpoint for triggering the prediction process.
+    """
     try:
-        main()
-        return {"message": "Data successfully preprocessed and vectorized. Outputs saved to specified directory."}
+        # Call the main function with the prediction folder
+        prediction = main(request.prediction_folder)
+        return {"message": "Prediction completed successfully.", "data": prediction}
 
     except FileNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=f"File not found: {str(e)}")
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid input: {str(e)}")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error during processing: {e}")
+        raise HTTPException(status_code=500, detail=f"Unexpected error during processing: {str(e)}")
 
     
