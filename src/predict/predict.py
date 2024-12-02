@@ -8,7 +8,7 @@ from src.custom_logger import logger
 import pandas as pd
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
-from src.s4handler import S3Handler
+from src.s3handler import S3Handler #TODO
 
 
 
@@ -97,26 +97,105 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, display_predictio
     logger.info("Génération des prédictions terminée.")
     return cleaned_data.to_json(orient='index')
 
+def load_vectorizer_and_model(vectorizer_path: str, model_path: str):
+    """Load the TF-IDF vectorizer and prediction model."""
+    logger.info("Loading vectorizer and model.")
+    vectorizer = joblib.load(vectorizer_path)
+    model = joblib.load(model_path)
+    logger.info("Vectorizer and model loaded successfully.")
+    return vectorizer, model
+
+
+def initialize_s3_handler():
+    """Initialize the S3 handler with environment variables."""
+    aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
+    aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
+    logger.info("S3 handler initialized.")
+    return S3Handler(aws_bucket_name)
+
+
+def prepare_prediction_folder(prediction_folder: str, s3_handler: S3Handler):
+    """Prepare the prediction folder and download the cleaned CSV file."""
+    logger.info(f"Preparing prediction folder: {prediction_folder}")
+    csv_file_path = get_csv_file_path(prediction_folder)
+    csv_file_path = s3_handler.download_file(csv_file_path)
+    logger.info(f"Cleaned CSV downloaded: {csv_file_path}")
+    return csv_file_path
+
+def process_predictions(
+    csv_file_path: str, vectorizer: TfidfVectorizer, model, s3_handler: S3Handler
+):
+    """Process predictions and upload results."""
+    # Transform data
+    logger.info("Starting TF-IDF transformation.")
+    vectorized_data = transform_with_tfidf(vectorizer, csv_file_path)
+    
+    # Generate predictions
+    logger.info("Generating predictions.")
+    predictions_json = make_predictions(csv_file_path, model, vectorized_data)
+    logger.info("Predictions generated successfully.")
+    
+    # Upload prediction results
+    prediction_folder = Path(csv_file_path).parent.parent / "prediction"
+    logger.info(f"Uploading predictions to S3: {prediction_folder}")
+    s3_handler.upload_directory(
+        remote_path=str(prediction_folder), local_directory_name=str(prediction_folder)
+    )
+    logger.info("Predictions uploaded successfully.")
+    
+    return predictions_json
+
+def main(prediction_folder: str):
+    """Main function to handle the prediction process."""
+    try:
+        logger.info("Starting the prediction process.")
+        
+        # Paths
+        tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+        model_path = 'models/train/ovrc.joblib' # TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+        prediction_folder = prediction_folder
+        
+        # Load vectorizer and model
+        vectorizer, model = load_vectorizer_and_model(tfidf_vectorizer_path, model_path)
+        
+        # Initialize S3 handler
+        s3_handler = initialize_s3_handler()
+        
+        # Prepare prediction folder
+        csv_file_path = prepare_prediction_folder(prediction_folder, s3_handler)
+        
+        # Process predictions
+        predictions_json = process_predictions(csv_file_path, vectorizer, model, s3_handler)
+        
+        logger.info("Prediction process completed successfully.")
+        return predictions_json
+        
+    except Exception as e:
+        logger.error(f"An error occurred during the prediction process: {e}")
+        raise
 
 if __name__ == "__main__":
-    tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
-    model_path = 'models/train/ovrc.joblib'# TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+    # tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+    # model_path = 'models/train/ovrc.joblib'# TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
 
-    fitted_vectorizer =  joblib.load(tfidf_vectorizer_path)
-    model = joblib.load(model_path)
+    # fitted_vectorizer =  joblib.load(tfidf_vectorizer_path)
+    # model = joblib.load(model_path)
 
-    aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
-    aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
-    aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
-    handler = S3Handler(aws_bucket_name)
+    # aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
+    # aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
+    # aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
+    # handler = S3Handler(aws_bucket_name)
 
-    prediction_folder = 'prediction_1731849628.762522/'
-    csv_file_path = get_csv_file_path(prediction_folder)
-    csv_file_path = handler.download_file(csv_file_path)
+    # prediction_folder = 'prediction_1731849628.762522/'
+    # csv_file_path = get_csv_file_path(prediction_folder)
+    # csv_file_path = handler.download_file(csv_file_path)
 
 
-    vectorized_data = transform_with_tfidf(fitted_vectorizer, csv_file_path)
-    print(make_predictions(csv_file_path, model, vectorized_data))
+    # vectorized_data = transform_with_tfidf(fitted_vectorizer, csv_file_path)
+    # print(make_predictions(csv_file_path, model, vectorized_data))
 
-    remote_path = local_directory = str(Path(csv_file_path).parent.parent / 'prediction')
-    handler.upload_directory(remote_path=remote_path, local_directory_name=local_directory)
+    # remote_path = local_directory = str(Path(csv_file_path).parent.parent / 'prediction')
+    # handler.upload_directory(remote_path=remote_path, local_directory_name=local_directory)
+
+    print(main('prediction_1731849628.762522/'))
