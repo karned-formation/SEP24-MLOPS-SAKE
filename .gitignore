@@ -14,6 +14,8 @@ env_mlops/
 
 /predict
 /env_predict
+/frontend
+/orchestrator
 
 models/*
 !models/.gitkeep
