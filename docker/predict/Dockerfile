@@ -23,7 +23,7 @@ COPY $DOCKERFILE_DIR/app.py ./
 COPY $SOURCE_DIR/predict/predict.py ./
 COPY $LOG_DIR/custom_logger.py ./custom_logger.py
 COPY $SOURCE_DIR/s3handler.py ./s3handler.py
-COPY $MODELS_DIR/train/ovrc.joblib ./ovrc.joblib
-COPY $MODELS_DIR/vectorizers/tfidf_vectorizer.joblib ./tfidf_vectorizer.joblib
+COPY $SOURCE_DIR/models/vectorizers/tfidf_vectorizer.joblib ./tfidf_vectorizer.joblib
+COPY $SOURCE_DIR/models/train/ovrc.joblib ./ovrc.joblib
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}

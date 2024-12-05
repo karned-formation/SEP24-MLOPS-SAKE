@@ -4,11 +4,11 @@ import os
 from datetime import datetime
 import requests
 from typing import Optional
-from src.custom_logger import logger
+from custom_logger import logger
 import pandas as pd
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
-from src.s3handler import S3Handler #TODO
+from s3handler import S3Handler #TODO
 
 
 
@@ -97,8 +97,12 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, display_predictio
     logger.info("Génération des prédictions terminée.")
     return cleaned_data.to_json(orient='index')
 
-def load_vectorizer_and_model(vectorizer_path: str, model_path: str):
+def load_vectorizer_and_model():
     """Load the TF-IDF vectorizer and prediction model."""
+    logger.info("Loading vectorizer and model ENV variables.")
+    vectorizer_path = get_env_var("PREDICT_TFIDF_VECTORIZER_PATH")
+    model_path = get_env_var("PREDICT_MODEL_PATH")
+    print(vectorizer_path, model_path)
     logger.info("Loading vectorizer and model.")
     vectorizer = joblib.load(vectorizer_path)
     model = joblib.load(model_path)
@@ -114,13 +118,20 @@ def initialize_s3_handler():
     logger.info("S3 handler initialized.")
     return S3Handler(aws_bucket_name)
 
+def create_parent_dir(file_path: str):
+    logger.info(f"Creating parent folder for: {file_path}")
+    parent_dir = Path(file_path).parent
+    Path(parent_dir).mkdir(parents=True, exist_ok=True)  
+    return str(parent_dir / Path(file_path).name )
+
 
 def prepare_prediction_folder(prediction_folder: str, s3_handler: S3Handler):
     """Prepare the prediction folder and download the cleaned CSV file."""
     logger.info(f"Preparing prediction folder: {prediction_folder}")
-    csv_file_path = get_csv_file_path(prediction_folder)
-    csv_file_path = s3_handler.download_file(csv_file_path)
-    logger.info(f"Cleaned CSV downloaded: {csv_file_path}")
+    remote_csv_file_path = get_csv_file_path(prediction_folder)
+    local_csv_file_path = create_parent_dir(remote_csv_file_path)
+    csv_file_path = s3_handler.download_file(remote_csv_file_path, local_csv_file_path)
+    logger.info(f"Cleaned CSV downloaded: {remote_csv_file_path}")
     return csv_file_path
 
 def process_predictions(
@@ -150,14 +161,8 @@ def main(prediction_folder: str):
     """Main function to handle the prediction process."""
     try:
         logger.info("Starting the prediction process.")
-        
-        # Paths
-        tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
-        model_path = 'models/train/ovrc.joblib' # TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
-        prediction_folder = prediction_folder
-        
         # Load vectorizer and model
-        vectorizer, model = load_vectorizer_and_model(tfidf_vectorizer_path, model_path)
+        vectorizer, model = load_vectorizer_and_model()
         
         # Initialize S3 handler
         s3_handler = initialize_s3_handler()
