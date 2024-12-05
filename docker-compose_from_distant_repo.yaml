@@ -1,22 +1,22 @@
 services:
-  ocr:
+  ocr-service:
     image: killiankopp/ms-ocr-ia:1.1
     ports:
-      - "8901:8901"
+      - "8901:80"
     networks:
       - sake
 
-  etl:
+  etl-service:
     image: killiankopp/ms-sake-etl:1.0
     ports:
-      - "8903:8903"
+      - "8903:80"
     networks:
       - sake
   
-  preprocessing:
+  preprocessing-service:
     image: abenayoub/ms-sake-preprocessing:1.0
     ports:
-      - "8904:8904"
+      - "8904:80"
     networks:
       - sake
     volumes:
@@ -25,10 +25,10 @@ services:
       - ./data/vectorizers:/app/data/vectorizers
       - ./data/cleaned:/app/data/cleaned
 
-  train:
+  train-service:
     image: abenayoub/ms-sake-train:1.0
     ports:
-      - "8905:8905"
+      - "8905:80"
     networks:
       - sake
     volumes:
