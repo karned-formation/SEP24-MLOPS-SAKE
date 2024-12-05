@@ -1,11 +1,9 @@
 import pandas as pd
 import os
-import logging
 from pathlib import Path
-import sys
 import shutil
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from src.config_manager import ConfigurationManager
 from src.custom_logger import logger
 from src.check_structure import check_existing_folder, check_existing_file
