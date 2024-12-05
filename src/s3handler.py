@@ -156,12 +156,8 @@ class S3Handler:
         files = [r['Key'] for r in response.get('Contents', [])]
         return file_path in files
     
-    def download_file(self, file_path: str, prefix: str = ''):
+    def download_file(self, file_path: str, local_file_path: str, prefix: str = ''):
         """Télécharge un fichier depuis la bucket S3 vers la machine locale"""
-        local_dir = Path('./tmp')  
-        local_dir.mkdir(parents=True, exist_ok=True)  
-        local_file_path = local_dir / Path(file_path).name 
-
         if self.file_exists(file_path, prefix):
             self.s3_client.download_file(self.bucket_name, file_path, str(local_file_path))
             return str(local_file_path)
