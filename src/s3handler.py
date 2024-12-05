@@ -3,7 +3,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from typing import List, Optional, Dict
-from custom_logger import logger #TODO Check imports
+from src.custom_logger import logger #TODO Check imports
 
 class S3Handler:
     def __init__(self, bucket_name: str):
