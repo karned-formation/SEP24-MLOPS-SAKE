@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
-from src import s3handler
 import os
 from datetime import datetime
+
+from src import s3handler
 
 class TestS3(unittest.TestCase):
 

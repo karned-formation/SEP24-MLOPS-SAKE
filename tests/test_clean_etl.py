@@ -5,10 +5,10 @@ import pandas as pd
 import pytest
 import tempfile
 
-from src.data.clean_all import get_env_var, load_processed_dataset, clean_text, read_file_content, make_dataset, \
+from src.data.clean_etl import get_env_var, load_processed_dataset, clean_text, read_file_content, make_dataset, \
     check_input_dir, process_dir, get_ocr_text_files, clean_ocr_files, save_cleaned_dataset_for_dir, read_app_mounts, \
     validate_host_uid_gid, update_permissions, set_permissions_of_host_volume_owner, encode_labels, \
-    save_cleaned_dataset, clean_all
+    save_cleaned_dataset, clean_train
 
 
 def test_get_env_var_defined():
@@ -51,7 +51,7 @@ def test_load_processed_dataset_file_not_found():
         load_processed_dataset('non_existent_file.csv')
 
 
-@patch('src.data.clean_all.requests.post')
+@patch('src.data.clean_etl.requests.post')
 def test_clean_text_success(mock_post):
     mock_response = mock_post.return_value
     mock_response.status_code = 200
@@ -67,7 +67,7 @@ def test_clean_text_success(mock_post):
     mock_post.assert_called_once_with(api_url, params = {'text': text}, headers = {'Content-Type': 'text/plain'})
 
 
-@patch('src.data.clean_all.requests.post')
+@patch('src.data.clean_etl.requests.post')
 def test_clean_text_failure(mock_post):
     mock_response = mock_post.return_value
     mock_response.status_code = 404
@@ -171,8 +171,8 @@ def test_get_ocr_text_files():
     assert result == expected_result
 
 
-@patch('src.data.clean_all.read_file_content')
-@patch('src.data.clean_all.clean_text')
+@patch('src.data.clean_etl.read_file_content')
+@patch('src.data.clean_etl.clean_text')
 def test_clean_ocr_files(mock_clean_text, mock_read_file_content):
     mock_read_file_content.side_effect = lambda path: f"Content of {os.path.basename(path)}"
     mock_clean_text.side_effect = lambda api_url, content: f"Cleaned {content}"
@@ -199,8 +199,8 @@ def test_clean_ocr_files(mock_clean_text, mock_read_file_content):
     ])
 
 
-@patch('src.data.clean_all.save_cleaned_dataset')
-@patch('src.data.clean_all.make_dataset')
+@patch('src.data.clean_etl.save_cleaned_dataset')
+@patch('src.data.clean_etl.make_dataset')
 def test_save_cleaned_dataset_for_dir(mock_make_dataset, mock_save_cleaned_dataset):
     root = "/path/to/ocr_text_dir/class1"
     ocr_text_files = [
@@ -260,7 +260,7 @@ def test_validate_host_uid_gid_failure():
         validate_host_uid_gid(1000, None)
 
 
-@patch("src.data.clean_all.subprocess.run")
+@patch("src.data.clean_etl.subprocess.run")
 def test_update_permissions_success(mock_subprocess_run):
     mock_subprocess_run.return_value = None
     mount_point = "/app/data"
@@ -273,7 +273,7 @@ def test_update_permissions_success(mock_subprocess_run):
     )
 
 
-@patch("src.data.clean_all.subprocess.run")
+@patch("src.data.clean_etl.subprocess.run")
 def test_update_permissions_failure(mock_subprocess_run):
     mock_subprocess_run.side_effect = subprocess.CalledProcessError(
         returncode = 1, cmd = "chown -R 1000:1000 /app/data"
@@ -288,9 +288,9 @@ def test_update_permissions_failure(mock_subprocess_run):
     )
 
 
-@patch("src.data.clean_all.validate_host_uid_gid")
-@patch("src.data.clean_all.read_app_mounts")
-@patch("src.data.clean_all.update_permissions")
+@patch("src.data.clean_etl.validate_host_uid_gid")
+@patch("src.data.clean_etl.read_app_mounts")
+@patch("src.data.clean_etl.update_permissions")
 def test_set_permissions_of_host_volume_owner(mock_update_permissions, mock_read_app_mounts,
                                               mock_validate_host_uid_gid):
     mock_validate_host_uid_gid.return_value = None
@@ -306,11 +306,11 @@ def test_set_permissions_of_host_volume_owner(mock_update_permissions, mock_read
     mock_update_permissions.assert_any_call("/app/config", host_uid, host_gid)
 
 
-@patch("src.data.clean_all.check_input_dir")
-@patch("src.data.clean_all.get_ocr_text_files")
-@patch("src.data.clean_all.clean_ocr_files")
-@patch("src.data.clean_all.save_cleaned_dataset_for_dir")
-@patch("src.data.clean_all.set_permissions_of_host_volume_owner")
+@patch("src.data.clean_etl.check_input_dir")
+@patch("src.data.clean_etl.get_ocr_text_files")
+@patch("src.data.clean_etl.clean_ocr_files")
+@patch("src.data.clean_etl.save_cleaned_dataset_for_dir")
+@patch("src.data.clean_etl.set_permissions_of_host_volume_owner")
 @patch("os.walk")
 def test_process_dir(mock_os_walk, mock_set_permissions, mock_save_cleaned, mock_clean_ocr_files,
                      mock_get_ocr_text_files, mock_check_input_dir):
@@ -349,9 +349,9 @@ def test_encode_labels():
     assert result == [0, 1, -1]
 
 
-@patch("src.data.clean_all.os.makedirs")
-@patch("src.data.clean_all.pd.DataFrame.to_csv")
-@patch("src.data.clean_all.logger")
+@patch("src.data.clean_etl.os.makedirs")
+@patch("src.data.clean_etl.pd.DataFrame.to_csv")
+@patch("src.data.clean_etl.logger")
 def test_save_cleaned_dataset(mock_logger, mock_to_csv, mock_makedirs):
     mock_to_csv.return_value = None
     mock_makedirs.return_value = None
@@ -366,9 +366,9 @@ def test_save_cleaned_dataset(mock_logger, mock_to_csv, mock_makedirs):
     mock_to_csv.assert_called_once_with(filepath, index = False)
 
 
-@patch("src.data.clean_all.get_env_var")
-@patch("src.data.clean_all.process_dir")
-def test_clean_all(mock_process_dir, mock_get_env_var):
+@patch("src.data.clean_etl.get_env_var")
+@patch("src.data.clean_etl.process_dir")
+def test_clean_train(mock_process_dir, mock_get_env_var):
     mock_get_env_var.side_effect = lambda key: {
         "DATA_INGESTION_OCR_TEXT_DIR": "/path/to/ocr_text",
         "DATA_CLEANING_CLEAN_ENDPOINT": "http://api.url",
@@ -378,7 +378,7 @@ def test_clean_all(mock_process_dir, mock_get_env_var):
     }[key]
     mock_process_dir.return_value = None
 
-    clean_all()
+    clean_train()
 
     mock_process_dir.assert_called_once_with("/path/to/ocr_text", "/path/to/cleaned_datasets", "http://api.url", "1000",
                                              "1000")

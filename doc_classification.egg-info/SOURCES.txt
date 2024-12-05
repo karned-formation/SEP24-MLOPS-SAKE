@@ -23,10 +23,10 @@ src/data/ingest_etl.py
 src/data/structure_raw.py
 src/preprocessing/__init__.py
 src/preprocessing/preprocessing.py
+tests/DEPRECATED_test_clean_etl.py
 tests/__init__.py
-tests/test_clean.py
-tests/test_clean_all.py
-tests/test_cleantext.py
+tests/test_clean_etl.py
+tests/test_clean_text.py
 tests/test_ingest.py
 tests/test_predict.py
 tests/test_s3handler.py
