@@ -1,14 +1,12 @@
-from pathlib import Path
-from typing import List
-import os
-from datetime import datetime
-import requests
-from typing import Optional
-from src.custom_logger import logger
 import pandas as pd
 import joblib
+import os
+
+from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
-from src.s3handler import S3Handler #TODO
+
+from src.custom_logger import logger
+from src.s3handler import S3Handler
 
 
 
@@ -23,7 +21,8 @@ def get_csv_file_path(prediction_folder: str):
     """
     Construct the path to the cleaned CSV file based on a folder path.
     """
-    return os.path.join(prediction_folder.rstrip('/'), 'cleaned', 'cleaned.csv')
+    cleaned_dir = get_env_var("PREDICT_CLEANED_DIR")
+    return os.path.join(prediction_folder.rstrip('/'), cleaned_dir, 'cleaned.csv')
 
 def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, csv_file_path: str) -> pd.DataFrame:
     """
@@ -73,8 +72,11 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, display_predictio
         logger.info("Affichage des prédictions.")
 
     # Définir le chemin de sortie par défaut
-    output_csv_path = Path(cleaned_csv_path).parent.parent / "prediction/predictions.csv"
-    output_json_path = Path(cleaned_csv_path).parent.parent / "prediction/predictions.json"
+    prediction_dir = get_env_var("PREDICT_PREDICTIONS_DIR")
+    output_csv_path = Path(cleaned_csv_path).parent.parent / prediction_dir / "predictions.csv"
+    output_json_path = Path(cleaned_csv_path).parent.parent / prediction_dir / "predictions.json"
+    # output_csv_path = Path(cleaned_csv_path).parent.parent / "prediction/predictions.csv"
+    # output_json_path = Path(cleaned_csv_path).parent.parent / "prediction/predictions.json"
     
     # Création des répertoires si nécessaire
     output_csv_path = Path(output_csv_path)
@@ -97,8 +99,12 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, display_predictio
     logger.info("Génération des prédictions terminée.")
     return cleaned_data.to_json(orient='index')
 
-def load_vectorizer_and_model(vectorizer_path: str, model_path: str):
+def load_vectorizer_and_model():
     """Load the TF-IDF vectorizer and prediction model."""
+    logger.info("Loading vectorizer and model ENV variables.")
+    vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+    model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+    print(vectorizer_path, model_path)
     logger.info("Loading vectorizer and model.")
     vectorizer = joblib.load(vectorizer_path)
     model = joblib.load(model_path)
@@ -114,13 +120,20 @@ def initialize_s3_handler():
     logger.info("S3 handler initialized.")
     return S3Handler(aws_bucket_name)
 
+def create_parent_dir(file_path: str):
+    logger.info(f"Creating parent folder for: {file_path}")
+    parent_dir = Path(file_path).parent
+    Path(parent_dir).mkdir(parents=True, exist_ok=True)  
+    return str(parent_dir / Path(file_path).name )
+
 
 def prepare_prediction_folder(prediction_folder: str, s3_handler: S3Handler):
     """Prepare the prediction folder and download the cleaned CSV file."""
     logger.info(f"Preparing prediction folder: {prediction_folder}")
-    csv_file_path = get_csv_file_path(prediction_folder)
-    csv_file_path = s3_handler.download_file(csv_file_path)
-    logger.info(f"Cleaned CSV downloaded: {csv_file_path}")
+    remote_csv_file_path = get_csv_file_path(prediction_folder)
+    local_csv_file_path = create_parent_dir(remote_csv_file_path)
+    csv_file_path = s3_handler.download_file(remote_csv_file_path, local_csv_file_path)
+    logger.info(f"Cleaned CSV downloaded: {remote_csv_file_path}")
     return csv_file_path
 
 def process_predictions(
@@ -137,7 +150,7 @@ def process_predictions(
     logger.info("Predictions generated successfully.")
     
     # Upload prediction results
-    prediction_folder = Path(csv_file_path).parent.parent / "prediction"
+    prediction_folder = Path(csv_file_path).parent.parent / get_env_var("PREDICT_PREDICTIONS_DIR")
     logger.info(f"Uploading predictions to S3: {prediction_folder}")
     s3_handler.upload_directory(
         remote_path=str(prediction_folder), local_directory_name=str(prediction_folder)
@@ -150,14 +163,8 @@ def main(prediction_folder: str):
     """Main function to handle the prediction process."""
     try:
         logger.info("Starting the prediction process.")
-        
-        # Paths
-        tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
-        model_path = 'models/train/ovrc.joblib' # TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
-        prediction_folder = prediction_folder
-        
         # Load vectorizer and model
-        vectorizer, model = load_vectorizer_and_model(tfidf_vectorizer_path, model_path)
+        vectorizer, model = load_vectorizer_and_model()
         
         # Initialize S3 handler
         s3_handler = initialize_s3_handler()
@@ -176,26 +183,4 @@ def main(prediction_folder: str):
         raise
 
 if __name__ == "__main__":
-    # tfidf_vectorizer_path = 'models/vectorizers/tfidf_vectorizer.joblib' #TODO get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
-    # model_path = 'models/train/ovrc.joblib'# TODO get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
-
-    # fitted_vectorizer =  joblib.load(tfidf_vectorizer_path)
-    # model = joblib.load(model_path)
-
-    # aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
-    # aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
-    # aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
-    # handler = S3Handler(aws_bucket_name)
-
-    # prediction_folder = 'prediction_1731849628.762522/'
-    # csv_file_path = get_csv_file_path(prediction_folder)
-    # csv_file_path = handler.download_file(csv_file_path)
-
-
-    # vectorized_data = transform_with_tfidf(fitted_vectorizer, csv_file_path)
-    # print(make_predictions(csv_file_path, model, vectorized_data))
-
-    # remote_path = local_directory = str(Path(csv_file_path).parent.parent / 'prediction')
-    # handler.upload_directory(remote_path=remote_path, local_directory_name=local_directory)
-
     print(main('prediction_1731849628.762522/'))

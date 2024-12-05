@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from predict import main
+from src.predict.predict import main
 
 app = FastAPI()
 
@@ -8,13 +8,13 @@ class PredictionRequest(BaseModel):
     prediction_folder: str
 
 @app.post("/predict")
-async def predict_folder(request: PredictionRequest):
+async def predict_folder(prediction_folder:str = None):
     """
     Endpoint for triggering the prediction process.
     """
     try:
         # Call the main function with the prediction folder
-        prediction = main(request.prediction_folder)
+        prediction = main(prediction_folder)
         return {"message": "Prediction completed successfully.", "data": prediction}
 
     except FileNotFoundError as e:
