@@ -83,9 +83,12 @@ mlflow:
   model_version: "1.0"
 
 predict:
-  original_dir: 'original_raw/'
-  ocr_dir: 'ocerized_raw/'
-  cleaned_dir: 'cleaned/'
-  predictions: 'predictions/'
+  original_dir:  "original_raw/"
+  ocr_dir: "ocerized_raw/"
+  cleaned_dir: "cleaned/"
+  predictions: "predictions/"
+  port_predict: "8908"
+  tfidf_vectorizer_path: "tfidf_vectorizer.joblib"
+  model_path: "ovrc.joblib"
 
   
