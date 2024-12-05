@@ -17,9 +17,6 @@ env_mlops/
 /frontend
 /orchestrator
 
-models/*
-!models/.gitkeep
-
 /models
 /mlruns
 

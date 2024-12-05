@@ -137,26 +137,26 @@ services:
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
 
-# Service de prédiction
-ms-sake-predict:
-  env_file:
-  - path: ./.env
-  build:
-    context: .  
-    dockerfile: docker/predict/Dockerfile  
-    args:
-      SOURCE_DIR: src/
-      DOCKERFILE_DIR: docker/predict
-      LOG_DIR: src
-      MODELS_DIR: models/
-    cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-      - ms-sake-predict:cache
-  image: ms-sake-predict:1.0  
-  container_name: predict
-  ports:
-    - "${PREDICT_PORT_PREDICT}:80"
-  networks:
-    - sake
+  # Service de prédiction
+  ms-sake-predict:
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/predict/Dockerfile  
+      args:
+        SOURCE_DIR: src/
+        DOCKERFILE_DIR: docker/predict
+        LOG_DIR: src
+        MODELS_DIR: models/
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - ms-sake-predict:cache
+    image: ms-sake-predict:1.0  
+    container_name: predict
+    ports:
+      - "${PREDICT_PORT_PREDICT}:80"
+    networks:
+      - sake
       
 networks:
   sake:
