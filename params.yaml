@@ -87,3 +87,5 @@ predict:
   port_predict: "8908"
   cleaned_dir: "cleaned/"
   predictions_dir: "prediction/"
+  original_dir: 'original_raw/'
+  ocr_dir: 'ocerized_raw/'
