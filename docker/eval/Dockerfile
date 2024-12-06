@@ -1,8 +1,9 @@
-FROM python:3.11-slim
+FROM python:3.11
+# la version "python:3.11-slim" provoque un probleme car "private_conn_dagshub.sh" s'appuie sur des fonctions non présentes dans ce docker
 
+ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
-ARG LOG_DIR
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -25,11 +26,13 @@ COPY $DOCKERFILE_DIR/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY $DOCKERFILE_DIR/app.py ./
-COPY $SOURCE_DIR/eval/eval.py ./
-COPY $LOG_DIR/custom_logger.py ./custom_logger.py
+
+COPY $SOURCE_DIR/eval.py $SOURCE_DIR/eval.py
+COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}", "--workers", "${WORKERS}"]
+CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
+#CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", ${PORT}, "--workers", ${WORKERS}]

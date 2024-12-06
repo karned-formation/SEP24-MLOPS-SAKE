@@ -5,10 +5,11 @@ import json
 import os
 import subprocess
 import joblib 
-from custom_logger import logger
 import mlflow
 import dagshub
 import traceback
+
+from src.custom_logger import logger
 
 def get_env_var(name):
     value = os.getenv(name)

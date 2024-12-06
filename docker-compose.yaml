@@ -20,9 +20,9 @@ services:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/clean_text  
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - clean-service:cache
     image: clean-service:1.0
@@ -42,9 +42,9 @@ services:
       context: .  
       dockerfile: docker/etl/Dockerfile  
       args:
-        SOURCE_DIR: src/
+        COMMON_DIR: src
+        SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-etl:cache  
     image: ms-sake-etl:1.0
@@ -70,9 +70,9 @@ services:
       context: .  
       dockerfile: docker/preprocessing/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/preprocessing
         DOCKERFILE_DIR: docker/preprocessing
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - preprocessing-service:cache
     image: preprocessing-service:1.0
@@ -95,9 +95,9 @@ services:
       context: .  
       dockerfile: docker/train/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/train
         DOCKERFILE_DIR: docker/train
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - train-service:cache
     image: train-service:1.0
@@ -119,9 +119,9 @@ services:
       context: .  
       dockerfile: docker/eval/Dockerfile  
       args:
-        SOURCE_DIR: src/
+        COMMON_DIR: src
+        SOURCE_DIR: src/eval
         DOCKERFILE_DIR: docker/eval
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - eval-service:cache
     image: eval-service:1.0
