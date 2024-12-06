@@ -19,11 +19,9 @@ RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf 
 COPY $DOCKERFILE_DIR/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY $DOCKERFILE_DIR/app.py ./
-COPY $SOURCE_DIR/predict/predict.py ./
-COPY $LOG_DIR/custom_logger.py ./custom_logger.py
-COPY $SOURCE_DIR/s3handler.py ./s3handler.py
-COPY $MODELS_DIR/train/ovrc.joblib ./ovrc.joblib
-COPY $MODELS_DIR/vectorizers/tfidf_vectorizer.joblib ./tfidf_vectorizer.joblib
+COPY $DOCKERFILE_DIR/app.py app.py
+COPY $SOURCE_DIR/orchestrator/orchestrator.py $SOURCE_DIR/orchestrator/orchestrator.py
+COPY $LOG_DIR/custom_logger.py  $LOG_DIR/custom_logger.py
+COPY $SOURCE_DIR/s3handler.py $SOURCE_DIR/s3handler.py
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT}
+CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --reload
