@@ -88,6 +88,14 @@ def main():
                 st.write("Training...")
                 dvc_repro_output, dvc_repro_err = run_command("dvc repro")
                 st.session_state.command_outputs.append(f"DVC REPRO : {dvc_repro_output}")
+                
+                # Load and display confusion matrix
+                matrix = load_confusion_matrix()
+                scores = load_scores()
+
+                fig = plot_confusion_matrix(matrix)
+                st.pyplot(fig)
+                st.write(f"Overall Accuracy: {scores['accuracy']:.2%}")
 
         with col2:
             if st.button("Commit Data (DVC & Git)"):         
@@ -101,6 +109,9 @@ def main():
                 # Get commit hash
                 commit_hash_output, commit_hash_err = run_command("git rev-parse HEAD")
                 st.success(f"Commit Hash: {commit_hash_output}")
+
+                
+
         
         with col3:
             if st.button("Save run in MLflow"):         
@@ -108,7 +119,6 @@ def main():
                 st.write("to implement")
 
         st.header("""
-                  1. Train : afficher les métriques et la matrice de confusion
                   2. Sortir l'enregistrement du run MLflow de EVAL et le mettre ici : enregistrer le commit hash dans les artefacts
                   3. Ajouter un bouton "Save model in registry and promote"
                   4. Lister les experiences MLflow et pouvoir sélectionner un hash et revenir à l'état de ces données.
