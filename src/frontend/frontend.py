@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import requests
 
-endpoint_url = 'http://localhost:8080/predict'
+endpoint_url = 'http://localhost:8908/predict'
 
 st.title("Classification de documents")
 reference = st.text_input("Votre référence")
