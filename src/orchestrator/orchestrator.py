@@ -104,8 +104,12 @@ def call_predict(uuid):
     endpoint_url,
     params={"prediction_folder": f'{uuid}/'}
     )
-    if response.text:
-        raise Exception("Le chemin fourni à predict est invalide") #TODO adapt this code
+    # print(response.json())
+    prediction = dict(response.json()).get('data', 0)
+    if prediction:
+        return prediction
+    else:
+        raise Exception("Le chemin fourni à predict est invalide")
 
 
 def main(files):
@@ -113,8 +117,9 @@ def main(files):
     
     call_ingest(uuid)
     call_clean(uuid)
+    prediction = call_predict(uuid)
     
-    return uuid
+    return uuid, prediction
 
 
 if __name__ == "__main__":

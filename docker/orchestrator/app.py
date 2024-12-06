@@ -15,9 +15,9 @@ async def upload_images(
 ):
     if database.get(reference, 0):
         return {"message": "Reference should be unique. Try again."}
-    uuid = main(files)
+    uuid, prediction = main(files)
     database[reference] = uuid
     print(database) #TODO Delete
-    return {"message": "Files saved successfully", "reference": reference, "uuid": uuid}
+    return {"message": "Files saved successfully", "reference": reference, "uuid": uuid, "prediction": prediction}
 
     
