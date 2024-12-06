@@ -14,7 +14,7 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: params.yaml
       hash: md5
@@ -40,7 +40,7 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: params.yaml
       hash: md5
@@ -62,7 +62,7 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: params.yaml
       hash: md5
@@ -84,7 +84,7 @@ stages:
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: params.yaml
       hash: md5
@@ -111,7 +111,7 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: params.yaml
       hash: md5
@@ -133,7 +133,7 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
     - path: models/train
       hash: md5
@@ -204,10 +204,10 @@ stages:
       size: 3272
     - path: docker-compose.yaml
       hash: md5
-      md5: e5cb3825216cfd912f13b955a4f06a56
-      size: 5424
+      md5: 80beee7cef45289a76589c16835297e4
+      size: 5430
     outs:
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: cc72867581029d08025a87c527baf24e
       size: 29
