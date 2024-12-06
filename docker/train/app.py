@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from train import main
+
+from src.train.train import main
 
 app = FastAPI()
 

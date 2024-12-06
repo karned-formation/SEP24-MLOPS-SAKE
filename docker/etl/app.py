@@ -1,7 +1,8 @@
-from ingest_etl import ingest_train, ingest_prediction
-from clean_etl import clean_train, clean_prediction
 from fastapi import FastAPI, HTTPException
 from starlette.responses import PlainTextResponse
+
+from src.data.ingest_etl import ingest_train, ingest_prediction
+from src.data.clean_etl import clean_train, clean_prediction
 
 app = FastAPI()
 

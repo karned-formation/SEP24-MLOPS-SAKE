@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import os
-from preprocessing import main
+
+from src.preprocessing.preprocessing import main
 
 app = FastAPI()
 @app.get("/process")

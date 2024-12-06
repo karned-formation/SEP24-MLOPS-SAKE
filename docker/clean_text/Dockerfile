@@ -1,8 +1,8 @@
 FROM python:3.11-slim
 
+ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
-ARG LOG_DIR
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -29,9 +29,11 @@ RUN python3 -m spacy download fr_core_news_sm && \
 
 COPY $DOCKERFILE_DIR/app.py ./
 COPY $DOCKERFILE_DIR/download_contents.py ./
-COPY $SOURCE_DIR/clean_text.py ./
-COPY $LOG_DIR/custom_logger.py ./custom_logger.py
+
+COPY $SOURCE_DIR/clean_text.py $SOURCE_DIR/clean_text.py
+COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
 
 RUN python3 download_contents.py
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "${PORT}", "--workers", "${WORKERS}"]
+CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
+#CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", ${PORT}, "--workers", ${WORKERS}]
