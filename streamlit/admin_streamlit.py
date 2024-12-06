@@ -2,6 +2,11 @@ import os
 import shutil
 import streamlit as st
 import subprocess
+import json
+import streamlit as st
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Objectif du streamlit
 
@@ -16,6 +21,31 @@ import subprocess
 # 2. Afficher le résultat
 # 3. Proposer à l'admin d'enregistrer ou non
 
+def load_confusion_matrix(file_path='metrics/confusion_matrix.json'):
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+    
+    # Convert nested dict to numpy array
+    matrix = np.array([[data[str(i)][str(j)] for j in range(3)] for i in range(3)])
+    return matrix
+
+def load_scores(file_path='metrics/scores.json'):
+    with open(file_path, 'r') as f:
+        scores = json.load(f)
+    return scores
+
+def plot_confusion_matrix(matrix):
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(matrix, annot=True, cmap='Blues', fmt='d', 
+                xticklabels=['Facture', 'Identité', 'CV'],
+                yticklabels=['Facture', 'Identité', 'CV'],
+                annot_kws={"fontsize":30})
+    plt.title('Confusion Matrix', fontsize=30)
+    plt.xlabel('Predicted', fontsize=12)
+    plt.ylabel('Actual', fontsize=12)
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
+    return plt
 
 def list_images(directory):
     """List image files in a directory."""
@@ -56,6 +86,14 @@ def main():
                 st.write("Training...")
                 dvc_repro_output, dvc_repro_err = run_command("dvc repro")
                 st.session_state.command_outputs.append(f"DVC REPRO : {dvc_repro_output}")
+                
+                # Load and display confusion matrix
+                matrix = load_confusion_matrix()
+                scores = load_scores()
+
+                fig = plot_confusion_matrix(matrix)
+                st.pyplot(fig)
+                st.write(f"Overall Accuracy: {scores['accuracy']:.2%}")
 
         with col2:
             if st.button("Commit Data (DVC & Git)"):         
@@ -69,6 +107,9 @@ def main():
                 # Get commit hash
                 commit_hash_output, commit_hash_err = run_command("git rev-parse HEAD")
                 st.success(f"Commit Hash: {commit_hash_output}")
+
+                
+
         
         with col3:
             if st.button("Save run in MLflow"):         
@@ -76,7 +117,6 @@ def main():
                 st.write("to implement")
 
         st.header("""
-                  1. Train : afficher les métriques et la matrice de confusion
                   2. Sortir l'enregistrement du run MLflow de EVAL et le mettre ici : enregistrer le commit hash dans les artefacts
                   3. Ajouter un bouton "Save model in registry and promote"
                   4. Lister les experiences MLflow et pouvoir sélectionner un hash et revenir à l'état de ces données.
