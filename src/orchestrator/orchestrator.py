@@ -8,7 +8,7 @@ from src.custom_logger import logger
 import pandas as pd
 import shutil
 from sklearn.feature_extraction.text import TfidfVectorizer
-from src.s3handler import S3Handler #TODO
+from src.s3handler import S3Handler
 from uuid import uuid4
 
 
@@ -80,7 +80,7 @@ def initialize_s3_handler():
 
 
 def call_ingest(uuid):
-    endpoint_url = 'http://localhost:8907/ingest' # TODO Change with env variable
+    endpoint_url = f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/{get_env_var('DATA_ETL_ROUTE_ETL_INGEST_ALL')}" #TODO
     response = requests.post(
     endpoint_url,
     params={"prediction_folder": f'{uuid}/'}
@@ -90,7 +90,8 @@ def call_ingest(uuid):
 
 
 def call_clean(uuid):
-    endpoint_url = 'http://localhost:8907/clean' # TODO Change with env variable
+    endpoint_url = f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/{get_env_var('DATA_ETL_ROUTE_ETL_CLEAN_ALL')}" # TODO
+    print(endpoint_url)
     response = requests.post(
     endpoint_url,
     params={"prediction_folder": f'{uuid}/'}
@@ -99,7 +100,8 @@ def call_clean(uuid):
         raise Exception("Le chemin fourni à clean est invalide")
     
 def call_predict(uuid):
-    endpoint_url = 'http://localhost:8908/predict' # TODO Change with env variable
+    endpoint_url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}" # TODO
+    print(endpoint_url)
     response = requests.post(
     endpoint_url,
     params={"prediction_folder": f'{uuid}/'}
