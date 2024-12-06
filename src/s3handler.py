@@ -35,6 +35,7 @@ class S3Handler:
             )
             return f"s3://{self.bucket_name}/{folder_path}"
         except ClientError as e:
+            print("error")
             logger.error(f"Erreur lors de la création du dossier: {e}")
             return None
 
@@ -146,3 +147,20 @@ class S3Handler:
             return 'Contents' in response
         except ClientError:
             return False
+    
+    def file_exists(self, file_path: str, prefix: str = '') -> bool:
+        """
+        Vérifie si un fichier existe dans le bucket.
+
+        """
+        response = self.s3_client.list_objects_v2(Bucket=self.bucket_name, Prefix=prefix)
+        files = [r['Key'] for r in response.get('Contents', [])]
+        return file_path in files
+    
+    def download_file(self, file_path: str, local_file_path: str, prefix: str = ''):
+        """Télécharge un fichier depuis la bucket S3 vers la machine locale"""
+        if self.file_exists(file_path, prefix):
+            self.s3_client.download_file(self.bucket_name, file_path, str(local_file_path))
+            return str(local_file_path)
+        else:
+            return None
