@@ -14,7 +14,7 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: cc72867581029d08025a87c527baf24e
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
     - path: params.yaml
       hash: md5
@@ -184,10 +184,10 @@ stages:
       size: 3272
     - path: docker-compose.yaml
       hash: md5
-      md5: 80beee7cef45289a76589c16835297e4
-      size: 5430
+      md5: 576be42b06fe6a9eab81b4e3ca6656d2
+      size: 5485
     outs:
     - path: dockers_started.txt
       hash: md5
-      md5: cc72867581029d08025a87c527baf24e
+      md5: 3752aadb534ab43ffcdff77892f5a134
       size: 29
