@@ -221,15 +221,15 @@ def page_select():
                     if 'commit_hash' not in st.session_state:
                         st.error("Please commit ther data first.")
                     else:
-                        save_to_mlflow(st.session_state.commit_hash)
+                        st.session_state.run_id = save_to_mlflow(st.session_state.commit_hash)
                         st.success("Successfully saved run in MLFLOW")
 
-
-            st.header("""
-                    2. Sortir l'enregistrement du run MLflow de EVAL et le mettre ici : enregistrer le commit hash dans les artefacts
-                    3. Ajouter un bouton "Save model in registry and promote"
-                    4. Lister les experiences MLflow et pouvoir sélectionner un hash et revenir à l'état de ces données.
-            """)
+                if st.button("Register the model"):
+                    if 'run_id' not in st.session_state:
+                        st.error("Save the run in ML flow for registering the model!")
+                    else:
+                        register_model(st.session_state.run_id)
+                        st.success("Successfully registered the model!")
     
             # Log output area on the right
         with log_col:
