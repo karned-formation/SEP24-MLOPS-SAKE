@@ -40,8 +40,8 @@ stages:
       nfiles: 177
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d05bd1adfe37dcb81f359156ada7de1d
+      size: 3410
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -58,8 +58,8 @@ stages:
       nfiles: 177
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d05bd1adfe37dcb81f359156ada7de1d
+      size: 3410
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -76,8 +76,8 @@ stages:
       nfiles: 3
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d05bd1adfe37dcb81f359156ada7de1d
+      size: 3410
     outs:
     - path: data/processed
       hash: md5
@@ -86,8 +86,8 @@ stages:
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 7893234217860b12a3f42e7aab225c75.dir
-      size: 2529539
+      md5: 0ef48904eaff62d13c8f0702b82a1f12.dir
+      size: 2529412
       nfiles: 1
   train:
     cmd: curl -X "GET" "http://localhost:8905/train"
@@ -99,8 +99,8 @@ stages:
       nfiles: 2
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d05bd1adfe37dcb81f359156ada7de1d
+      size: 3410
     outs:
     - path: models/train
       hash: md5
@@ -122,8 +122,8 @@ stages:
       nfiles: 1
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d05bd1adfe37dcb81f359156ada7de1d
+      size: 3410
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
