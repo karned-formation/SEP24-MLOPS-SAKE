@@ -137,6 +137,26 @@ services:
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
 
+  # Service d'Orchestration
+  ms-sake-orchestrator:
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/orchestrator/Dockerfile  
+      args:
+        SOURCE_DIR: src/
+        DOCKERFILE_DIR: docker/orchestrator
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - ms-sake-orchestrator:cache
+    image: ms-sake-orchestrator:1.0  
+    container_name: orchestrator
+    ports:
+      - "${ORCHESTRATOR_PORT_ORCHESTRATOR}:80"
+    networks:
+      - sake
+  
   # Service de prédiction
   ms-sake-predict:
     env_file:

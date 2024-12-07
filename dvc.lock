@@ -14,12 +14,12 @@ stages:
       size: 4542
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     - path: src/data/structure_raw.py
       hash: md5
       md5: 222e1cd8e683fb3b9a0cd5ffc0dcf882
@@ -40,12 +40,12 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -62,12 +62,12 @@ stages:
       nfiles: 183
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -84,12 +84,12 @@ stages:
       nfiles: 3
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     outs:
     - path: data/processed
       hash: md5
@@ -111,12 +111,12 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     outs:
     - path: models/train
       hash: md5
@@ -133,7 +133,7 @@ stages:
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
     - path: models/train
       hash: md5
@@ -142,8 +142,8 @@ stages:
       nfiles: 1
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
@@ -158,8 +158,8 @@ stages:
     deps:
     - path: params.yaml
       hash: md5
-      md5: ba6f9bb53bbada055e556f582b04da9b
-      size: 3407
+      md5: d8eb7bb5988fc7350618207d24d267b9
+      size: 3589
     - path: src/config_transform_as_env.py
       hash: md5
       md5: d0ac128f1cc32185ebfd4bf959cf5c5f
@@ -200,14 +200,14 @@ stages:
     deps:
     - path: .env_mlops_sake
       hash: md5
-      md5: ebda30d4cd6c48f6ac57daa41bbb423d
-      size: 3272
+      md5: d4a2dcced50ae9db06117d8e147622c1
+      size: 3471
     - path: docker-compose.yaml
       hash: md5
-      md5: e5cb3825216cfd912f13b955a4f06a56
-      size: 5424
+      md5: 1df8ee88e64ab17b92dbd65d222d2d6e
+      size: 6597
     outs:
     - path: dockers_started.txt
       hash: md5
-      md5: f1c47d515fd836f55583c546d3f5e2b3
+      md5: fcd979979b16f1f6d8574762f75c35d4
       size: 29
