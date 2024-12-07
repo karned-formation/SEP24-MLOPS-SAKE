@@ -133,6 +133,14 @@ def list_mlflow_runs():
     
     return display_runs
 
+def run_command(command):
+    """Run a shell command and return its output."""
+    try:
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        return result.stdout.strip()
+    except Exception as e:
+        return "", str(e)
+
 def git_revert_to_commit(commit_hash):
     """
     Attempt to revert to a specific commit hash
@@ -159,6 +167,8 @@ def git_revert_to_commit(commit_hash):
             text=True, 
             check=True
         )
+
+        dvc_pull_result = run_command("dvc pull")
         
         return True, "Successfully reverted to commit"
     
