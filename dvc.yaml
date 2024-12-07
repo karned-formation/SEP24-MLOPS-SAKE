@@ -6,6 +6,9 @@ stages:
     - params.yaml
     - src/config_transform_as_env.py
     - src/smart_merge_.env_.env_mlops_sake.py
+    outs:
+    - .env_mlops_sake
+    - .env_plantUML
 
   start_dockers:
     cmd: 'source scripts/docker_clean_dangling_images.sh && 

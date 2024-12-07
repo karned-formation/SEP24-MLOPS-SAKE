@@ -1,6 +1,6 @@
 services:
   # Service OCR
-  ms-OCR:
+  ocr-service:
     env_file:
     - path: ./.env
     image: killiankopp/ms-ocr-ia:1.1
@@ -8,50 +8,50 @@ services:
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
     container_name: OCR
     ports:
-      - ${DATA_INGESTION_PORT_OCR}:8901
+      - ${DATA_INGESTION_PORT_OCR}:80
     networks:
       - sake
 
   # Service de nettoyage de texte
-  ms-sake-clean-text:
+  clean-service:
     env_file:
     - path: ./.env
     build:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/clean_text  
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-clean-text:cache  
-    image: ms-sake-clean-text:1.0 
+        - clean-service:cache
+    image: clean-service:1.0
     container_name: clean_text
     ports:
-      - "${DATA_CLEANING_PORT_CLEAN_TEXT}:80"
+      - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service ETL
-  ms-sake-ETL:
+  etl-service:
     env_file:
     - path: ./.env
     build:
       context: .  
       dockerfile: docker/etl/Dockerfile  
       args:
-        SOURCE_DIR: src/
+        COMMON_DIR: src
+        SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-etl:cache  
     image: ms-sake-etl:1.0
     container_name: ETL
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
-      - ms-OCR
-      - ms-sake-clean-text
+      - ocr-service
+      - clean-service
     ports:
       - ${DATA_ETL_PORT_ETL}:80
     networks:
@@ -63,22 +63,22 @@ services:
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
     
   # Service de prétraitement
-  ms-sake-preprocessing:
+  preprocessing-service:
     env_file:
     - path: ./.env
     build:
       context: .  
       dockerfile: docker/preprocessing/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/preprocessing
         DOCKERFILE_DIR: docker/preprocessing
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-preprocessing:cache
-    image: ms-sake-preprocessing:1.0  
+        - preprocessing-service:cache
+    image: preprocessing-service:1.0
     container_name: preprocessing
     ports:
-      - "${DATA_PREPROCESSING_PORT_PREPROCESSING}:80"
+      - ${DATA_PREPROCESSING_PORT_PREPROCESSING}:80
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
@@ -88,22 +88,22 @@ services:
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'entraînement
-  ms-sake-train:
+  train-service:
     env_file:
     - path: ./.env
     build:
       context: .  
       dockerfile: docker/train/Dockerfile  
       args:
+        COMMON_DIR: src
         SOURCE_DIR: src/train
         DOCKERFILE_DIR: docker/train
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-train:cache
-    image: ms-sake-train:1.0  
+        - train-service:cache
+    image: train-service:1.0
     container_name: train
     ports:
-      - "${MODEL_TRAIN_PORT_TRAIN}:80"
+      - ${MODEL_TRAIN_PORT_TRAIN}:80
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
@@ -112,22 +112,22 @@ services:
       - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'évaluation
-  ms-sake-eval:
+  eval-service:
     env_file:
     - path: ./.env
     build:
       context: .  
       dockerfile: docker/eval/Dockerfile  
       args:
-        SOURCE_DIR: src/
+        COMMON_DIR: src
+        SOURCE_DIR: src/eval
         DOCKERFILE_DIR: docker/eval
-        LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-eval:cache
-    image: ms-sake-eval:1.0  
+        - eval-service:cache
+    image: eval-service:1.0
     container_name: eval
     ports:
-      - "${MODEL_EVAL_PORT_EVAL}:80"
+      - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
       - sake
     volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes

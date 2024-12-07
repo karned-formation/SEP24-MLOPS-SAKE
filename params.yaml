@@ -7,7 +7,7 @@ data_structure_raw:
   raw_dataset_dir: "data/raw_per_classes/" 
 
 data_ingestion: # => OCR
-  docker_service_ocr: ms-OCR # /!\ à synchroniser avec docker-compose.yaml
+  docker_service_ocr: ocr-service # /!\ à synchroniser avec docker-compose.yaml
   port_ocr: 8901
   route_ocr: txt/blocks-words
   ocr_endpoint: "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/${data_ingestion.route_ocr}"
@@ -15,7 +15,7 @@ data_ingestion: # => OCR
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
 data_cleaning: # => clean_text
-  docker_service_clean_text: ms-sake-clean-text # /!\ à synchroniser avec docker-compose.yaml
+  docker_service_clean_text: clean-service # /!\ à synchroniser avec docker-compose.yaml
   port_clean_text: 8903
   route_clean_text: clean
   clean_endpoint: "http://${data_cleaning.docker_service_clean_text}/clean"
@@ -23,7 +23,7 @@ data_cleaning: # => clean_text
   cleaned_datasets_dir: "data/cleaned_per_classes/"
 
 data_ETL:
-  docker_service_ETL: ms-sake-ETL
+  docker_service_ETL: etl-service
   port_ETL: 8907
   route_ETL_ingest_all: ingest
   route_ETL_clean_all: clean
@@ -31,7 +31,7 @@ data_ETL:
   endpoint_ETL_clean_all: "http://${data_ETL.docker_service_ETL}/${data_ETL.route_ETL_clean_all}"
 
 data_preprocessing:
-  docker_service_preprocessing: ms-sake-preprocessing
+  docker_service_preprocessing: preprocessing-service
   port_preprocessing: 8904
   route_preprocessing: process
   endpoint_preprocessing: "http://${data_preprocessing.docker_service_preprocessing}/${data_preprocessing.route_preprocessing}"
@@ -53,7 +53,7 @@ data_preprocessing:
   y_test_path: "${data_preprocessing.test_data_dir}/${data_preprocessing.y_test_file}"
 
 model_train:
-  docker_service_train: ms-sake-train
+  docker_service_train: train-service
   port_train: 8905
   route_train: train
   endpoint_train: "http://${model_train.docker_service_train}/${model_train.route_train}"
@@ -62,7 +62,7 @@ model_train:
   model_train_path: "${model_train.model_train_dir}/${model_train.model_train_file}"
 
 model_eval:
-  docker_service_eval: ms-sake-eval
+  docker_service_eval: eval-service
   port_eval: 8906
   route_eval: eval
   endpoint_eval: "http://${model_eval.docker_service_eval}/${model_eval.route_eval}"

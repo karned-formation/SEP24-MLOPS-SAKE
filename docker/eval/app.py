@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
-from eval import main
+
+from src.eval.eval import main
 
 app = FastAPI()
 

@@ -1,6 +1,7 @@
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI
-from clean_text import tokenize_data
+
+from src.data.clean_text import tokenize_data
 
 app = FastAPI()
 

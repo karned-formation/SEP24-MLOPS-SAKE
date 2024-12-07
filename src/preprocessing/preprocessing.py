@@ -7,10 +7,9 @@ import subprocess
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
-from custom_logger import logger
 
-import os
-import pandas as pd
+from src.custom_logger import logger
+
 
 def get_env_var(name):
     value = os.getenv(name)

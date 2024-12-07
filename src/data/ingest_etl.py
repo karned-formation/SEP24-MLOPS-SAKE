@@ -3,9 +3,10 @@ import requests
 import os
 import subprocess
 from typing import List
-from custom_logger import logger
-from s3handler import S3Handler
 from fastapi import HTTPException
+
+from src.custom_logger import logger
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)

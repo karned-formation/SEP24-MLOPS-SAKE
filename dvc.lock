@@ -22,8 +22,8 @@ stages:
       size: 3589
     - path: src/data/structure_raw.py
       hash: md5
-      md5: 913a67d14af30d19176c2eeb4a6f6c88
-      size: 3467
+      md5: 222e1cd8e683fb3b9a0cd5ffc0dcf882
+      size: 3431
     outs:
     - path: data/raw_per_classes/
       hash: md5
@@ -93,21 +93,21 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 8f6e79db1772ad27ff7ea6fa3fe1d666.dir
-      size: 3115082
+      md5: f9f7c3539333eff72265c5c27b4ea11a.dir
+      size: 3097922
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: ae8fd8092167a0d459e12f5b1b3b6a9e.dir
-      size: 2528542
+      md5: 6afc09a74b4000a40799ebbb3854bf26.dir
+      size: 2528658
       nfiles: 1
   train:
     cmd: curl -X "GET" "http://localhost:8905/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: 26d5051ab4d38b24788922340deb9ab5.dir
-      size: 2597437
+      md5: 13e4116cade78dec46263b5c6311d3dc.dir
+      size: 2582301
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
@@ -128,8 +128,8 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: cf2c722675e6efbf76287d66a69f896b.dir
-      size: 517645
+      md5: cc4ba51fe46dfc94f2693fdfd96ab9d7.dir
+      size: 515621
       nfiles: 2
     - path: dockers_started.txt
       hash: md5
@@ -168,6 +168,15 @@ stages:
       hash: md5
       md5: 59a04e062df44655488134f8946c638a
       size: 1287
+    outs:
+    - path: .env_mlops_sake
+      hash: md5
+      md5: ebda30d4cd6c48f6ac57daa41bbb423d
+      size: 3272
+    - path: .env_plantUML
+      hash: md5
+      md5: 6bbc1d40608aa5d1637aeb5d1d93d4d3
+      size: 3818
   start_docker:
     cmd: source scripts/docker_clean_dangling_images.sh && docker-compose stop &&
       docker-compose up --build -d && date > dockers_started.txt

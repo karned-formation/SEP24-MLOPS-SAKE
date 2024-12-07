@@ -1,0 +1,10 @@
+###
+POST https://sake.karned.bzh/token?username=killiankopp@gmail.com&password=elkiwi
+Content-Type: application/json
+
+{}
+###
+POST https://sake.karned.bzh/etl/clean?text=voici un test afin de vérifier le fonctionnement de notre API Gateway
+Content-Type: text/plain
+
+{}

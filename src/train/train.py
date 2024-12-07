@@ -6,7 +6,8 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
-from custom_logger import logger
+
+from src.custom_logger import logger
 
 def get_env_var(name):
     value = os.getenv(name)

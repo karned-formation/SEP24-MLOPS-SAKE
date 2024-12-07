@@ -6,7 +6,8 @@ from langdetect import detect
 import nltk
 nltk.download('wordnet')
 import spacy
-from custom_logger import logger
+
+from src.custom_logger import logger
 
 set_stop_words_french = set(stopwords.words('french'))
 set_stop_words_english = set(stopwords.words('english'))
