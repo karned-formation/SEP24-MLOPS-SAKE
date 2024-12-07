@@ -8,7 +8,7 @@ import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from src.experiment_tracking.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model
+from src.experiment_tracking.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model, run_command
 
 # Set page configuration
 st.set_page_config(
@@ -98,13 +98,7 @@ def delete_image(directory, filename):
     """Delete an image from a specific directory."""
     os.remove(os.path.join(directory, filename))
 
-def run_command(command):
-    """Run a shell command and return its output."""
-    try:
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        return result.stdout.strip()
-    except Exception as e:
-        return "", str(e)
+
     
 
 def page_select():
@@ -213,6 +207,10 @@ def page_select():
                     # Get commit hash
                     commit_hash_output = run_command("git rev-parse HEAD")
                     st.success(f"Commit Hash: {commit_hash_output}")
+                    
+                    # DVC PUSH
+                    dvc_push_output = run_command("dvc push")
+                    st.session_state.command_outputs.append(f"DVC PUSH : {dvc_push_output}")
                     st.session_state.commit_hash=commit_hash_output
 
             
