@@ -171,17 +171,17 @@ def page_select():
             st.session_state.command_outputs = []
 
         # Use column layout to create a main area and an output log area
-        main_col, log_col = st.columns([3, 1])
+        main_col, log_col = st.columns([2, 1])
 
         with main_col:
             
             st.header("Launch a new training")
             
             # DVC and Git commit buttons
-            col1, col2, col3 = st.columns(3)
+            col1, col2 = st.columns(2)
 
             with col1:
-                if st.button("Train Model (DVC Reproduce)"):
+                if st.button("Train Model and save run in MLflow"):
                     # Run DVC reproduce
                     st.write("Training...")
                     dvc_repro_output = run_command("dvc repro")
@@ -195,12 +195,12 @@ def page_select():
                     st.pyplot(fig)
                     st.write(f"Overall Accuracy: {scores['accuracy']:.2%}")
 
-            with col2:
-                if st.button("Commit Data (DVC & Git)"):         
                     # Git add and commit
-                    git_add_output = run_command("git add dvc.lock")          
+                    st.write("Running git add...")
+                    git_add_output = run_command("git add dvc.lock data/raw_per_classes.dvc")          
                     st.session_state.command_outputs.append(f"GIT ADD : {git_add_output}")
 
+                    st.write("Running git commit...")
                     git_commit_output = run_command('git commit -m "Training completed."')
                     st.session_state.command_outputs.append(f"GIT COMMIT : {git_commit_output}")
 
@@ -209,27 +209,24 @@ def page_select():
                     st.success(f"Commit Hash: {commit_hash_output}")
                     
                     # DVC PUSH
+                    st.write("Running dvc push...")
                     dvc_push_output = run_command("dvc push")
                     st.session_state.command_outputs.append(f"DVC PUSH : {dvc_push_output}")
                     st.session_state.commit_hash=commit_hash_output
 
+                    st.write("Saving run in mlflow...")                    
+                    st.session_state.run_id = save_to_mlflow(st.session_state.commit_hash)
+                    st.success("Successfully saved run in MLFLOW")
             
-            with col3:
-                if st.button("Save run in MLflow"):         
-                    if 'commit_hash' not in st.session_state:
-                        st.error("Please commit ther data first.")
-                    else:
-                        st.session_state.run_id = save_to_mlflow(st.session_state.commit_hash)
-                        st.success("Successfully saved run in MLFLOW")
-
+            with col2:     
                 if st.button("Register the model"):
                     if 'run_id' not in st.session_state:
-                        st.error("Save the run in ML flow for registering the model!")
+                        st.error("Please train the model first!")
                     else:
                         register_model(st.session_state.run_id)
                         st.success("Successfully registered the model!")
     
-            # Log output area on the right
+        # Log output area on the right
         with log_col:
             st.header("Command Log")
             if 'command_outputs' in st.session_state and st.session_state.command_outputs:
