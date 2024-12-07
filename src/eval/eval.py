@@ -5,8 +5,6 @@ import json
 import os
 import subprocess
 import joblib 
-import mlflow
-import dagshub
 import traceback
 
 from src.custom_logger import logger
@@ -20,15 +18,12 @@ def get_env_var(name):
 def get_env_variables():
     """Get environment variables."""
     model_path = get_env_var("MODEL_EVAL_MODEL_PATH")
-    X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
-    y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
     X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
     y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
     metrics_dir = get_env_var("MODEL_EVAL_METRICS_DIR")
-    cleaned_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
     host_uid = get_env_var("HOST_UID")
     host_gid = get_env_var("HOST_GID")
-    return model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, host_uid, host_gid
+    return model_path, X_test_path, y_test_path, metrics_dir, host_uid, host_gid
 
 def load_variables(model_path, X_test_path, y_test_path):
     """Load the model, X_test, and y_test from specified file paths."""
@@ -81,50 +76,6 @@ def save_confusion_matrix(confusion_matrix, confusion_matrix_path):
     logger.info(f"Confusion matrix saved successfully to {confusion_matrix_path}.")
 
 
-def flatten_dict(d, parent_key='', sep='_'):
-    """Flatten a nested dictionary."""
-    items = []
-    for k, v in d.items():
-        new_key = f"{parent_key}{sep}{k}" if parent_key else k
-        if isinstance(v, dict):
-            items.extend(flatten_dict(v, new_key, sep=sep).items())
-        else:
-            items.append((new_key.upper(), v))
-    return dict(items)
-
-
-def create_mlflow_run(experiment_id, metrics, artifacts, model):
-    """Update MLflow with the evaluation metrics. Return the run ID."""
-    logger.info("Creating MLflow run...")
-    mlflow.set_experiment(experiment_id)
-    with mlflow.start_run() as run:
-        mlflow.log_metric("test_accuracy", 1.0)
-        for key, value in metrics.items():
-            mlflow.log_metric(key, value)
-            
-        for key, value in artifacts.items():
-            mlflow.log_artifact(value)
-        
-        mlflow.sklearn.log_model(model, get_env_var("MLFLOW_MODEL_NAME"))
-        
-        logger.info(f"Eval metrics and artifacts successfully logged to MLflow.")
-    return run.info.run_id
-
-def register_model(run_id: int):
-    """Register the model in the MLflow registry."""
-    try: 
-        logger.info(f"Registering model in MLflow registry...")
-        mlflow.register_model(
-            model_uri=f"runs:/{run_id}/{get_env_var('MLFLOW_MODEL_NAME')}",
-            #version=get_env_var("MLFLOW_MODEL_VERSION"),
-            name=get_env_var("MLFLOW_MODEL_NAME"),
-            await_registration_for=600
-        )
-        logger.info(f"Model successfully registered in MLflow registry. Run ID: {run_id}")
-    except Exception as e:
-        logger.error(f"Error registering the model in the MLflow registry: {traceback.format_exc()}")
-        raise e
-
 def set_permissions_of_host_volume_owner(host_uid, host_gid):
     """ pour mettre en place les permissions du propriétaire hôte des volumes 
         - sur chacun des volumes montés dans "/app/"
@@ -165,33 +116,11 @@ def main():
     STAGE_NAME = "Stage: eval"   
     try:
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
-        model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, host_uid, host_gid = get_env_variables()
-        
-        # Run the script to set up the private connection to Dagshub - To be deleted when we'll use our own MLflow server
-        subprocess.run('./private_conn_dagshub.sh', shell=True, executable='/bin/bash')
-        logger.info(f"Initalizing Dagshub for MLflow tracking.")
-        dagshub.init(repo_owner='Belwen', repo_name='SEP24-MLOPS-SAKE', mlflow=True)
-        
+        model_path, X_test_path, y_test_path, metrics_dir, host_uid, host_gid = get_env_variables()
+                
         # Load the variables and evaluate the model
         model, X_test, y_test = load_variables(model_path, X_test_path, y_test_path)
-        metrics, confusion_matrix_path = evaluate(model, X_test, y_test, metrics_dir)
-        
-
-        # Update MLflow with the evaluation metrics and artifacts
-        run_id = create_mlflow_run(experiment_id=get_env_var("MLFLOW_EXPERIMENT_ID"), 
-                                    metrics=flatten_dict(metrics), 
-                                    model=model,
-                                    artifacts={
-                                        "cleaned_datasets": cleaned_dir,
-                                        "X_train": X_train_path,
-                                        "y_train": y_train_path,
-                                        "X_test": X_test_path, 
-                                        "y_test": y_test_path,
-                                        "confusion_matrix": confusion_matrix_path})
-
-
-        # Register the model in the MLflow registry
-        register_model(run_id)
+        evaluate(model, X_test, y_test, metrics_dir)
 
         # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
         set_permissions_of_host_volume_owner(host_uid, host_gid)

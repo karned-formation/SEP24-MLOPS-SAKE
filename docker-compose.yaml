@@ -6,7 +6,7 @@ services:
     image: killiankopp/ms-ocr-ia:1.1
     # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
-    container_name: OCR
+    container_name: ocr-service
     ports:
       - ${DATA_INGESTION_PORT_OCR}:80
     networks:
@@ -26,7 +26,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - clean-service:cache
     image: clean-service:1.0
-    container_name: clean_text
+    container_name: clean-service
     ports:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
     networks:
@@ -46,9 +46,9 @@ services:
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-etl:cache  
-    image: ms-sake-etl:1.0
-    container_name: ETL
+        - etl-service:cache  
+    image: etl-service:1.0
+    container_name: etl-service
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - ocr-service
       - clean-service
@@ -76,7 +76,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - preprocessing-service:cache
     image: preprocessing-service:1.0
-    container_name: preprocessing
+    container_name: preprocessing-service
     ports:
       - ${DATA_PREPROCESSING_PORT_PREPROCESSING}:80
     networks:
@@ -101,7 +101,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - train-service:cache
     image: train-service:1.0
-    container_name: train
+    container_name: train-service
     ports:
       - ${MODEL_TRAIN_PORT_TRAIN}:80
     networks:
@@ -125,7 +125,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - eval-service:cache
     image: eval-service:1.0
-    container_name: eval
+    container_name: eval-service
     ports:
       - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
@@ -152,7 +152,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - ms-sake-predict:cache
     image: ms-sake-predict:1.0  
-    container_name: predict
+    container_name: ms-sake-predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"
     networks:

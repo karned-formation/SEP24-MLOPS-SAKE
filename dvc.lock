@@ -35,8 +35,8 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: b5646a2a0e3217a0e1855f9c54f79a86.dir
-      size: 21550535
+      md5: c249b260cd4c9f9cd49935df16b4756d.dir
+      size: 21798276
       nfiles: 177
     - path: params.yaml
       hash: md5
@@ -45,16 +45,16 @@ stages:
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 93c4eecbc2a7ac2375ff75fd5dc4f854.dir
-      size: 170818
+      md5: 9b03b6b7f8d9bfed7562321104a1fc91.dir
+      size: 172714
       nfiles: 177
   clean:
     cmd: curl -X "POST" "http://localhost:8907/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 93c4eecbc2a7ac2375ff75fd5dc4f854.dir
-      size: 170818
+      md5: 9b03b6b7f8d9bfed7562321104a1fc91.dir
+      size: 172714
       nfiles: 177
     - path: params.yaml
       hash: md5
@@ -63,16 +63,16 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 1cb39ff14c92ff1f6069fa3630a10f96.dir
-      size: 110759
+      md5: 94436c866e203be5a7e25ca88a6281bf.dir
+      size: 111160
       nfiles: 3
   preprocessing:
     cmd: curl -X "GET" "http://localhost:8904/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 1cb39ff14c92ff1f6069fa3630a10f96.dir
-      size: 110759
+      md5: 94436c866e203be5a7e25ca88a6281bf.dir
+      size: 111160
       nfiles: 3
     - path: params.yaml
       hash: md5
@@ -81,21 +81,21 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: c2602a023344fd04aad8ec5f0b0d811d.dir
-      size: 3044018
+      md5: 7adf475712510da59b6962b51ad0cdc5.dir
+      size: 3052034
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 0ef48904eaff62d13c8f0702b82a1f12.dir
-      size: 2529412
+      md5: 070131e73702ca5fd3a33bf5c645c361.dir
+      size: 2529884
       nfiles: 1
   train:
     cmd: curl -X "GET" "http://localhost:8905/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: 68c4bcbae40cfb188bc4b1653e486b52.dir
-      size: 2550709
+      md5: e9220417bde9fc2ad6f8c1413081d48d.dir
+      size: 2562797
       nfiles: 2
     - path: params.yaml
       hash: md5
@@ -104,7 +104,7 @@ stages:
     outs:
     - path: models/train
       hash: md5
-      md5: 882571995e497174060d1f4f05b968dd.dir
+      md5: 577021788047824ff58df824779589ff.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -112,12 +112,12 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: b0b828257c8d1c6ba5d736aa659bb643.dir
-      size: 493309
+      md5: a0b00de796b365d8700e3389b3bdc665.dir
+      size: 489237
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: 882571995e497174060d1f4f05b968dd.dir
+      md5: 577021788047824ff58df824779589ff.dir
       size: 1682517
       nfiles: 1
     - path: params.yaml
@@ -127,12 +127,12 @@ stages:
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
-      md5: 7df4032c6936a0a9979c09a5478e9bc0
+      md5: 9e368a35e4aa4298f2c014e7244fdac6
       size: 75
     - path: metrics/scores.json
       hash: md5
-      md5: d754a8171cd384e0bd4e54afd8f70923
-      size: 399
+      md5: 00a8494869d5b572ea31d5aef970b670
+      size: 624
   env_mlops_sake:
     cmd: python3 src/config_transform_as_env.py && python src/smart_merge_.env_.env_mlops_sake.py
     deps:
