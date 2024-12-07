@@ -83,7 +83,7 @@ mlflow:
   model_version: "1.0"
 
 predict:
-  docker_service_predict: ms-sake-predict
+  docker_service_predict: predict-service
   port_predict: 8909
   cleaned_dir: "cleaned/"
   predictions_dir: "prediction/"
@@ -92,5 +92,5 @@ predict:
   route_predict: 'predict'
 
 orchestrator:
-  docker_service_predict: ms-sake-orchestrator
+  docker_service_predict: predict-orchestrator-service
   port_orchestrator: 8908

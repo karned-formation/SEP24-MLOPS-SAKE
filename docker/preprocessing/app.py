@@ -4,7 +4,7 @@ import os
 from src.preprocessing.preprocessing import main
 
 app = FastAPI()
-@app.get("/process")
+@app.post("/process")
 async def process_data():
     try:
         main()

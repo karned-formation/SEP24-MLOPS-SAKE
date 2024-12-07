@@ -1,6 +1,7 @@
 services:
   # Service OCR
   ocr-service:
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     image: killiankopp/ms-ocr-ia:1.1
@@ -14,6 +15,7 @@ services:
 
   # Service de nettoyage de texte
   clean-service:
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     build:
@@ -26,7 +28,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - clean-service:cache
     image: clean-service:1.0
-    container_name: clean_text
+    container_name: clean
     ports:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
     networks:
@@ -36,6 +38,7 @@ services:
 
   # Service ETL
   etl-service:
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     build:
@@ -46,8 +49,8 @@ services:
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-etl:cache  
-    image: ms-sake-etl:1.0
+        - etl:cache  
+    image: etl:1.0
     container_name: ETL
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - ocr-service
@@ -64,6 +67,7 @@ services:
     
   # Service de prétraitement
   preprocessing-service:
+    profiles: ["training"]
     env_file:
     - path: ./.env
     build:
@@ -89,6 +93,7 @@ services:
 
   # Service d'entraînement
   train-service:
+    profiles: ["training"]
     env_file:
     - path: ./.env
     build:
@@ -113,6 +118,7 @@ services:
 
   # Service d'évaluation
   eval-service:
+    profiles: ["training"]
     env_file:
     - path: ./.env
     build:
@@ -126,6 +132,8 @@ services:
         - eval-service:cache
     image: eval-service:1.0
     container_name: eval
+    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+      - etl-service
     ports:
       - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
@@ -138,7 +146,8 @@ services:
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
 
   # Service d'Orchestration
-  ms-sake-orchestrator:
+  predict-orchestrator-service:
+    profiles: ["prediction"]
     env_file:
     - path: ./.env
     build:
@@ -149,16 +158,17 @@ services:
         DOCKERFILE_DIR: docker/orchestrator
         LOG_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-orchestrator:cache
-    image: ms-sake-orchestrator:1.0  
-    container_name: orchestrator
+        - predict-orchestrator:cache
+    image: predict-orchestrator:1.0  
+    container_name: predict-orchestrator
     ports:
       - "${ORCHESTRATOR_PORT_ORCHESTRATOR}:80"
     networks:
       - sake
   
   # Service de prédiction
-  ms-sake-predict:
+  predict-service:
+    profiles: ["prediction"]
     env_file:
     - path: ./.env
     build:
@@ -170,8 +180,8 @@ services:
         LOG_DIR: src
         MODELS_DIR: models/
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-predict:cache
-    image: ms-sake-predict:1.0  
+        - predict:cache
+    image: predict:1.0  
     container_name: predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"

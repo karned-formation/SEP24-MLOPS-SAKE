@@ -4,7 +4,7 @@ from src.train.train import main
 
 app = FastAPI()
 
-@app.get('/train')
+@app.post('/train')
 def train():
     """
     Trains the model using the specified data directory and saves it to the specified model path.

@@ -4,7 +4,7 @@ from src.eval.eval import main
 
 app = FastAPI()
 
-@app.get('/eval')
+@app.post('/eval')
 def eval():
     try:
         # Run the main evaluation function
