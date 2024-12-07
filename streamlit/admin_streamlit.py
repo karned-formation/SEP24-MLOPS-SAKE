@@ -1,14 +1,11 @@
 import os
-import shutil
 import streamlit as st
-import streamlit_shadcn_ui as ui
-import subprocess
 import json
 import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from src.experiment_tracking.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model, run_command
+from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model, run_command
 
 # Set page configuration
 st.set_page_config(
@@ -98,8 +95,6 @@ def delete_image(directory, filename):
     """Delete an image from a specific directory."""
     os.remove(os.path.join(directory, filename))
 
-
-    
 
 def page_select():
     pages = ['Select Images', 'Train', 'ML Flow Runs']

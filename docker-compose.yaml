@@ -188,7 +188,30 @@ services:
       - "${PREDICT_PORT_PREDICT}:80"
     networks:
       - sake
-      
+
+  # Streamlit admin et gestion des données avec DVC et MLFLOW
+  admin-service:
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/admin/Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/admin
+        DOCKERFILE_DIR: docker/admin
+        STREAMLIT_DIR : streamlit
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - admin-service:cache
+    image: admin-service:1.0  
+    container_name: admin-service
+    ports:
+      - "${ADMIN_PORT_ADMIN}:80"
+    networks:
+      - sake
+    volumes:
+      - ./data:/app/data
+
 networks:
   sake:
     driver: bridge

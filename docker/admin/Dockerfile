@@ -4,6 +4,7 @@ FROM python:3.11
 ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
+ARG STREAMLIT_DIR
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -27,12 +28,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY $DOCKERFILE_DIR/app.py ./
 
-COPY $SOURCE_DIR/eval.py $SOURCE_DIR/eval.py
+COPY $SOURCE_DIR/mlflow_tracking.py $SOURCE_DIR/mlflow_tracking.py
 COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
+COPY $STREAMLIT_DIR/admin_streamlit.py $STREAMLIT_DIR/admin_streamlit.py
+
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-# CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
-CMD exec streamlit run admin_streamlit.py
+CMD exec streamlit run $STREAMLIT_DIR/admin_streamlit.py --server.port 80

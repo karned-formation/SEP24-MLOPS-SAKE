@@ -35,9 +35,9 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: deec5b87db70aa5b3744466b947c2b38.dir
+      md5: d34a8d079645fcd04a06d056853567e1.dir
       size: 22429521
-      nfiles: 190
+      nfiles: 186
     - path: params.yaml
       hash: md5
       md5: d05bd1adfe37dcb81f359156ada7de1d
