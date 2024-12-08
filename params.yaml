@@ -91,6 +91,15 @@ bucket:
   original_subdir: 'original_raw/'
   ocr_subdir: 'ocerized_raw/'
   cleaned_subdir: "cleaned/"
+
+  preprocessed_train_subdir: "processed/train/"
+  preprocessed_test_subdir: "processed/test/"
+  vectorizer_subdir: "models/vectorizers/"
+
+  model_train_subdir: "models/train/"
+
+  metrics_subdir: "metrics/"
+
   predictions_subdir: "prediction/"
 
 orchestrator:

@@ -5,13 +5,13 @@ from src.train.train import main
 app = FastAPI()
 
 @app.post('/train')
-def train():
+def train(prediction_folder_S3:str = None):
     """
     Trains the model using the specified data directory and saves it to the specified model path.
     """
     try:
         # Execute training process
-        main()
+        main(prediction_folder_S3)
         return {"message": "Model trained and saved successfully"}
     
     except FileNotFoundError as e:

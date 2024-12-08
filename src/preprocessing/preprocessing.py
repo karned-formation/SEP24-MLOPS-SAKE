@@ -7,9 +7,13 @@ import subprocess
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
+from fastapi import HTTPException
+
+# pour permettre de lancer le programme depuis l'intérieur du docker
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.custom_logger import logger
-
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -56,7 +60,7 @@ def fusionner_csv(chemin_dossier, inclure_racine=False):
         
         # Vérifier s'il y a plus d'un fichier CSV dans le sous-dossier
         if len(fichiers_csv) > 1:
-            logger.erreur(f"Erreur : Le sous-dossier '{sous_dossier}' contient plus d'un fichier CSV.")
+            logger.error(f"Erreur : Le sous-dossier '{sous_dossier}' contient plus d'un fichier CSV.")
             return None
         
         # Ajouter le fichier CSV s'il n'y en a qu'un seul
@@ -187,31 +191,61 @@ def set_permissions_of_host_volume_owner(host_uid, host_gid):
 
 
 
-def main() -> None:
+def main(prediction_folder_S3:str = None) -> None:
     """
     Main function to split the dataset, fit and apply TF-IDF vectorization, and save the results.
     """
-
-    STAGE_NAME = "Stage: Pre-Processing"    
     try:        
+
+        STAGE_NAME = "Stage: Pre-Processing"    
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
-        clean_dir_path = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+        if prediction_folder_S3:
+            bucket_name = get_env_var('AWS_BUCKET_NAME')
+            # Initialisation de la connexion au bucket              
+            handler = S3Handler(bucket_name)
 
-        X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
-        X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
-        y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
-        y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+            clean_subdir_bucket = get_env_var("BUCKET_CLEANED_SUBDIR")
+            clean_dir_path = f"{prediction_folder_S3}{clean_subdir_bucket}"
+            if not handler.folder_exists(clean_dir_path):
+                raise HTTPException (status_code = 404, 
+                                    detail = f"Le dossier '{clean_dir_path}' n'existe pas sur le bucket.")
 
-        tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+            # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+            handler.download_directory(remote_directory_name = clean_dir_path)
 
-        host_uid = get_env_var("HOST_UID")
-        host_gid = get_env_var("HOST_GID")
+            X_train_subdir = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+            X_train_filename = get_env_var("DATA_PREPROCESSING_X_TRAIN_FILE")
+            X_train_path = f"{prediction_folder_S3}{X_train_subdir}{X_train_filename}"
 
-        # Check if the input exists
-        if not os.path.exists(clean_dir_path):
-            logger.error(f"Dataset not found: {clean_dir_path}")
-            raise Exception("Dataset not found")
+            X_test_subdir = get_env_var("BUCKET_PREPROCESSED_TEST_SUBDIR")
+            X_test_filename = get_env_var("DATA_PREPROCESSING_X_TEST_FILE")
+            X_test_path = f"{prediction_folder_S3}{X_test_subdir}{X_test_filename}"
+
+            y_train_subdir = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+            y_train_filename = get_env_var("DATA_PREPROCESSING_Y_TRAIN_FILE")
+            y_train_path = f"{prediction_folder_S3}{y_train_subdir}{y_train_filename}"
+            
+            y_test_subdir = get_env_var("BUCKET_PREPROCESSED_TEST_SUBDIR")
+            y_test_filename = get_env_var("DATA_PREPROCESSING_Y_TEST_FILE")
+            y_test_path = f"{prediction_folder_S3}{y_test_subdir}{y_test_filename}"
+
+            tfidf_vectorizer_subdir = get_env_var("BUCKET_VECTORIZER_SUBDIR")
+            tfidf_vectorizer_filename = get_env_var("DATA_PREPROCESSING_VECTORIZER_FILE")
+            tfidf_vectorizer_path = f"{prediction_folder_S3}{tfidf_vectorizer_subdir}{tfidf_vectorizer_filename}"
+           
+        else: # local Linux docker volumes are used
+            clean_dir_path = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+
+            X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
+            X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
+            y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
+            y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+
+            tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+
+            host_uid = get_env_var("HOST_UID")
+            host_gid = get_env_var("HOST_GID")
 
         # Split the dataset into train and test sets
         X_train, X_test, y_train, y_test = split_dataset(clean_dir_path)
@@ -240,12 +274,22 @@ def main() -> None:
         # Save the fitted TF-IDF vectorizer
         save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
 
-        set_permissions_of_host_volume_owner(host_uid, host_gid)
+        if prediction_folder_S3:
+            # upload des fichiers locaux générés vers le bucket s3
+            handler.upload_file(X_train_path, X_train_path)
+            handler.upload_file(y_train_path, y_train_path)
+            handler.upload_file(X_test_path, X_test_path)
+            handler.upload_file(y_test_path, y_test_path)
+            handler.upload_file(tfidf_vectorizer_path, tfidf_vectorizer_path)
+        else:
+            # only apply if local Linux docker volumes are used !
+            set_permissions_of_host_volume_owner(host_uid, host_gid)
 
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+        
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
 
 if __name__ == "__main__":
-    main()
+    main("training_essai_EJA/")
