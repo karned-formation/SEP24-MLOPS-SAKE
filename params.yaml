@@ -85,11 +85,13 @@ mlflow:
 predict:
   docker_service_predict: predict-service
   port_predict: 8909
-  cleaned_dir: "cleaned/"
-  predictions_dir: "prediction/"
-  original_dir: 'original_raw/'
-  ocr_dir: 'ocerized_raw/'
   route_predict: 'predict'
+
+bucket:
+  original_subdir: 'original_raw/'
+  ocr_subdir: 'ocerized_raw/'
+  cleaned_subdir: "cleaned/"
+  predictions_subdir: "prediction/"
 
 orchestrator:
   docker_service_predict: predict-orchestrator-service

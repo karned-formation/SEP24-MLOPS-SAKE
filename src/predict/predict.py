@@ -21,7 +21,7 @@ def get_csv_file_path(prediction_folder: str):
     """
     Construct the path to the cleaned CSV file based on a folder path.
     """
-    cleaned_dir = get_env_var("PREDICT_CLEANED_DIR")
+    cleaned_dir = get_env_var("BUCKET_CLEANED_SUBDIR")
     return os.path.join(prediction_folder.rstrip('/'), cleaned_dir, 'cleaned.csv')
 
 def transform_with_tfidf(fitted_vectorizer: TfidfVectorizer, csv_file_path: str) -> pd.DataFrame:
@@ -72,7 +72,7 @@ def make_predictions(cleaned_csv_path, model, vectorized_data, display_predictio
         logger.info("Affichage des prédictions.")
 
     # Définir le chemin de sortie par défaut
-    prediction_dir = get_env_var("PREDICT_PREDICTIONS_DIR")
+    prediction_dir = get_env_var("BUCKET_PREDICTIONS_SUBDIR")
     output_csv_path = Path(cleaned_csv_path).parent.parent / prediction_dir / "predictions.csv"
     output_json_path = Path(cleaned_csv_path).parent.parent / prediction_dir / "predictions.json"
     # output_csv_path = Path(cleaned_csv_path).parent.parent / "prediction/predictions.csv"
@@ -150,7 +150,7 @@ def process_predictions(
     logger.info("Predictions generated successfully.")
     
     # Upload prediction results
-    prediction_folder = Path(csv_file_path).parent.parent / get_env_var("PREDICT_PREDICTIONS_DIR")
+    prediction_folder = Path(csv_file_path).parent.parent / get_env_var("BUCKET_PREDICTIONS_SUBDIR")
     logger.info(f"Uploading predictions to S3: {prediction_folder}")
     s3_handler.upload_directory(
         remote_path=str(prediction_folder), local_directory_name=str(prediction_folder)
