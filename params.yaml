@@ -83,14 +83,25 @@ mlflow:
   model_version: "1.0"
 
 predict:
-  docker_service_predict: ms-sake-predict
+  docker_service_predict: predict-service
   port_predict: 8909
-  cleaned_dir: "cleaned/"
-  predictions_dir: "prediction/"
-  original_dir: 'original_raw/'
-  ocr_dir: 'ocerized_raw/'
   route_predict: 'predict'
 
+bucket:
+  original_subdir: 'original_raw/'
+  ocr_subdir: 'ocerized_raw/'
+  cleaned_subdir: "cleaned/"
+
+  preprocessed_train_subdir: "processed/train/"
+  preprocessed_test_subdir: "processed/test/"
+  vectorizer_subdir: "models/vectorizers/"
+
+  model_train_subdir: "models/train/"
+
+  metrics_subdir: "metrics/"
+
+  predictions_subdir: "prediction/"
+
 orchestrator:
-  docker_service_predict: ms-sake-orchestrator
+  docker_service_predict: predict-orchestrator-service
   port_orchestrator: 8908

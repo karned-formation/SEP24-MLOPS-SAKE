@@ -13,7 +13,7 @@ stages:
   start_dockers:
     cmd: 'source scripts/docker_clean_dangling_images.sh && 
           docker-compose stop && 
-          docker-compose up --build -d && 
+          docker-compose --profile training up --build -d && 
           date > dockers_started.txt'
     deps:
     - .env_mlops_sake
@@ -34,7 +34,7 @@ stages:
         persist: true
 
   ingest:
-    cmd:  'curl -X "GET" "http://localhost:8907/ingest"'
+    cmd:  'curl -X "POST" "http://localhost:8907/ingest"'
     deps:
     - params.yaml
     - dockers_started.txt
@@ -44,7 +44,7 @@ stages:
         persist: true
 
   clean:
-    cmd: 'curl -X "GET" "http://localhost:8907/clean"'
+    cmd: 'curl -X "POST" "http://localhost:8907/clean"'
     deps:
     - params.yaml
     - dockers_started.txt
@@ -54,7 +54,7 @@ stages:
         persist: true
 
   preprocessing:
-    cmd: 'curl -X "GET" "http://localhost:8904/process"'
+    cmd: 'curl -X "POST" "http://localhost:8904/process"'
     deps:
     - params.yaml
     - dockers_started.txt
@@ -66,7 +66,7 @@ stages:
         persist: true
 
   train:
-    cmd: 'curl -X "GET" "http://localhost:8905/train"'
+    cmd: 'curl -X "POST" "http://localhost:8905/train"'
     deps:
     - params.yaml
     - dockers_started.txt
@@ -76,7 +76,7 @@ stages:
         persist: true
 
   eval:
-    cmd: 'curl -X "GET" "http://localhost:8906/eval"'
+    cmd: 'curl -X "POST" "http://localhost:8906/eval"'
     deps:
     - params.yaml
     - dockers_started.txt

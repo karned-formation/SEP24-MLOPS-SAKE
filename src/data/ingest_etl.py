@@ -143,8 +143,8 @@ def ingest_prediction(remote_directory_name: str):
 
         bucket_name = get_env_var('AWS_BUCKET_NAME')
         ocr_endpoint = get_env_var("DATA_INGESTION_OCR_ENDPOINT")
-        ocr_dir = get_env_var("PREDICT_OCR_DIR")
-        original_dir = get_env_var("PREDICT_ORIGINAL_DIR")
+        ocr_dir = get_env_var("BUCKET_OCR_SUBDIR")
+        original_dir = get_env_var("BUCKET_ORIGINAL_SUBDIR")
         
         # Initialisation de la connexion au bucket              
         handler = S3Handler(bucket_name)

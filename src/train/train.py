@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 import pandas as pd
 import joblib
@@ -6,8 +7,13 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Tuple
+from fastapi import HTTPException
+
+# pour permettre de lancer le programme depuis l'intérieur du docker
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.custom_logger import logger
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -16,19 +22,10 @@ def get_env_var(name):
     return value
 
 
-def load_data(data_dir: str) -> Tuple[pd.DataFrame, pd.Series]:
-    """
-    Loads the training data from the data folder.
-
-    Parameters:
-        data_dir (str): The directory path containing X_train.csv and y_train.csv files.
-
-    Returns:
-        Tuple[pd.DataFrame, pd.Series]: The feature data (X_train) as a DataFrame and labels (y_train) as a Series.
-    """
+def load_data(X_train_path, y_train_path) -> Tuple[pd.DataFrame, pd.Series]:
     try:
-        X_train = joblib.load(os.path.join(data_dir, 'X_train.joblib'))
-        y_train = joblib.load(os.path.join(data_dir, 'y_train.joblib'))
+        X_train = joblib.load(X_train_path)
+        y_train = joblib.load(y_train_path)
         return X_train, y_train
     except Exception as e:
         raise FileNotFoundError(f"Error loading data files from {data_dir}: {e}")
@@ -101,7 +98,7 @@ def set_permissions_of_host_volume_owner(host_uid, host_gid):
     else:
         logger.error("UID ou GID de l'hôte non définis.")
 
-def main():
+def main(prediction_folder_S3:str = None):
     """
     Main function to load data, create model, train it, and save it.
     """
@@ -110,19 +107,52 @@ def main():
     try:        
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
-        data_dir = get_env_var("DATA_PREPROCESSING_TRAIN_DATA_DIR")
-        model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+        if prediction_folder_S3:
+            bucket_name = get_env_var('AWS_BUCKET_NAME')
+            # Initialisation de la connexion au bucket              
+            handler = S3Handler(bucket_name)
+            
+            preprocessed_train_data_subdir_bucket = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+            preprocessed_train_data_dir = f"{prediction_folder_S3}{preprocessed_train_data_subdir_bucket}"
+            if not handler.folder_exists(preprocessed_train_data_dir):
+                raise HTTPException (status_code = 404, 
+                                    detail = f"Le dossier '{preprocessed_train_data_dir}' n'existe pas sur le bucket.")
 
-        host_uid = get_env_var("HOST_UID")
-        host_gid = get_env_var("HOST_GID")
+            # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+            handler.download_directory(remote_directory_name = preprocessed_train_data_dir)
+
+            X_train_subdir = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+            X_train_filename = get_env_var("DATA_PREPROCESSING_X_TRAIN_FILE")
+            X_train_path = f"{prediction_folder_S3}{X_train_subdir}{X_train_filename}"
+
+            y_train_subdir = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+            y_train_filename = get_env_var("DATA_PREPROCESSING_Y_TRAIN_FILE")
+            y_train_path = f"{prediction_folder_S3}{y_train_subdir}{y_train_filename}"
+
+            model_subdir = get_env_var("BUCKET_MODEL_TRAIN_SUBDIR")
+            model_filename = get_env_var("MODEL_TRAIN_MODEL_TRAIN_FILE")
+            model_path = f"{prediction_folder_S3}{model_subdir}{model_filename}"
+
+        else: # local Linux docker volumes are used
+            X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
+            y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
+
+            model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+
+            host_uid = get_env_var("HOST_UID")
+            host_gid = get_env_var("HOST_GID")
 
         # Check if the input exists
-        if not os.path.exists(data_dir):
-            logger.error(f"Train Dataset not found: {data_dir}")
-            raise Exception("Dataset not found")
+        if not os.path.exists(X_train_path):
+            logger.error(f"Train Dataset not found: {X_train_path}")
+            raise Exception(f"X Train Dataset not found: {X_train_path}")
+        
+        if not os.path.exists(y_train_path):
+            logger.error(f"Train Dataset not found: {y_train_path}")
+            raise Exception(f"X Train Dataset not found: {y_train_path}")
 
         # Load data
-        X_train, y_train = load_data(data_dir)
+        X_train, y_train = load_data(X_train_path, y_train_path)
         logger.info("Data loaded successfully.")
 
         # Create model
@@ -137,9 +167,15 @@ def main():
         save_model(model, model_path)
         logger.info("Model saved successfully.")
 
-        set_permissions_of_host_volume_owner(host_uid, host_gid)
+        if prediction_folder_S3:
+            # upload des fichiers locaux générés vers le bucket s3
+            handler.upload_file(model_path, model_path)
+        else:
+            # only apply if local Linux docker volumes are used !
+            set_permissions_of_host_volume_owner(host_uid, host_gid)
 
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
@@ -147,4 +183,4 @@ def main():
 # Execute main function
 if __name__ == "__main__":
 
-    main()
+    main("training_essai_EJA/")

@@ -11,7 +11,7 @@ def ingest(prediction_folder:str = None):
     try:
         if prediction_folder:
             ingest_prediction(prediction_folder)
-        else :
+        else:
             ingest_train()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

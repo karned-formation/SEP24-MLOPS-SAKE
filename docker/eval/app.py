@@ -4,11 +4,11 @@ from src.eval.eval import main
 
 app = FastAPI()
 
-@app.get('/eval')
-def eval():
+@app.post('/eval')
+def eval(prediction_folder_S3:str = None):
     try:
         # Run the main evaluation function
-        main()
+        main(prediction_folder_S3)
     except FileNotFoundError as e:
         # Handle missing files
         raise HTTPException(status_code=404, detail=f"File not found: {e}")
