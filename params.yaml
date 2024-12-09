@@ -105,3 +105,7 @@ bucket:
 orchestrator:
   docker_service_predict: predict-orchestrator-service
   port_orchestrator: 8908
+
+admin: 
+  port_admin = 8910
+  
