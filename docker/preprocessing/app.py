@@ -1,13 +1,12 @@
 from fastapi import FastAPI, HTTPException
-import os
 
 from src.preprocessing.preprocessing import main
 
 app = FastAPI()
-@app.get("/process")
-async def process_data():
+@app.post("/process")
+async def process_data(prediction_folder_S3:str = None):
     try:
-        main()
+        main(prediction_folder_S3)
         return {"message": "Data successfully preprocessed and vectorized. Outputs saved to specified directory."}
 
     except FileNotFoundError as e:

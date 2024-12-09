@@ -3,13 +3,19 @@ import numpy as np
 from imblearn.metrics import classification_report_imbalanced
 import json
 import os
+import sys
 import subprocess
 import joblib 
 import mlflow
 import dagshub
 import traceback
+from fastapi import HTTPException
+
+# pour permettre de lancer le programme depuis l'intérieur du docker
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.custom_logger import logger
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -17,15 +23,81 @@ def get_env_var(name):
         raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
     return value
 
-def get_env_variables():
+def get_env_variables(prediction_folder_S3:str):
     """Get environment variables."""
-    model_path = get_env_var("MODEL_EVAL_MODEL_PATH")
-    X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
-    y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
-    X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
-    y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
-    metrics_dir = get_env_var("MODEL_EVAL_METRICS_DIR")
-    cleaned_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+    if prediction_folder_S3:
+        bucket_name = get_env_var('AWS_BUCKET_NAME')
+        # Initialisation de la connexion au bucket              
+        handler = S3Handler(bucket_name)
+        
+        preprocessed_train_data_subdir_bucket = get_env_var("BUCKET_PREPROCESSED_TRAIN_SUBDIR")
+        preprocessed_train_data_dir = f"{prediction_folder_S3}{preprocessed_train_data_subdir_bucket}"
+        if not handler.folder_exists(preprocessed_train_data_dir):
+            raise HTTPException (status_code = 404, 
+                                detail = f"Le dossier '{preprocessed_train_data_dir}' n'existe pas sur le bucket.")
+        # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+        handler.download_directory(remote_directory_name = preprocessed_train_data_dir)
+
+        preprocessed_test_data_subdir_bucket = get_env_var("BUCKET_PREPROCESSED_TEST_SUBDIR")
+        preprocessed_test_data_dir = f"{prediction_folder_S3}{preprocessed_test_data_subdir_bucket}"
+        if not handler.folder_exists(preprocessed_test_data_dir):
+            raise HTTPException (status_code = 404, 
+                                detail = f"Le dossier '{preprocessed_test_data_dir}' n'existe pas sur le bucket.")
+        # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+        handler.download_directory(remote_directory_name = preprocessed_test_data_dir)
+
+        model_train_subdir_bucket = get_env_var("BUCKET_MODEL_TRAIN_SUBDIR")
+        model_train_dir = f"{prediction_folder_S3}{model_train_subdir_bucket}"
+        if not handler.folder_exists(model_train_dir):
+            raise HTTPException (status_code = 404, 
+                                detail = f"Le dossier '{model_train_dir}' n'existe pas sur le bucket.")
+        # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+        handler.download_directory(remote_directory_name = model_train_dir)
+
+        # Uniquement pour MLFlow
+        cleaned_subdir_bucket = get_env_var("BUCKET_CLEANED_SUBDIR")
+        cleaned_dir = f"{prediction_folder_S3}{cleaned_subdir_bucket}"
+        if not handler.folder_exists(cleaned_dir):
+            raise HTTPException (status_code = 404, 
+                                detail = f"Le dossier '{cleaned_dir}' n'existe pas sur le bucket.")
+        # On télécharge le dossier en local (/!\ Potentiellement plusieurs fichiers)
+        handler.download_directory(remote_directory_name = cleaned_dir)
+
+        X_train_filename = get_env_var("DATA_PREPROCESSING_X_TRAIN_FILE")
+        X_train_path = f"{preprocessed_train_data_dir}{X_train_filename}"
+
+        y_train_filename = get_env_var("DATA_PREPROCESSING_Y_TRAIN_FILE")
+        y_train_path = f"{preprocessed_train_data_dir}{y_train_filename}"
+
+        X_test_filename = get_env_var("DATA_PREPROCESSING_X_TEST_FILE")
+        X_test_path = f"{preprocessed_test_data_dir}{X_test_filename}"
+
+        y_test_filename = get_env_var("DATA_PREPROCESSING_Y_TEST_FILE")
+        y_test_path = f"{preprocessed_test_data_dir}{y_test_filename}"
+
+        model_filename = get_env_var("MODEL_TRAIN_MODEL_TRAIN_FILE")
+        model_path = f"{model_train_dir}{model_filename}"
+
+        metrics_subdir = get_env_var("BUCKET_METRICS_SUBDIR")
+        metrics_dir = f"{prediction_folder_S3}{metrics_subdir}"
+
+        # uniquement pour MLFlow
+        cleaned_subdir_bucket = get_env_var("BUCKET_CLEANED_SUBDIR")
+        cleaned_dir = f"{prediction_folder_S3}{cleaned_subdir_bucket}"
+
+    else: # local Linux docker volumes are used
+        X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
+        y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
+        X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
+        y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+
+        model_path = get_env_var("MODEL_EVAL_MODEL_PATH")
+
+        metrics_dir = get_env_var("MODEL_EVAL_METRICS_DIR")
+
+        # uniquement pour MLFlow
+        cleaned_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+
     host_uid = get_env_var("HOST_UID")
     host_gid = get_env_var("HOST_GID")
     return model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, host_uid, host_gid
@@ -159,13 +231,16 @@ def evaluate(model, X_test, y_test, metrics_dir):
     return metrics, confusion_matrix_path
     
 
-def main():
+def main(prediction_folder_S3:str = None):
     """Run model prediction, calculate metrics, and save results."""  
 
     STAGE_NAME = "Stage: eval"   
     try:
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
-        model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, host_uid, host_gid = get_env_variables()
+        model_path, \
+        X_train_path, y_train_path, X_test_path, y_test_path, \
+        metrics_dir, cleaned_dir, \
+        host_uid, host_gid = get_env_variables(prediction_folder_S3)
         
         # Run the script to set up the private connection to Dagshub - To be deleted when we'll use our own MLflow server
         subprocess.run('./private_conn_dagshub.sh', shell=True, executable='/bin/bash')
@@ -193,13 +268,23 @@ def main():
         # Register the model in the MLflow registry
         register_model(run_id)
 
-        # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
-        set_permissions_of_host_volume_owner(host_uid, host_gid)
+        if prediction_folder_S3:
+            bucket_name = get_env_var('AWS_BUCKET_NAME')
+            handler = S3Handler(bucket_name)
+            # upload des fichiers locaux générés vers le bucket s3
+            handler.upload_directory(metrics_dir, metrics_dir)
+
+        else:
+            # only apply if local Linux docker volumes are used !
+            # pour mettre en place les permissions du propriétaire hôte des volumes (pour la création de dossier ou de fichiers)
+            set_permissions_of_host_volume_owner(host_uid, host_gid)
+
         logger.info(f">>>>> {STAGE_NAME} / END <<<<<")
+
     except Exception as e:
         logger.error(f"Erreur lors de l'évaluation du modèle : {traceback.format_exc()}")
         raise e
 
 # Execute main function
 if __name__ == "__main__":
-    main()
+    main("training_essai_EJA/")

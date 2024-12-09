@@ -13,6 +13,7 @@ def load_env_file(filepath):
 
 def save_env_file(filepath, env_vars):
     with open(filepath, 'w') as file:
+        file.write("\n# /!\ à ne pas éditer => modifier params.yaml ou .env_original (secrets)\n")
         for key, value in env_vars.items():
             file.write(f"{key}={value}\n")
 

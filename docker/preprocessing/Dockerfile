@@ -27,6 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY $DOCKERFILE_DIR/app.py ./
 
 COPY $SOURCE_DIR/preprocessing.py $SOURCE_DIR/preprocessing.py
+COPY $COMMON_DIR/s3handler.py $COMMON_DIR/s3handler.py
 COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
 
 CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
