@@ -132,8 +132,6 @@ services:
         - eval-service:cache
     image: eval-service:1.0
     container_name: eval
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
-      - etl-service
     ports:
       - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
@@ -161,6 +159,9 @@ services:
         - predict-orchestrator:cache
     image: predict-orchestrator:1.0  
     container_name: predict-orchestrator
+    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+      - etl-service
+      - predict-service
     ports:
       - "${ORCHESTRATOR_PORT_ORCHESTRATOR}:80"
     networks:
