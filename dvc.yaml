@@ -1,6 +1,6 @@
 stages:
   ingest:
-    cmd:  'curl -X "POST" "http://localhost:8907/ingest"'
+    cmd:  'curl -X "POST" "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/ingest"'
     deps:
     - params.yaml
     - ${data_structure_raw.raw_dataset_dir}
@@ -9,7 +9,7 @@ stages:
         persist: true
 
   clean:
-    cmd: 'curl -X "POST" "http://localhost:8907/clean"'
+    cmd: 'curl -X "POST" "http://${data_cleaning.docker_service_clean_text}/clean"'
     deps:
     - params.yaml
     - ${data_ingestion.ocr_text_dir}
@@ -18,7 +18,7 @@ stages:
         persist: true
 
   preprocessing:
-    cmd: 'curl -X "POST" "http://localhost:8904/process"'
+    cmd: 'curl -X "GET" "http://${data_preprocessing.docker_service_preprocessing}/process"'
     deps:
     - params.yaml
     - ${data_cleaning.cleaned_datasets_dir}
@@ -29,7 +29,7 @@ stages:
         persist: true
 
   train:
-    cmd: 'curl -X "POST" "http://localhost:8905/train"'
+    cmd: 'curl -X "GET" "http://${model_train.docker_service_train}/train"'
     deps:
     - params.yaml
     - ${data_preprocessing.train_data_dir}
@@ -38,7 +38,7 @@ stages:
         persist: true
 
   eval:
-    cmd: 'curl -X "POST" "http://localhost:8906/eval"'
+    cmd: 'curl -X "GET" "http://${model_eval.docker_service_eval}/eval"'
     deps:
     - params.yaml
     - ${data_preprocessing.test_data_dir}
