@@ -169,7 +169,7 @@ services:
         COMMON_DIR: src
         SOURCE_DIR: src/admin
         DOCKERFILE_DIR: docker/admin
-        STREAMLIT_DIR : streamlit
+        STREAMLIT_DIR: src/streamlit
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - admin-service:cache
     image: admin-service:1.0  

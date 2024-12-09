@@ -87,3 +87,6 @@ predict:
   port_predict: "8908"
   cleaned_dir: "cleaned/"
   predictions_dir: "prediction/"
+
+admin:
+  port_admin: 8909

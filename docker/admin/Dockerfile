@@ -12,10 +12,17 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
 ENV PORT=80
 ENV WORKERS=1
+ENV STREAMLIT_DIR ${STREAMLIT_DIR}
 
-EXPOSE $PORT
+EXPOSE ${PORT}
 
-WORKDIR $APP_HOME
+RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git
+RUN cd SEP24-MLOPS-SAKE/
+# remove the following line when merging with main
+RUN git switch training_admin_launch 
+RUN git pull
+
+WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends gcc && \
@@ -23,18 +30,12 @@ RUN apt-get update && apt-get upgrade -y && \
 
 RUN pip install --upgrade pip
 
-COPY $DOCKERFILE_DIR/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY $DOCKERFILE_DIR/app.py ./
-
-COPY $SOURCE_DIR/mlflow_tracking.py $SOURCE_DIR/mlflow_tracking.py
-COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
-COPY $STREAMLIT_DIR/admin_streamlit.py $STREAMLIT_DIR/admin_streamlit.py
-
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-CMD exec streamlit run $STREAMLIT_DIR/admin_streamlit.py --server.port 80
+
+
+CMD dvc pull && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
