@@ -107,5 +107,4 @@ orchestrator:
   port_orchestrator: 8908
 
 admin: 
-  port_admin = 8910
-  
+  port_admin: 8910

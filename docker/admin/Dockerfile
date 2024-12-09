@@ -15,14 +15,13 @@ ENV WORKERS=1
 ENV STREAMLIT_DIR ${STREAMLIT_DIR}
 
 EXPOSE ${PORT}
+WORKDIR ${APP_HOME}
 
-RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git
-RUN cd SEP24-MLOPS-SAKE/
+RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
+WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 # remove the following line when merging with main
 RUN git switch training_admin_launch 
 RUN git pull
-
-WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends gcc && \
@@ -35,7 +34,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
-
 
 
 CMD dvc pull && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
