@@ -29,7 +29,7 @@ if st.button("Traiter"):
             st.success(
                 f"Référence : {r['reference']} \n\n"
                 f"UUID : {r['uuid']} \n\n"
-                f"Prédiction : {r['prediction']} \n\n"
+                # f"Prédiction : {r['prediction']} \n\n"
                 f"Message : {r['message']}"
             )
         else:
