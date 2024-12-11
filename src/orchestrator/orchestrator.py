@@ -22,8 +22,8 @@ def get_env_var(name):
 
 
 def create_folder_structure():
-    # uuid = '86a9a398-713c-42e9-8508-50fc5495856d' 
     uuid = str(uuid4())
+    uuid = '86a9a398-713c-42e9-8508-50fc5495856d' 
     original_raw_path = f'{uuid}/original_raw'
 
     Path(original_raw_path).mkdir(exist_ok=True, parents=True)
@@ -114,14 +114,14 @@ def call_predict(uuid):
         raise Exception("Le chemin fourni à predict est invalide")
 
 
-def main(files):
-    uuid = save_images(files)
+def main(uuid):
+    # uuid = save_images(files)
     
     call_ingest(uuid)
     call_clean(uuid)
     prediction = call_predict(uuid)
     
-    return uuid, prediction
+    return prediction
 
 
 if __name__ == "__main__":
