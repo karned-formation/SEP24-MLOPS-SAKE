@@ -191,6 +191,7 @@ services:
 
   # Streamlit admin et gestion des données avec DVC et MLFLOW
   admin-service:
+    profiles: ["training"]
     env_file:
     - path: ./.env
     build:
@@ -201,6 +202,7 @@ services:
         SOURCE_DIR: src/admin
         DOCKERFILE_DIR: docker/admin
         STREAMLIT_DIR: src/streamlit
+        DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - admin-service:cache
     image: admin-service:1.0  
@@ -209,9 +211,7 @@ services:
       - "${ADMIN_PORT_ADMIN}:80"
     networks:
       - sake
-    volumes:
-      - ./data:/app/data
-
+      
 networks:
   sake:
     driver: bridge

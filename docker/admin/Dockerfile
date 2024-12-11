@@ -5,6 +5,8 @@ ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
 ARG STREAMLIT_DIR
+ARG DAGSHUB_ACCESS_KEY_ID
+
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -29,11 +31,13 @@ RUN apt-get update && apt-get upgrade -y && \
 
 RUN pip install --upgrade pip
 
+RUN python3 -m venv .venv
+RUN . .venv/bin/activate
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-
-CMD dvc pull && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
+CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80

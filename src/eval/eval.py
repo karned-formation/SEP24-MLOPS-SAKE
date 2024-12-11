@@ -85,9 +85,6 @@ def get_env_variables(prediction_folder_S3:str):
 
         metrics_dir = get_env_var("MODEL_EVAL_METRICS_DIR")
 
-        # uniquement pour MLFlow
-        cleaned_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
-
     host_uid = get_env_var("HOST_UID")
     host_gid = get_env_var("HOST_GID")
     return model_path, X_test_path, y_test_path, metrics_dir, host_uid, host_gid
