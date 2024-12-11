@@ -22,8 +22,8 @@ def get_env_var(name):
 
 
 def create_folder_structure():
+    # uuid = '86a9a398-713c-42e9-8508-50fc5495856d' 
     uuid = str(uuid4())
-    uuid = '86a9a398-713c-42e9-8508-50fc5495856d' 
     original_raw_path = f'{uuid}/original_raw'
 
     Path(original_raw_path).mkdir(exist_ok=True, parents=True)
@@ -101,12 +101,11 @@ def call_clean(uuid):
     
 def call_predict(uuid):
     endpoint_url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}" # TODO
-    print(endpoint_url)
+
     response = requests.post(
     endpoint_url,
     params={"prediction_folder": f'{uuid}/'}
     )
-    # print(response.json())
     prediction = dict(response.json()).get('data', 0)
     if prediction:
         return prediction
