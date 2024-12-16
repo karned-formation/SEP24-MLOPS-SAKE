@@ -31,3 +31,5 @@ dockers_started.txt
 docker/eval/private_conn_dagshub.sh
 
 NOT_USED_FOR_DAGSHUB/
+doc_classification.egg-info/
+
