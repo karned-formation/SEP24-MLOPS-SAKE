@@ -211,6 +211,9 @@ services:
       - "${ADMIN_PORT_ADMIN}:80"
     networks:
       - sake
+    volumes:
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${MODEL_EVAL_METRICS_DIR}:/app/SEP24-MLOPS-SAKE/${MODEL_EVAL_METRICS_DIR}
       
 networks:
   sake:
