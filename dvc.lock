@@ -31,17 +31,17 @@ stages:
       size: 21840025
       nfiles: 181
   ingest:
-    cmd: curl -X "POST" "http://localhost:8907/ingest"
+    cmd: curl -X "POST" "http://ocr-service:8901/ingest"
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: d34a8d079645fcd04a06d056853567e1.dir
-      size: 22429521
+      md5: 1255c67587a813a2b300a7261adbfbbe.dir
+      size: 22204457
       nfiles: 186
     - path: params.yaml
       hash: md5
-      md5: d05bd1adfe37dcb81f359156ada7de1d
-      size: 3410
+      md5: e8863fbdae4c02e9b337daf654ab891c
+      size: 3870
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -49,7 +49,7 @@ stages:
       size: 179562
       nfiles: 186
   clean:
-    cmd: curl -X "POST" "http://localhost:8907/clean"
+    cmd: curl -X "POST" "http://clean-service/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -58,8 +58,8 @@ stages:
       nfiles: 186
     - path: params.yaml
       hash: md5
-      md5: d05bd1adfe37dcb81f359156ada7de1d
-      size: 3410
+      md5: e8863fbdae4c02e9b337daf654ab891c
+      size: 3870
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -67,7 +67,7 @@ stages:
       size: 116088
       nfiles: 3
   preprocessing:
-    cmd: curl -X "GET" "http://localhost:8904/process"
+    cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -76,8 +76,8 @@ stages:
       nfiles: 3
     - path: params.yaml
       hash: md5
-      md5: d05bd1adfe37dcb81f359156ada7de1d
-      size: 3410
+      md5: e8863fbdae4c02e9b337daf654ab891c
+      size: 3870
     outs:
     - path: data/processed
       hash: md5
@@ -90,7 +90,7 @@ stages:
       size: 2528006
       nfiles: 1
   train:
-    cmd: curl -X "GET" "http://localhost:8905/train"
+    cmd: curl -X "POST" "http://train-service/train"
     deps:
     - path: data/processed/train
       hash: md5
@@ -99,8 +99,8 @@ stages:
       nfiles: 2
     - path: params.yaml
       hash: md5
-      md5: d05bd1adfe37dcb81f359156ada7de1d
-      size: 3410
+      md5: e8863fbdae4c02e9b337daf654ab891c
+      size: 3870
     outs:
     - path: models/train
       hash: md5
@@ -108,7 +108,7 @@ stages:
       size: 1682517
       nfiles: 1
   eval:
-    cmd: curl -X "GET" "http://localhost:8906/eval"
+    cmd: curl -X "POST" "http://eval-service/eval"
     deps:
     - path: data/processed/test
       hash: md5
@@ -122,8 +122,8 @@ stages:
       nfiles: 1
     - path: params.yaml
       hash: md5
-      md5: d05bd1adfe37dcb81f359156ada7de1d
-      size: 3410
+      md5: e8863fbdae4c02e9b337daf654ab891c
+      size: 3870
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
