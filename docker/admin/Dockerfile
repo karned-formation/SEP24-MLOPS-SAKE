@@ -40,4 +40,4 @@ COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
+CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
