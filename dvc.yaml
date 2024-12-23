@@ -1,6 +1,6 @@
 stages:
   ingest:
-    cmd:  'curl -X "POST" "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/ingest"'
+    cmd:  'curl -X "POST" "http://${data_ETL.docker_service_ETL}/ingest"'
     deps:
     - params.yaml
     - ${data_structure_raw.raw_dataset_dir}
@@ -9,7 +9,7 @@ stages:
         persist: true
 
   clean:
-    cmd: 'curl -X "POST" "http://${data_cleaning.docker_service_clean_text}/clean"'
+    cmd: 'curl -X "POST" "http://${data_ETL.docker_service_ETL}/clean"'
     deps:
     - params.yaml
     - ${data_ingestion.ocr_text_dir}
