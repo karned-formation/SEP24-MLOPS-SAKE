@@ -179,7 +179,7 @@ def page_select():
                 if st.button("Train Model and save run in MLflow"):
                     # Run DVC reproduce
                     st.write("Training...")
-                    dvc_repro_output = run_command("dvc repro")
+                    dvc_repro_output = run_command("dvc repro --force")
                     st.session_state.command_outputs.append(f"DVC REPRO : {dvc_repro_output}")
                     
                     # Load and display confusion matrix
