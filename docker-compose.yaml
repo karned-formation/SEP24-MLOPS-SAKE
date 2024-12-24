@@ -7,7 +7,7 @@ services:
     image: killiankopp/ms-ocr-ia:1.1
     # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
-    container_name: OCR
+    container_name: ocr-service
     ports:
       - ${DATA_INGESTION_PORT_OCR}:80
     networks:
@@ -28,7 +28,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - clean-service:cache
     image: clean-service:1.0
-    container_name: clean
+    container_name: clean-service
     ports:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
     networks:
@@ -49,9 +49,9 @@ services:
         SOURCE_DIR: src/data
         DOCKERFILE_DIR: docker/etl  
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - etl:cache  
-    image: etl:1.0
-    container_name: ETL
+        - etl-service:cache  
+    image: etl-service:1.0
+    container_name: etl-service
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - ocr-service
       - clean-service
@@ -80,7 +80,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - preprocessing-service:cache
     image: preprocessing-service:1.0
-    container_name: preprocessing
+    container_name: preprocessing-service
     ports:
       - ${DATA_PREPROCESSING_PORT_PREPROCESSING}:80
     networks:
@@ -106,7 +106,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - train-service:cache
     image: train-service:1.0
-    container_name: train
+    container_name: train-service
     ports:
       - ${MODEL_TRAIN_PORT_TRAIN}:80
     networks:
@@ -131,7 +131,7 @@ services:
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - eval-service:cache
     image: eval-service:1.0
-    container_name: eval
+    container_name: eval-service
     ports:
       - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
@@ -181,13 +181,43 @@ services:
         LOG_DIR: src
         MODELS_DIR: models/
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - predict:cache
-    image: predict:1.0  
-    container_name: predict
+        - ms-sake-predict:cache
+    image: ms-sake-predict:1.0  
+    container_name: ms-sake-predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"
     networks:
       - sake
+
+  # Streamlit admin et gestion des données avec DVC et MLFLOW
+  admin-service:
+    profiles: ["training"]
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/admin/Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/admin
+        DOCKERFILE_DIR: docker/admin
+        STREAMLIT_DIR: src/streamlit
+        DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - admin-service:cache
+    image: admin-service:1.0  
+    container_name: admin-service
+    ports:
+      - "${ADMIN_PORT_ADMIN}:80"
+    networks:
+      - sake
+    volumes:
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${MODEL_EVAL_METRICS_DIR}:/app/SEP24-MLOPS-SAKE/${MODEL_EVAL_METRICS_DIR}
+      - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
+      - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_INGESTION_OCR_TEXT_DIR}
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      - ./${DATA_GENERAL_LOG_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_GENERAL_LOG_DIR}
       
 networks:
   sake:

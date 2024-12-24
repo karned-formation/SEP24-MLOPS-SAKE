@@ -1,63 +1,26 @@
 stages:
-  env_mlops_sake:
-    cmd: 'python3 src/config_transform_as_env.py && 
-          python src/smart_merge_.env_.env_mlops_sake.py'
-    deps:
-    - params.yaml
-    - src/config_transform_as_env.py
-    - src/smart_merge_.env_.env_mlops_sake.py
-    outs:
-    - .env_mlops_sake
-    - .env_plantUML
-
-  start_dockers:
-    cmd: 'source scripts/docker_clean_dangling_images.sh && 
-          docker-compose stop && 
-          docker-compose --profile training up --build -d && 
-          date > dockers_started.txt'
-    deps:
-    - .env_mlops_sake
-    - docker-compose.yaml
-    outs:
-    - dockers_started.txt
-
-  structure_raw:
-    cmd: python3 src/data/structure_raw.py
-    deps:
-    - src/data/structure_raw.py
-    - params.yaml
-    - dockers_started.txt
-    - ${data_structure_raw.image_dir}
-    - data/working_dataset.csv
-    outs:
-    - ${data_structure_raw.raw_dataset_dir}:
-        persist: true
-
   ingest:
-    cmd:  'curl -X "POST" "http://localhost:8907/ingest"'
+    cmd:  'curl -X "POST" "http://${data_ETL.docker_service_ETL}/ingest"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_structure_raw.raw_dataset_dir}
     outs:
     - ${data_ingestion.ocr_text_dir}:
         persist: true
 
   clean:
-    cmd: 'curl -X "POST" "http://localhost:8907/clean"'
+    cmd: 'curl -X "POST" "http://${data_ETL.docker_service_ETL}/clean"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_ingestion.ocr_text_dir}
     outs:
     - ${data_cleaning.cleaned_datasets_dir}:
         persist: true
 
   preprocessing:
-    cmd: 'curl -X "POST" "http://localhost:8904/process"'
+    cmd: 'curl -X "POST" "http://${data_preprocessing.docker_service_preprocessing}/process"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_cleaning.cleaned_datasets_dir}
     outs:
     - data/processed:
@@ -66,20 +29,18 @@ stages:
         persist: true
 
   train:
-    cmd: 'curl -X "POST" "http://localhost:8905/train"'
+    cmd: 'curl -X "POST" "http://${model_train.docker_service_train}/train"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_preprocessing.train_data_dir}
     outs:
     - ${model_train.model_train_dir}:
         persist: true
 
   eval:
-    cmd: 'curl -X "POST" "http://localhost:8906/eval"'
+    cmd: 'curl -X "POST" "http://${model_eval.docker_service_eval}/eval"'
     deps:
     - params.yaml
-    - dockers_started.txt
     - ${data_preprocessing.test_data_dir}
     - ${model_train.model_train_dir}
     metrics:
