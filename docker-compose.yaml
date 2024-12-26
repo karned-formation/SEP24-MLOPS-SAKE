@@ -145,7 +145,7 @@ services:
 
   # Service d'Orchestration
   predict-orchestrator-service:
-    profiles: ["prediction"]
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     build:
@@ -169,7 +169,7 @@ services:
   
   # Service de prédiction
   predict-service:
-    profiles: ["prediction"]
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     build:
