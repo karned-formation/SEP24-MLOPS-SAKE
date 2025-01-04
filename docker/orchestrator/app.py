@@ -1,8 +1,10 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from pathlib import Path
 from src.orchestrator.orchestrator import *
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 # En attendant la mise en place de BDD
 database = {}

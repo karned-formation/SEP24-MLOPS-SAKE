@@ -21,8 +21,6 @@ WORKDIR ${APP_HOME}
 
 RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
-# remove the following line when merging with main
-RUN git switch training_admin_launch 
 RUN git pull
 
 RUN apt-get update && apt-get upgrade -y && \

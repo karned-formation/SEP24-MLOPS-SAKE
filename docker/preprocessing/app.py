@@ -1,8 +1,11 @@
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from src.preprocessing.preprocessing import main
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
+
 @app.post("/process")
 async def process_data(prediction_folder_S3:str = None):
     try:

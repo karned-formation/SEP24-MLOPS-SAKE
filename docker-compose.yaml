@@ -218,7 +218,35 @@ services:
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_CLEANING_CLEANED_DATASETS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_GENERAL_LOG_DIR}
-      
+
+  # Prometheus Service
+  prometheus-service:
+    profiles: ["training", "prediction"]
+    build:
+      context: .
+      dockerfile: docker/prometheus/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/prometheus
+    image: prometheus-service:1.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - sake
+
+  # Grafana Service
+  grafana-service:
+    profiles: ["training", "prediction"]
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Set the admin password
+    ports:
+      - "3000:3000"
+    networks:
+      - sake
+
+
 networks:
   sake:
     driver: bridge

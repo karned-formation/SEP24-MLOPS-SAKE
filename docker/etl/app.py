@@ -1,10 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from starlette.responses import PlainTextResponse
-
+from prometheus_fastapi_instrumentator import Instrumentator
 from src.data.ingest_etl import ingest_train, ingest_prediction
 from src.data.clean_etl import clean_train, clean_prediction
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 @app.post("/ingest", response_class = PlainTextResponse)
 def ingest(prediction_folder:str = None):

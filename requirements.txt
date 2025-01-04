@@ -28,3 +28,4 @@ requests~=2.32.3
 pytest~=8.3.3
 streamlit~=1.40.2
 streamlit_shadcn_ui~=0.1.18
+prometheus_fastapi_instrumentator~=7.0.0

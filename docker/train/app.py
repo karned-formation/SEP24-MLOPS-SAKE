@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException
-
+from prometheus_fastapi_instrumentator import Instrumentator
 from src.train.train import main
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 @app.post('/train')
 def train(prediction_folder_S3:str = None):
