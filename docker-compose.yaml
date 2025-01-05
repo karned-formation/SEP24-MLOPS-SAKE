@@ -228,7 +228,7 @@ services:
       args: 
         DOCKERFILE_DIR: docker/prometheus
     image: prometheus-service:1.0
-    container_name: prometheus
+    container_name: prometheus-service
     ports:
       - "9090:9090"
     networks:
@@ -237,16 +237,30 @@ services:
   # Grafana Service
   grafana-service:
     profiles: ["training", "prediction"]
-    image: grafana/grafana:latest
-    container_name: grafana
+    build:
+      context: .
+      dockerfile: docker/grafana/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/grafana
+    image: grafana-service:1.0
+    container_name: grafana-service
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Set the admin password
     ports:
       - "3000:3000"
     networks:
       - sake
+      
+  node-exporter-service:
+    profiles: ["training", "prediction"]
+    image: prom/node-exporter:latest
+    container_name: node-exporter-service
+    networks:
+      - sake
+    ports:
+      - "9100:9100"
 
 
 networks:
   sake:
-    driver: bridge
+    driver: bridge  

@@ -29,3 +29,7 @@ scrape_configs:
   - job_name: 'predict-service'
     static_configs:
       - targets: ['ms-sake-predict:80']
+
+  - job_name: 'node-exporter-service'
+    static_configs:
+      - targets: ['node-exporter-service:9100']
