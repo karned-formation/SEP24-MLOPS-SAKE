@@ -8,10 +8,8 @@ ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
-ENV PORT=80
-ENV WORKERS=1
 
-EXPOSE $PORT
+EXPOSE 80
 
 WORKDIR $APP_HOME
 
@@ -31,5 +29,4 @@ COPY $SOURCE_DIR/ingest_etl.py $SOURCE_DIR/ingest_etl.py
 COPY $COMMON_DIR/s3handler.py $COMMON_DIR/s3handler.py
 COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
-#CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", ${PORT}, "--workers", ${WORKERS}]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
