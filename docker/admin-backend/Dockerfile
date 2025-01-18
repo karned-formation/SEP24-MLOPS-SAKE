@@ -33,14 +33,17 @@ RUN apt-get update && apt-get upgrade -y && \
     python3 -m venv .venv && \
     . .venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    rustup self uninstall -y && \
-    apt-get remove -y curl && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+    pip install --no-cache-dir -r requirements.txt 
+
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
+
+RUN rustup self uninstall -y && \ 
+apt-get remove -y curl && \
+apt-get autoremove -y && \
+rm -rf /var/lib/apt/lists/*
+
 
 CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
