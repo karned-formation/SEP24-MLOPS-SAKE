@@ -4,17 +4,17 @@
 # external packages
 pip~=24.3.1
 pandas==2.2.3
-matplotlib==3.9.2
-seaborn==0.13.2
-opencv-python==4.10.0.84
-scikit-learn==1.5.2
-imbalanced-learn==0.12.4
+#matplotlib==3.9.2
+#seaborn==0.13.2
+#opencv-python==4.10.0.84
+#scikit-learn==1.5.2
+#imbalanced-learn==0.12.4
 typing==3.7.4.3
-scipy==1.14.1
-nltk==3.9.1
+#scipy==1.14.1
+#nltk==3.9.1
 ipython==8.29.0
-spacy==3.8.2
-langdetect==1.0.9
+#spacy==3.8.2
+#langdetect==1.0.9
 fastapi[standard]==0.115.2
 dvc==3.56.0
 dvc-s3==3.2.0
