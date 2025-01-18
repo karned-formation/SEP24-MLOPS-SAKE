@@ -18,6 +18,7 @@ src/save_commit_hash.py
 src/smart_merge_.env_.env_mlops_sake.py
 src/admin/__init__.py
 src/admin/mlflow_tracking.py
+src/admin/select_images.py
 src/data/__init__.py
 src/data/clean_etl.py
 src/data/clean_text.py
@@ -30,6 +31,7 @@ src/predict/predict.py
 src/preprocessing/__init__.py
 src/preprocessing/preprocessing.py
 src/streamlit/__init__.py
+src/streamlit/admin-frontend.py
 src/streamlit/admin_streamlit.py
 tests/DEPRECATED_test_clean_etl.py
 tests/__init__.py
