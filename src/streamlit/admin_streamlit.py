@@ -127,7 +127,6 @@ def page_select():
         selected_dir = st.selectbox("Select Directory", 
             [f"data/raw_per_classes/{i}" for i in range(3)])
         
-        
         # Image upload section
         uploaded_files = st.file_uploader("Upload Images", accept_multiple_files=True, type=['png', 'jpg', 'jpeg', 'gif', 'bmp'])
         

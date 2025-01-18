@@ -1,13 +1,12 @@
 import json
 import traceback
-
+import boto3
 import joblib
 from src.custom_logger import logger
 import mlflow
 import subprocess
 import dagshub
 import os 
-import pandas as pd
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -103,7 +102,7 @@ def save_to_mlflow(commit_hash: str) -> str:
 
 def list_mlflow_runs():
     """
-    Retrieve all MLflow runs and convert them to a pandas DataFrame.
+    Retrieve all MLflow runs
     """
     initialize_ml_flow()
 
@@ -131,7 +130,7 @@ def list_mlflow_runs():
     display_runs = runs[columns_to_display].copy()
     display_runs.columns = [col.split('.')[-1] for col in display_runs.columns]
     
-    return display_runs
+    return display_runs.to_json()
 
 def run_command(command):
     """Run a shell command and return its output."""
@@ -176,3 +175,27 @@ def git_revert_to_commit(commit_hash):
         return False, f"Git revert failed: {e.stderr}"
     except Exception as e:
         return False, f"Unexpected error: {str(e)}"
+    
+def register_model_to_s3() -> bool:
+    """Register current model to S3."""
+    try:
+        s3 = boto3.client('s3')
+        
+        # Get latest model artifacts
+        model_path = "path/to/model/artifacts"  # Replace with your model path
+        bucket_name = "your-bucket-name"  # Replace with your bucket name
+        
+        # Upload to S3
+        for root, _, files in os.walk(model_path):
+            for file in files:
+                local_path = os.path.join(root, file)
+                s3_path = os.path.join(
+                    "models",
+                    os.path.relpath(local_path, model_path)
+                )
+                s3.upload_file(local_path, bucket_name, s3_path)
+        
+        return True
+    except Exception as e:
+        print(f"Error registering model: {str(e)}")
+        return False

@@ -21,7 +21,10 @@ WORKDIR ${APP_HOME}
 
 RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
+# remove the following line when merging with main
+RUN git switch admin_front
 RUN git pull
+
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends gcc && \
@@ -38,4 +41,4 @@ COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 RUN ./private_conn_dagshub.sh
 
-CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && exec streamlit run ${STREAMLIT_DIR}/admin_streamlit.py --server.port 80
+CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}

@@ -189,24 +189,23 @@ services:
     networks:
       - sake
 
-  # Streamlit admin et gestion des données avec DVC et MLFLOW
-  admin-service:
+  # Backend d'administration et gestion des données avec DVC et MLFLOW
+  admin-backend-service:
     profiles: ["training"]
     env_file:
     - path: ./.env
     build:
       context: .  
-      dockerfile: docker/admin/Dockerfile  
+      dockerfile: docker/admin-backend/Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/admin
-        DOCKERFILE_DIR: docker/admin
-        STREAMLIT_DIR: src/streamlit
+        DOCKERFILE_DIR: docker/admin-backend
         DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - admin-service:cache
-    image: admin-service:1.0  
-    container_name: admin-service
+        - admin-backend-service:cache
+    image: admin-backend-service:1.0  
+    container_name: admin-backend-service
     ports:
       - "${ADMIN_PORT_ADMIN}:80"
     networks:
@@ -250,6 +249,26 @@ services:
       - "3000:3000"
     networks:
       - sake
+  # Streamlit d'administration, envoi des requêtes vers admin-backend-service
+  # admin-frontend-service:
+  #   profiles: ["training"]
+  #   env_file:
+  #   - path: ./.env
+  #   build:
+  #     context: .  
+  #     dockerfile: docker/admin-frontend/Dockerfile  
+  #     args:
+  #       COMMON_DIR: src
+  #       SOURCE_DIR: src/streamlit
+  #       DOCKERFILE_DIR: docker/admin-frontend
+  #     cache_from:
+  #       - admin-frontend-service:cache
+  #   image: admin-frontend-service:1.0  
+  #   container_name: admin-frontend-service
+  #   ports:
+  #     - "${ADMIN_PORT_ADMIN}:80"
+  #   networks:
+  #     - sake
       
   node-exporter-service:
     profiles: ["training", "prediction"]
