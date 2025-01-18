@@ -34,4 +34,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
 
-CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
+CMD dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && dvc pull --force && cd ${APP_HOME}/SEP24-MLOPS-SAKE && exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
