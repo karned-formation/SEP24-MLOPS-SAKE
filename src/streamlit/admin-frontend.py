@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 API_URL = "http://localhost:8910"
 
@@ -48,7 +49,8 @@ def show_training_page():
     response = requests.get(f"{API_URL}/getmlflowruns")
     if response.status_code == 200:
         runs = response.json()
-        st.table(runs)
+        df = pd.DataFrame.from_dict(runs, orient='tight')
+        st.table(df)
     
     # Training button
     if st.button("Start Training"):

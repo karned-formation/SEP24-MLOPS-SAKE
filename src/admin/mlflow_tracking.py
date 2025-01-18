@@ -130,7 +130,7 @@ def list_mlflow_runs():
     display_runs = runs[columns_to_display].copy()
     display_runs.columns = [col.split('.')[-1] for col in display_runs.columns]
     
-    return display_runs.to_json()
+    return display_runs.to_dict()
 
 def run_command(command):
     """Run a shell command and return its output."""
