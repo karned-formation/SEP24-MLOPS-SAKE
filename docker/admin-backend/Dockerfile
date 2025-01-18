@@ -38,7 +38,6 @@ RUN apt-get update && apt-get upgrade -y && \
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
-RUN ./private_conn_dagshub.sh
 
 RUN rustup self uninstall -y && \ 
 apt-get remove -y curl && \
