@@ -4,7 +4,6 @@ FROM python:3.11
 ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
-ARG STREAMLIT_DIR
 ARG DAGSHUB_ACCESS_KEY_ID
 
 
@@ -14,10 +13,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
 ENV PORT=80
 ENV WORKERS=1
-ENV STREAMLIT_DIR ${STREAMLIT_DIR}
 
 EXPOSE ${PORT}
 WORKDIR ${APP_HOME}
+
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends gcc && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip
 
 RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
@@ -25,19 +29,7 @@ WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 RUN git switch admin_front
 RUN git pull
 
-#  installs everything needed, then removes Rust and curl after DVC is installed to keep the final image smaller
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends gcc curl && \
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    export PATH="/root/.cargo/bin:${PATH}" && \
-    python3 -m venv .venv && \
-    . .venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \ 
-    rustup self uninstall -y && \ 
-    apt-get remove -y curl && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh

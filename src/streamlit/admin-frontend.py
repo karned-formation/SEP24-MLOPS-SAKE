@@ -1,10 +1,7 @@
 import streamlit as st
 import requests
-import os
-from PIL import Image
-import io
 
-API_URL = "http://localhost:8000"
+API_URL = "http://localhost:8910"
 
 def main():
     st.title("ML Training System")
