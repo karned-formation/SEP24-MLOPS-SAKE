@@ -30,10 +30,10 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends gcc && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
-
 RUN python3 -m venv .venv
 RUN . .venv/bin/activate
+
+RUN pip install --upgrade pip
 
 RUN pip install streamlit
 RUN pip install dvc
