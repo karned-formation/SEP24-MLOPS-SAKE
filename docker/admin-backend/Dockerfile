@@ -25,20 +25,19 @@ WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 RUN git switch admin_front 
 RUN git pull
 
-
+#  installs everything needed, then removes Rust and curl after DVC is installed to keep the final image smaller
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends gcc && \
+    apt-get install -y --no-install-recommends gcc curl && \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    export PATH="/root/.cargo/bin:${PATH}" && \
+    python3 -m venv .venv && \
+    . .venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    rustup self uninstall -y && \
+    apt-get remove -y curl && \
+    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
-
-RUN python3 -m venv .venv
-RUN . .venv/bin/activate
-
-RUN pip install --upgrade pip
-
-RUN pip install streamlit
-RUN pip install dvc
-RUN pip install requests
-RUN pip install dagshub
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
