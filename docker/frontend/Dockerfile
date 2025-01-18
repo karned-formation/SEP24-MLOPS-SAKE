@@ -1,5 +1,9 @@
 FROM python:3.11-slim AS builder
 
+ENV LANG=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
@@ -11,6 +15,10 @@ FROM python:3.11-slim
 
 EXPOSE 80
 WORKDIR /app
+
+ENV LANG=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 ENV URL_BACKEND=https://sake.karned.bzh
 

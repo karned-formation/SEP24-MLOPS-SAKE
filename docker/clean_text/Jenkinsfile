@@ -31,7 +31,7 @@ spec:
         string(name: 'GITHUB_BRANCH', defaultValue: 'main', description: 'Git branch to checkout')
     }
     environment {
-        DOCKER_IMAGE = 'killiankopp/sake-frontend'
+        DOCKER_IMAGE = 'killiankopp/sake-clean'
         DOCKER_TAG = 'test'
     }
     stages {
@@ -44,8 +44,11 @@ spec:
             steps {
                 container('docker') {
                     sh """
-                    cd docker/frontend
-                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    docker build \
+                      --build-arg COMMON_DIR=${COMMON_DIR} \
+                      --build-arg SOURCE_DIR=${SOURCE_DIR} \
+                      --build-arg DOCKERFILE_DIR=${DOCKERFILE_DIR} \
+                      -t ${DOCKER_IMAGE}:${DOCKER_TAG} docker/clean_text
                     """
                 }
             }

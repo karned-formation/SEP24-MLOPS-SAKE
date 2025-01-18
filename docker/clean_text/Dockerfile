@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11-slim AS builder
 
 ARG COMMON_DIR
 ARG SOURCE_DIR
@@ -8,10 +8,6 @@ ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
-ENV PORT=80
-ENV WORKERS=1
-
-EXPOSE $PORT
 
 WORKDIR $APP_HOME
 
@@ -35,5 +31,20 @@ COPY $COMMON_DIR/custom_logger.py $COMMON_DIR/custom_logger.py
 
 RUN python3 download_contents.py
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS}
-#CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", ${PORT}, "--workers", ${WORKERS}]
+FROM python:3.11-slim AS runtime
+
+ARG APP_HOME=/app
+ENV LANG=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV APP_HOME=/app
+ENV PORT=80
+ENV WORKERS=1
+
+EXPOSE $PORT
+
+WORKDIR $APP_HOME
+
+COPY --from=builder $APP_HOME $APP_HOME
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--workers", "1"]
