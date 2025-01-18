@@ -51,7 +51,7 @@ async def train_model():
         run_id = save_to_mlflow(commit_hash_output)
         command_outputs += "Successfully saved run in MLFLOW"
         
-        if run_id:
+        if run_id != "":
             return JSONResponse(content={
                     "message": "Training completed successfully",
                     "output": command_outputs,
