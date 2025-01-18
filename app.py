@@ -2,10 +2,6 @@ from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, sa
 from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import JSONResponse
-from typing import Dict, List
-import subprocess
-import boto3
-import os
 import json
 import numpy as np 
 
