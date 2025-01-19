@@ -63,16 +63,16 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 4db4c9ba2b043609cb994330b86aa5f7.dir
-      size: 115933
+      md5: d2dc3f92816125d9617def04682c2f5a.dir
+      size: 115931
       nfiles: 3
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 4db4c9ba2b043609cb994330b86aa5f7.dir
-      size: 115933
+      md5: d2dc3f92816125d9617def04682c2f5a.dir
+      size: 115931
       nfiles: 3
     - path: params.yaml
       hash: md5
@@ -81,21 +81,21 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: d38068e9b142a90060107a119dd6fbe4.dir
-      size: 3177922
+      md5: 7f0745e0a1d279feb3a63fd6be33490d.dir
+      size: 3197562
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 9aa544af4499ad878730a0cede409c03.dir
-      size: 2528074
+      md5: 0fef735cc550557941cd958941500dd4.dir
+      size: 2528036
       nfiles: 1
   train:
     cmd: curl -X "POST" "http://train-service/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: cc53f60d3789f7dc4018478f0fceed2a.dir
-      size: 2683981
+      md5: d039f224394d3e8c130fb8babad50062.dir
+      size: 2704317
       nfiles: 2
     - path: params.yaml
       hash: md5
@@ -104,7 +104,7 @@ stages:
     outs:
     - path: models/train
       hash: md5
-      md5: 6895323750d8aec0cc7e060341eee8c2.dir
+      md5: 3bd08db455c6f3e43f8c1f73c5380618.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -112,12 +112,12 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: 2ad49e12c123765639e1bd43007c0850.dir
-      size: 493941
+      md5: 20339f27b480147a341717fd78a6bf8f.dir
+      size: 493245
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: 6895323750d8aec0cc7e060341eee8c2.dir
+      md5: 3bd08db455c6f3e43f8c1f73c5380618.dir
       size: 1682517
       nfiles: 1
     - path: params.yaml
