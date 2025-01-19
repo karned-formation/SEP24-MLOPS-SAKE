@@ -207,7 +207,7 @@ services:
     image: admin-backend-service:1.0  
     container_name: admin-backend-service
     ports:
-      - "${ADMIN_PORT_ADMIN}:80"
+      - "${ADMIN_BACKEND_PORT_ADMIN_BACKEND}:80"
     networks:
       - sake
     volumes:
@@ -249,26 +249,26 @@ services:
       - "3000:3000"
     networks:
       - sake
-  # Streamlit d'administration, envoi des requêtes vers admin-backend-service
-  # admin-frontend-service:
-  #   profiles: ["training"]
-  #   env_file:
-  #   - path: ./.env
-  #   build:
-  #     context: .  
-  #     dockerfile: docker/admin-frontend/Dockerfile  
-  #     args:
-  #       COMMON_DIR: src
-  #       SOURCE_DIR: src/streamlit
-  #       DOCKERFILE_DIR: docker/admin-frontend
-  #     cache_from:
-  #       - admin-frontend-service:cache
-  #   image: admin-frontend-service:1.0  
-  #   container_name: admin-frontend-service
-  #   ports:
-  #     - "${ADMIN_PORT_ADMIN}:80"
-  #   networks:
-  #     - sake
+  #Streamlit d'administration, envoi des requêtes vers admin-backend-service
+  admin-frontend-service:
+    profiles: ["training"]
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/admin-frontend/Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/streamlit
+        DOCKERFILE_DIR: docker/admin-frontend
+      cache_from:
+        - admin-frontend-service:cache
+    image: admin-frontend-service:1.0  
+    container_name: admin-frontend-service
+    ports:
+      - "${ADMIN_FRONTEND_PORT_ADMIN_FRONTEND}:80"
+    networks:
+      - sake
       
   node-exporter-service:
     profiles: ["training", "prediction"]
