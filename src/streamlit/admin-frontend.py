@@ -198,7 +198,5 @@ def plot_confusion_matrix(matrix):
 
 
 
-
-
 if __name__ == "__main__":
     main()
