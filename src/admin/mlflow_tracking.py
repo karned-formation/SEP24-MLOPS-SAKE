@@ -53,9 +53,9 @@ def create_mlflow_run(experiment_id, metrics, artifacts, model, commit_hash):
 
         mlflow.set_tag("commit_hash", commit_hash)
 
-        logger.info(f"Eval metrics and artifacts successfully logged to MLflow. {run}")
+        logger.info(f"Eval metrics and artifacts successfully logged to MLflow. {str(run.info)}")
 
-    return run
+    return str(run.info)
 
 def register_model(run_id: int):
     """Register the model in the MLflow registry."""
