@@ -153,13 +153,15 @@ def git_revert_to_commit(commit_hash):
         tuple: (success_flag, output_message)
     """
     try:
-        # Fetch the latest changes from remote
+         # Fetch the latest changes from remote
         fetch_result = subprocess.run(
             ['git', 'fetch', 'origin'], 
             capture_output=True, 
             text=True, 
             check=True
         )
+
+        logger.info(f"GIT FETCH ORIGIN: {fetch_result}")
         
         # Revert to the specific commit
         revert_result = subprocess.run(
@@ -169,8 +171,15 @@ def git_revert_to_commit(commit_hash):
             check=True
         )
 
-        dvc_pull_result = run_command("dvc pull")
         
+        logger.info(f"GIT REVERT: {revert_result}")
+
+        dvc_pull_result = run_command("dvc pull")
+
+        
+        logger.info(f"DVC PULL: {dvc_pull_result}")
+
+
         return True, "Successfully reverted to commit"
     
     except subprocess.CalledProcessError as e:

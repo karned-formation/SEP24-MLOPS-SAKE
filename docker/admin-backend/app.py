@@ -1,6 +1,7 @@
 from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model_to_s3, run_command
 from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image
 from fastapi import FastAPI, UploadFile, File, Form
+from src.custom_logger import logger
 from fastapi.responses import JSONResponse
 import json
 import numpy as np 
@@ -44,12 +45,22 @@ async def train_model():
         commit_hash_output = run_command("git rev-parse HEAD")
         
         # DVC PUSH
+        dvc_commit_output = run_command("dvc commit")        
+        command_outputs += f"DVC COMMIT : {dvc_commit_output}"
+
         dvc_push_output = run_command("dvc push")
         command_outputs += f"DVC PUSH : {dvc_push_output}"
 
+        
+        git_push_output = run_command("git push")
+        command_outputs += f"GIT PUSH : {git_push_output}"
+
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
-        command_outputs += "Successfully saved run in MLFLOW."
+        command_outputs += "Successfully saved run in MLFLOW"
+
+        logger.info(command_outputs)
+        
         
         return JSONResponse(content={
                 "message": "Training completed successfully",
