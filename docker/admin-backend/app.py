@@ -5,6 +5,7 @@ from src.custom_logger import logger
 from fastapi.responses import JSONResponse
 import json
 import numpy as np 
+import traceback
 
 def load_confusion_matrix(file_path='metrics/confusion_matrix.json'):
     with open(file_path, 'r') as f:
@@ -69,6 +70,8 @@ async def train_model():
             }
         )
     except Exception as e:
+
+        logger.error(e.with_traceback())
         return JSONResponse(
             status_code=500,
             content={"error": str(e)}
