@@ -5,6 +5,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from urllib.parse import quote
+import os
 
 # Set page configuration
 st.set_page_config(
@@ -13,7 +14,7 @@ st.set_page_config(
     layout="wide"
 )
 
-API_URL = "http://localhost:8910"
+BACKEND_URL = os.getenv("ADMIN_BACKEND_ENDPOINT_ADMIN_BACKEND")
 
 def main():    
     # Sidebar for navigation
@@ -31,7 +32,7 @@ def show_image_management():
     st.header("Image Management")
     
     # Get folders and images
-    response = requests.get(f"{API_URL}/get_images")
+    response = requests.get(f"{BACKEND_URL}/get_images")
     if response.status_code == 200:
         folders_data = response.json()
         
@@ -59,7 +60,7 @@ def show_training_page():
     # Training button
     if st.button("Start Training"):
         with st.spinner("Training in progress..."):
-            response = requests.post(f"{API_URL}/train")
+            response = requests.post(f"{BACKEND_URL}/train")
             if response.status_code == 200:
                 st.success("Training completed!")
             else:
@@ -68,7 +69,7 @@ def show_training_page():
     # Model registration
     if st.button("Register Current Model to S3"):
         with st.spinner("Registering model..."):
-            response = requests.post(f"{API_URL}/registermodel")
+            response = requests.post(f"{BACKEND_URL}/registermodel")
             if response.status_code == 200:
                 st.success("Model registered successfully!")
             else:
@@ -79,7 +80,7 @@ def show_version_management():
     st.header("Version Management")
 
     # Display MLflow runs
-    response = requests.get(f"{API_URL}/getmlflowruns")
+    response = requests.get(f"{BACKEND_URL}/getmlflowruns")
     if response.status_code == 200:
         runs = response.json()
         df = pd.DataFrame(json.loads(runs))
@@ -131,7 +132,7 @@ def display_mlflow_runs(runs_df):
     if len(selected_runs) == 1:
         selected_run = selected_runs.iloc[0]
         commit_hash = selected_run['commit_hash']
-        encoded_url = f"{API_URL}/reverttocommit?commit_hash={quote(commit_hash)}"
+        encoded_url = f"{BACKEND_URL}/reverttocommit?commit_hash={quote(commit_hash)}"
         if st.button(f"Revert to Commit {commit_hash[:7]}", type="primary"):
             response = requests.post(encoded_url)
             if response.status_code == 200:
@@ -151,7 +152,7 @@ def delete_image(folder, image_name):
         "image_name": image_name
     }
     # Encode query parameters into the URL
-    encoded_url = f"{API_URL}/deleteimage?folder={quote(folder)}&image_name={quote(image_name)}"
+    encoded_url = f"{BACKEND_URL}/deleteimage?folder={quote(folder)}&image_name={quote(image_name)}"
 
     try:
         response = requests.post(encoded_url, headers=headers)
@@ -172,7 +173,7 @@ def delete_image(folder, image_name):
 def add_image(folder, file):
     files = {"file": file}
     response = requests.post(
-        f"{API_URL}/addimage",
+        f"{BACKEND_URL}/addimage",
         files=files,
         data={"folder": folder}
     )
