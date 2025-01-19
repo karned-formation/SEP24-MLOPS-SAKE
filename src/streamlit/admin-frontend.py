@@ -26,6 +26,7 @@ def main():
     else:
         show_version_management()
 
+
 def show_image_management():
     st.header("Image Management")
     
@@ -52,7 +53,6 @@ def show_image_management():
                         delete_image(folder, img_data["name"])
         
 
-
 def show_training_page():
     st.header("Training Management")
         
@@ -65,8 +65,6 @@ def show_training_page():
             else:
                 st.error("Training failed!")
 
-            
-
     # Model registration
     if st.button("Register Current Model to S3"):
         with st.spinner("Registering model..."):
@@ -75,6 +73,7 @@ def show_training_page():
                 st.success("Model registered successfully!")
             else:
                 st.error("Model registration failed!")
+
 
 def show_version_management():
     st.header("Version Management")
@@ -85,6 +84,63 @@ def show_version_management():
         runs = response.json()
         df = pd.DataFrame(json.loads(runs))
         display_mlflow_runs(df)
+
+def display_mlflow_runs(runs_df):
+    """
+    Display MLflow runs with selection and revert functionality
+    
+    Args:
+        runs_df (pd.DataFrame): DataFrame of MLflow runs
+    """
+    runs_df['start_time'] = pd.to_datetime(runs_df['start_time'], unit='ms')
+    runs_df['end_time'] = pd.to_datetime(runs_df['end_time'], unit='ms')
+
+    # Add a selection column
+    runs_df['Select'] = False
+    
+    # Display the dataframe with selection
+    edited_df = st.data_editor(
+        runs_df, 
+        column_config={
+            'Select': st.column_config.CheckboxColumn(
+                "Select Run",
+                help="Select one run to revert to",
+                default=False
+            )
+        },
+        disabled=[
+            'tags.mlflow.runName', 
+            'start_time', 
+            'end_time', 
+            'status', 
+            'metrics.accuracy', 
+            'metrics.f1_score', 
+            'tags.commit_hash'
+        ],
+        hide_index=True
+    )
+    
+    # Count selected runs
+    selected_runs = edited_df[edited_df['Select']]
+    
+    # Validate selection
+    if len(selected_runs) > 1:
+        st.warning("Please select only one run.")
+    
+    # Revert button
+    if len(selected_runs) == 1:
+        selected_run = selected_runs.iloc[0]
+        commit_hash = selected_run['commit_hash']
+        encoded_url = f"{API_URL}/reverttocommit?commit_hash={quote(commit_hash)}"
+        if st.button(f"Revert to Commit {commit_hash[:7]}", type="primary"):
+            response = requests.post(encoded_url)
+            if response.status_code == 200:
+                st.success("Successfully reverted to specified commit!")
+                st.balloons()
+            else:
+                st.error("Revert failed!")
+    
+    return edited_df
     
 
 def delete_image(folder, image_name):
@@ -141,62 +197,7 @@ def plot_confusion_matrix(matrix):
     return plt
 
 
-def display_mlflow_runs(runs_df):
-    """
-    Display MLflow runs with selection and revert functionality
-    
-    Args:
-        runs_df (pd.DataFrame): DataFrame of MLflow runs
-    """
-    runs_df['start_time'] = pd.to_datetime(runs_df['start_time'], unit='ms')
-    runs_df['end_time'] = pd.to_datetime(runs_df['end_time'], unit='ms')
 
-    # Add a selection column
-    runs_df['Select'] = False
-    
-    # Display the dataframe with selection
-    edited_df = st.data_editor(
-        runs_df, 
-        column_config={
-            'Select': st.column_config.CheckboxColumn(
-                "Select Run",
-                help="Select one run to revert to",
-                default=False
-            )
-        },
-        disabled=[
-            'tags.mlflow.runName', 
-            'start_time', 
-            'end_time', 
-            'status', 
-            'metrics.accuracy', 
-            'metrics.f1_score', 
-            'tags.commit_hash'
-        ],
-        hide_index=True
-    )
-    
-    # Count selected runs
-    selected_runs = edited_df[edited_df['Select']]
-    
-    # Validate selection
-    if len(selected_runs) > 1:
-        st.warning("Please select only one run.")
-    
-    # Revert button
-    if len(selected_runs) == 1:
-        selected_run = selected_runs.iloc[0]
-        commit_hash = selected_run['commit_hash']
-        
-        if st.button(f"Revert to Commit {commit_hash[:7]}", type="primary"):
-            response = requests.post(f"{API_URL}/reverttocommit", json={"commit_hash": commit_hash})
-            if response.status_code == 200:
-                st.success("Successfully reverted to specified commit!")
-                st.balloons()
-            else:
-                st.error("Revert failed!")
-    
-    return edited_df
 
 
 if __name__ == "__main__":
