@@ -7,6 +7,7 @@ import mlflow
 import subprocess
 import dagshub
 import os 
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -53,9 +54,8 @@ def create_mlflow_run(experiment_id, metrics, artifacts, model, commit_hash):
 
         mlflow.set_tag("commit_hash", commit_hash)
 
-        logger.info(f"Eval metrics and artifacts successfully logged to MLflow. {str(run.info)}")
-
-    return str(run.info)
+        logger.info(f"Eval metrics and artifacts successfully logged to MLflow.")
+    return run.info.run_id
 
 def register_model(run_id: int):
     """Register the model in the MLflow registry."""
@@ -131,7 +131,7 @@ def list_mlflow_runs():
     display_runs = runs[columns_to_display].copy()
     display_runs.columns = [col.split('.')[-1] for col in display_runs.columns]
     
-    return display_runs.to_dict()
+    return display_runs.to_json()
 
 def run_command(command):
     """Run a shell command and return its output."""
@@ -186,25 +186,26 @@ def git_revert_to_commit(commit_hash):
         return False, f"Git revert failed: {e.stderr}"
     except Exception as e:
         return False, f"Unexpected error: {str(e)}"
-    
+
+def initialize_s3_handler():
+    """Initialize the S3 handler with environment variables."""
+    aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
+    aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
+    logger.info("S3 handler initialized.")
+    return S3Handler(aws_bucket_name)
+
 def register_model_to_s3() -> bool:
     """Register current model to S3."""
     try:
-        s3 = boto3.client('s3')
+        s3 = initialize_s3_handler()
         
-        # Get latest model artifacts
+        # Get latest model 
         model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
-        bucket_name = get_env_var('AWS_BUCKET_NAME')
+
+        s3.upload_file(model_path, "models/ovrc:latest.joblib")
         
-        # Upload to S3
-        for root, _, files in os.walk(model_path):
-            for file in files:
-                local_path = os.path.join(root, file)
-                s3_path = os.path.join(
-                    "models",
-                    os.path.relpath(local_path, model_path)
-                )
-                s3.upload_file(local_path, bucket_name, s3_path)
+        
         
         return True
     except Exception as e:
