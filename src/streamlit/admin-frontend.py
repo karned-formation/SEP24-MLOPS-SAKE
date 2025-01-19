@@ -64,7 +64,7 @@ def show_training_page():
             if response.status_code == 200:
                 st.success("Training completed!")
             else:
-                st.error("Training failed!")
+                st.error(response.content)
 
     # Model registration
     if st.button("Register Current Model to S3"):
