@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from urllib.parse import quote
 
 # Set page configuration
 st.set_page_config(
@@ -11,7 +12,6 @@ st.set_page_config(
     page_icon=":rocket:",
     layout="wide"
 )
-
 
 API_URL = "http://localhost:8910"
 
@@ -65,6 +65,8 @@ def show_training_page():
             else:
                 st.error("Training failed!")
 
+            
+
     # Model registration
     if st.button("Register Current Model to S3"):
         with st.spinner("Registering model..."):
@@ -84,25 +86,32 @@ def show_version_management():
         df = pd.DataFrame(json.loads(runs))
         display_mlflow_runs(df)
     
-    # Git revert
-    commit_hash = st.text_input("Enter commit hash to revert to:")
-    if commit_hash and st.button("Revert to Commit"):
-        response = requests.post(f"{API_URL}/reverttocommit", json={"commit_hash": commit_hash})
-        if response.status_code == 200:
-            st.success("Successfully reverted to specified commit!")
-        else:
-            st.error("Revert failed!")
 
 def delete_image(folder, image_name):
-    response = requests.post(f"{API_URL}/deleteimage", json={
+    headers = {"Content-Type": "application/json"}  # Retain headers if required
+    # Construct the query parameters
+    query_params = {
         "folder": folder,
         "image_name": image_name
-    })
-    if response.status_code == 200:
-        st.success(f"Deleted {image_name}")
-        st.rerun()
-    else:
-        st.error("Failed to delete image")
+    }
+    # Encode query parameters into the URL
+    encoded_url = f"{API_URL}/deleteimage?folder={quote(folder)}&image_name={quote(image_name)}"
+
+    try:
+        response = requests.post(encoded_url, headers=headers)
+        
+        if response.status_code == 200:
+            st.success(f"Deleted {image_name}")
+            st.rerun()
+        else:
+            # Log full response details for debugging
+            st.error(f"Failed to delete image: {image_name}")
+            st.error(f"Response status: {response.status_code}")
+            st.error(f"Response body: {response.text}")
+    
+    except requests.RequestException as e:
+        # Handle connection errors
+        st.error(f"Request failed: {e}")
 
 def add_image(folder, file):
     files = {"file": file}
@@ -139,6 +148,9 @@ def display_mlflow_runs(runs_df):
     Args:
         runs_df (pd.DataFrame): DataFrame of MLflow runs
     """
+    runs_df['start_time'] = pd.to_datetime(runs_df['start_time'], unit='ms')
+    runs_df['end_time'] = pd.to_datetime(runs_df['end_time'], unit='ms')
+
     # Add a selection column
     runs_df['Select'] = False
     

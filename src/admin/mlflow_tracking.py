@@ -53,8 +53,9 @@ def create_mlflow_run(experiment_id, metrics, artifacts, model, commit_hash):
 
         mlflow.set_tag("commit_hash", commit_hash)
 
-        logger.info(f"Eval metrics and artifacts successfully logged to MLflow.")
-    return run.info.run_id
+        logger.info(f"Eval metrics and artifacts successfully logged to MLflow. {run}")
+
+    return run
 
 def register_model(run_id: int):
     """Register the model in the MLflow registry."""
@@ -97,7 +98,7 @@ def save_to_mlflow(commit_hash: str) -> str:
                                     "y_test": y_test_path,
                                     "confusion_matrix": confusion_matrix_path},
                                 commit_hash=commit_hash)
-
+    logger.info(run_id)
     return run_id
 
 def list_mlflow_runs():
@@ -136,6 +137,7 @@ def run_command(command):
     """Run a shell command and return its output."""
     try:
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        logger.info(f"command : {command} \nresult : {result}")
         return result.stdout.strip()
     except Exception as e:
         return "", str(e)
