@@ -193,8 +193,8 @@ def register_model_to_s3() -> bool:
         s3 = boto3.client('s3')
         
         # Get latest model artifacts
-        model_path = "path/to/model/artifacts"  # Replace with your model path
-        bucket_name = "your-bucket-name"  # Replace with your bucket name
+        model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+        bucket_name = get_env_var('AWS_BUCKET_NAME')
         
         # Upload to S3
         for root, _, files in os.walk(model_path):
