@@ -30,37 +30,35 @@ async def train_model():
         dvc_repro_output = run_command("dvc repro --force")
         command_outputs += f"DVC REPRO : {dvc_repro_output}"
         
-        # Load and display confusion matrix
-        matrix = load_confusion_matrix()
-        scores = load_scores()
 
         # Git add and commit
-        git_add_output = run_command("git add dvc.lock data/raw_per_classes.dvc")          
-        command_outputs += f"GIT ADD : {git_add_output}"
+        git_add_output,  = run_command("git add dvc.lock data/raw_per_classes.dvc")          
+        command_outputs += f"\nGIT ADD : {git_add_output}"
 
         git_commit_output = run_command('git commit -m "Training completed."')
-        command_outputs += f"GIT COMMIT : {git_commit_output}"
+        command_outputs += f"\nGIT COMMIT : {git_commit_output}"
 
-        # Get commit hash
-        commit_hash_output = run_command("git rev-parse HEAD")
-        
-        # DVC PUSH
-        dvc_commit_output = run_command("dvc commit")        
-        command_outputs += f"DVC COMMIT : {dvc_commit_output}"
 
         dvc_push_output = run_command("dvc push")
-        command_outputs += f"DVC PUSH : {dvc_push_output}"
+        command_outputs += f"\nDVC PUSH : {dvc_push_output}"
 
         
         git_push_output = run_command("git push")
-        command_outputs += f"GIT PUSH : {git_push_output}"
+        command_outputs += f"\nGIT PUSH : {git_push_output}"
 
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
-        command_outputs += "Successfully saved run in MLFLOW"
+        command_outputs += "\nSuccessfully saved run in MLFLOW"
+
+        # Get commit hash
+        commit_hash_output = run_command("git rev-parse HEAD")
+        command_outputs += f"\nGIT HASH : {commit_hash_output}"
 
         logger.info(command_outputs)
         
+        # Load and display confusion matrix
+        matrix = load_confusion_matrix()
+        scores = load_scores()
         
         return JSONResponse(content={
                 "message": "Training completed successfully",
