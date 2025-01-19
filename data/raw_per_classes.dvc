@@ -1,6 +1,6 @@
 outs:
-- md5: 1255c67587a813a2b300a7261adbfbbe.dir
-  size: 22204457
-  nfiles: 186
+- md5: e287bf87092d098342775c0baa5908f0.dir
+  size: 22147861
+  nfiles: 185
   hash: md5
   path: raw_per_classes

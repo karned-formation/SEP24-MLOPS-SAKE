@@ -49,22 +49,16 @@ async def train_model():
 
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
-        command_outputs += "Successfully saved run in MLFLOW"
+        command_outputs += "Successfully saved run in MLFLOW."
         
-        if run_id != "":
-            return JSONResponse(content={
-                    "message": "Training completed successfully",
-                    "output": command_outputs,
-                    "confusion_matrix":matrix,
-                    "scores": scores,
-                    "run_id": run_id
-                }
-            )
-        else:
-            return JSONResponse(
-                status_code=500,
-                content={"error": f"Training failed."}
-            )
+        return JSONResponse(content={
+                "message": "Training completed successfully",
+                "output": str(command_outputs),
+                "confusion_matrix": str(matrix),
+                "scores": str(scores),
+                "run_id": str(run_id)
+            }
+        )
     except Exception as e:
         return JSONResponse(
             status_code=500,
