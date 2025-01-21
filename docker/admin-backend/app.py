@@ -33,7 +33,7 @@ async def train_model():
         
 
         # Git add and commit
-        git_add_output,  = run_command("git add dvc.lock data/raw_per_classes.dvc")          
+        git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc")          
         command_outputs += f"\nGIT ADD : {git_add_output}"
 
         git_commit_output = run_command('git commit -m "Training completed."')
