@@ -202,8 +202,8 @@ services:
         SOURCE_DIR: src/admin
         DOCKERFILE_DIR: docker/admin-backend
         DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
-      cache_from:
-        - admin-backend-service:cache
+      #cache_from:
+      #  - admin-backend-service:cache
     image: admin-backend-service:1.0  
     container_name: admin-backend-service
     ports:
