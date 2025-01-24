@@ -136,10 +136,11 @@ def list_mlflow_runs():
 def run_command(command):
     """Run a shell command and return its output."""
     try:
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        return result.stdout.strip()
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)        
+        return result
     except Exception as e:
-        return "", str(e)
+        logger.error(command, e)
+        return "Exception in run_command", str(e)
 
 def git_revert_to_commit(commit_hash):
     """
