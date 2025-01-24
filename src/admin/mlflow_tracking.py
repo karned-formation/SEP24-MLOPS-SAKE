@@ -137,6 +137,7 @@ def run_command(command):
     """Run a shell command and return its output."""
     try:
         result = subprocess.run(command, shell=True, capture_output=True, text=True)        
+        logger.info(result)
         return result
     except Exception as e:
         logger.error(command)
