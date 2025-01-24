@@ -1,0 +1,17 @@
+Facture
+LOGO
+De
+A
+Nom De L'entreprise
+Nom Du Client email@dient.fr Rue..
+email@email.fr Rue... P: (123).456 789 GST #: No d'enregistrement
+Téléphone: (789) 654 123
+Nombre Termes
+INV0001
+Rendez-vous Amoureux01 Mar 2019
+En Raison De La Réception
+La Description
+Prix €0.00 €0.00 €0.00 €0.00 €0.00
+Quantité 1 1 1 1 1 Total TVA (5%) Total Solde DU
+Montant €0.00 €0.00 €0.00 €0.00 €0.00 €0.00 0.00 €0.00 €0.00
+Note Toute information pertinente uou couverte, conditions generales supplementaires

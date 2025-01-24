@@ -1,0 +1,16 @@
+VOTRE LOGO
+Nom de l'entreprise Adresse Code postal Ville / Pays Siret / No de TVA Numéro de téléphone Email
+FACTURE no #
+Date
+Nom du client Addresse Code postal Ville Pays
+Nom du projet
+Description
+Qté
+Prix Unitaire
+TVA
+Total HT
+Conditions de paiement Les modes de paiement acceptés incluent le chèque, le virement bancaire et la carte de crédie
+Total net HT TVA Remise Total TTC :
+0.00€
+Détails bancaires
+Information additionnelle

@@ -1,0 +1,22 @@
+Facture
+Proforma
+Logo
+Mon Entreprise 22, Avenue Voltaire 13000 Marseille. France Téléphone +33 4 g
+Adresse de facturation Michel Acheteur 31, rue de la Forêt 13100 Alx-en-Provence France Adresse de livraison Acheteur SA Michel Acheteur 31 rue de la Forêt 13100 Aix-en-Provencs France
+Date : N de facture : Contact client - Mode de transport Date d'expédition prévue : Pays d'origine : Incoterm :
+26 8 2020 123 Michael Acheteur Avion/Bateateau/Route 29 2 2020 France FCA
+Conditions de livraison et colisage Nombre de colis. taille, poids unitaire. etc.
+Conditions de mise à disposition et répartition des responsabilités.
+Description Thé vert biologique Miel
+Quantité Unité
+Prix unitaire HT % TVA Total TVA Total TTC
+5 3
+Kg
+15.00 € 20,00 €
+20 % 20 %
+15,00 € 12,00 € Total HT Total TVA Total HT
+90,00 € 72,90 € 135,00 € 27,00 € 162,00 €
+Siège social 22, Avenue Voltaire 13000 Marseille. France
+Coordonnées pierre Fournisseur Téléphone +43 30 12345678 E-mail: Pieme@macompagnie 6 www macompagnie fr
+Détails bancairet Banque NP Paribas Code banque 10000000 N de compte 12345678 IBAN FR2341124098234 SWIFT/BIC FRHHCXX1001
+N" Siren ou Siret OODEVIS n 123 N TVA intra. FRXX 999999999
