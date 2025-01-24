@@ -26,7 +26,7 @@ RUN pip install --upgrade pip
 RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 # remove the following line when merging with main
-RUN git switch admin_front
+RUN git switch admin_front 
 RUN git pull
 
 RUN pip install --no-cache-dir -r requirements.txt
