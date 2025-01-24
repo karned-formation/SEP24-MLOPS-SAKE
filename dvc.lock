@@ -35,8 +35,8 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: e2a634642b4554795e78133a01af0c47.dir
-      size: 23417222
+      md5: 1255c67587a813a2b300a7261adbfbbe.dir
+      size: 22204457
       nfiles: 186
     - path: params.yaml
       hash: md5
@@ -81,8 +81,8 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: bdfc72ed716b43c0105f8acc6ae2438d.dir
-      size: 3196674
+      md5: 7f0745e0a1d279feb3a63fd6be33490d.dir
+      size: 3197562
       nfiles: 4
     - path: models/vectorizers
       hash: md5
@@ -94,8 +94,8 @@ stages:
     deps:
     - path: data/processed/train
       hash: md5
-      md5: 2933f6932ac6e01ed5d0135e9d87a0be.dir
-      size: 2668861
+      md5: d039f224394d3e8c130fb8babad50062.dir
+      size: 2704317
       nfiles: 2
     - path: params.yaml
       hash: md5
@@ -112,8 +112,8 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: eff74bbd367de8cd1d66f7f4e79f8eb1.dir
-      size: 527813
+      md5: 20339f27b480147a341717fd78a6bf8f.dir
+      size: 493245
       nfiles: 2
     - path: models/train
       hash: md5
