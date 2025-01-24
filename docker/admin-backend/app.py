@@ -48,15 +48,15 @@ async def train_model():
 
         # Get commit hash
         commit_hash_output = run_command("git rev-parse HEAD")
-        logger.info("COMMIT HASH "+commit_hash_output)
+        logger.info(commit_hash_output)
 
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
-        logger.info("RUN ID: " + run_id)
+        logger.info(run_id)
 
         # Load and display confusion matrix
         matrix = load_confusion_matrix()
-        logger.info("CONFUSION MATRIX" + matrix)
+        logger.info(matrix)
 
         scores = load_scores()
         logger.info(scores)
