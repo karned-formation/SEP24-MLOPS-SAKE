@@ -139,7 +139,7 @@ def run_command(command):
         result = subprocess.run(command, shell=True, capture_output=True, text=True)        
         return result
     except Exception as e:
-        logger.error(command, e)
+        logger.error(command + str(e))
         return "Exception in run_command", str(e)
 
 def git_revert_to_commit(commit_hash):

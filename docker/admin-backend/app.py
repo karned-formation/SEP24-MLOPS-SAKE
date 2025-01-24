@@ -71,7 +71,7 @@ async def train_model():
         )
     except Exception as e:
 
-        logger.error(e.with_traceback())
+        logger.error(str(e))
         return JSONResponse(
             status_code=500,
             content={"error": str(e)}
