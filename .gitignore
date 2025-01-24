@@ -34,3 +34,5 @@ NOT_USED_FOR_DAGSHUB/
 
 
 private_ssh_key
+app.py
+private_conn_dagshub.sh
