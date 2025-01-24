@@ -1,11 +1,10 @@
-FROM python:3.11
-# la version "python:3.11-slim" provoque un probleme car "private_conn_dagshub.sh" s'appuie sur des fonctions non présentes dans ce docker
+FROM ubuntu:latest
+# ubuntu needed for installing git and openssh-server
 
 ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
 ARG DAGSHUB_ACCESS_KEY_ID
-
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -17,19 +16,28 @@ ENV WORKERS=1
 EXPOSE ${PORT}
 WORKDIR ${APP_HOME}
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends gcc && \
-    rm -rf /var/lib/apt/lists/*
+# install needed apps
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y python3 python3-pip python3-venv git openssh-server 
 
-RUN pip install --upgrade pip
+# install the ssh key for github in root/.ssh
+RUN mkdir -p /root/.ssh        
+RUN chmod -R 600 /root/.ssh/  
+COPY ${DOCKERFILE_DIR}/private_ssh_key /root/.ssh/private_ssh_key
+RUN ssh-keyscan github.com >>/root/.ssh/known_hosts
 
+# clone github repository
 RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
-# remove the following line when merging with main
+
+# create a virtual environment
+RUN python3 -m venv .venv
+RUN /bin/bash -c "source .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+
+# TODO : remove the following line when merging with main
 RUN git switch admin_front 
 RUN git pull
 
-RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
