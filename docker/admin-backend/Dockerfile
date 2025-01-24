@@ -17,16 +17,10 @@ ENV WORKERS=1
 EXPOSE ${PORT}
 WORKDIR ${APP_HOME}
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends gcc && \
-    rm -rf /var/lib/apt/lists/*
+# install needed apps
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y python3 python3-pip python3-venv curl git openssh-server 
 
-RUN pip install --upgrade pip
-
-RUN git clone https://github.com/karned-formation/SEP24-MLOPS-SAKE.git 
-WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
-# remove the following line when merging with main
-RUN git switch admin_front 
 # install the ssh key for github in root/.ssh
 RUN mkdir -p /root/.ssh        
 RUN chmod -R 600 /root/.ssh/  
