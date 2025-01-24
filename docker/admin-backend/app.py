@@ -29,34 +29,29 @@ async def train_model():
 
         # Run DVC reproduce
         dvc_repro_output = run_command("dvc repro --force")
-        logger.info(dvc_repro_output)
 
         # Git add and commit
         git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc")     
-        logger.info(git_add_output)
+
 
         git_commit_output = run_command('git commit -m "Training completed."')
-        logger.info(git_commit_output)
-
 
         dvc_push_output = run_command("dvc push")
-        logger.info(dvc_push_output)
 
         
         git_push_output = run_command("git push")
-        logger.info(git_push_output)
-
+      
         # Get commit hash
         commit_hash_output = run_command("git rev-parse HEAD")
-        logger.info("COMMIT HASH "+commit_hash_output)
-
+        
+        logger.info("JUSTE AVANT SAVE TO MLFLOW")
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
-        logger.info("RUN ID: " + run_id)
+        logger.info(run_id)
 
         # Load and display confusion matrix
         matrix = load_confusion_matrix()
-        logger.info("CONFUSION MATRIX" + matrix)
+        logger.info(matrix)
 
         scores = load_scores()
         logger.info(scores)
