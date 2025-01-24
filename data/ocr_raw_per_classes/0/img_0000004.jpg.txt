@@ -1,0 +1,25 @@
+Payer en ligne A FACTURE No /05.2020/099 Date de création: 18/05/2020 Date limite de validité: 18/06/2020
+FIDEL
+VENDEUR FIDELI
+ACHETEUR M. & Mme Dupont 13 rue du Paradis 75014 Paris, France
+32 Rue du Commerce 75018 Paris, France Numéro TVA FR5213719114 info@fideli.fr Téléphone: +33.1.67.86.34.67
+Travaux Sallle de bain et Toilettes
+Montant TVA
+No
+Désignation
+Qté 2h 1.5L
+PUHT Devis no D/016 - 18/05/2020
+Total HT TVA
+Total TTC
+Service 1 - Produit 1
+50,00 18,00
+100,00 10% 27,00 20%
+10,00 5,40
+110,00 32,40
+Description du Service 1 Description du Produit 1 Service 1 Description du Service 1 4 Produit 1 Description du Produit 1 3 Service 2 6 Produit 2
+Devis no D/017 . 18/05/2020
+2h 1 pc 1 h 1 pc
+50,00 300,00 35,00 250,00 TOTAL:
+100,00 10% 300,00 20% 35,00 20% 250,00 20% 812,00
+10,00 60,00 7,00 50,00 OvZ4! Total HT Montant TVA (20%) Montant TVA (10%) Total TTC
+110,00 360,00 42,00 300,00 954,40 812,00 122,40 20,00 954,40

@@ -1,0 +1,19 @@
+[Nom de l'entreprise,
+FACTURE
+Adresse
+(Ville (Province), Code postal Téléphone : 000 000-0000
+N # AGLBE 2034
+DATE 2018-02-21
+FACTURE À [Niom]
+RiF. CLENT 564
+CONDIONS Paiement à réception
+[Nom de l'entreprise (Adresse
+[ville Province) Code postal) (N' de téléphone (Adresse de courriell
+NOU4DPS30 Frais de service
+QTE PN UNIARE
+MONIANT
+1 5
+200.00 75.00 (50.00)
+200.00 37500 (50.00)
+Main-d'oure : 5 neures à 75 5 mheure
+Remise novveav dient

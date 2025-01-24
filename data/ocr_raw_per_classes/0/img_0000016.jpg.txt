@@ -1,0 +1,11 @@
+Facture
+-
+De
+À
+Nom Entreprise nom@entreprise.com 123 Rue Ville P:33 a -
+Nom Du Client nom@client.com 456 heureux Téléphone: 33 1 22 a
+Facture Nombre FAC0001 Date Échéance La Description Description De L'article 1 Description De L'article 2
+9 avr. 2019 Exigible Dès Réception
+Coût Unitaire 1 444.00 € 115,00 €
+Quantité 1,00 11,00 Sous-total VAT (20%) Total Solde DO
+Montant 1 444.00 € 1 265,00 € 2709,00 € 541,80 € 3 250,80 € 3 250,80 €
