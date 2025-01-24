@@ -35,9 +35,9 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: f649d221b593c31f1d3a432966a87f42.dir
-      size: 21954635
-      nfiles: 183
+      md5: 6db85066201a8a32cb4b4ce8696a1e56.dir
+      size: 21894799
+      nfiles: 182
     - path: params.yaml
       hash: md5
       md5: 93a222820e1507c63f845811b880b2a1
@@ -45,17 +45,17 @@ stages:
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
-      size: 174192
-      nfiles: 183
+      md5: ce5800cd31ced8c84a2d4271777592a3.dir
+      size: 173117
+      nfiles: 182
   clean:
     cmd: curl -X "POST" "http://etl-service/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: ff5eb92600b4ae1aebd4dd6e33148388.dir
-      size: 174192
-      nfiles: 183
+      md5: ce5800cd31ced8c84a2d4271777592a3.dir
+      size: 173117
+      nfiles: 182
     - path: params.yaml
       hash: md5
       md5: 93a222820e1507c63f845811b880b2a1
@@ -63,16 +63,16 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: d2e355af9fd36c1fb95eb79dc9d7550e.dir
-      size: 113333
+      md5: 0bb75d77cdb9a45cc5554b8650ba2bda.dir
+      size: 112598
       nfiles: 3
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: d2e355af9fd36c1fb95eb79dc9d7550e.dir
-      size: 113333
+      md5: 0bb75d77cdb9a45cc5554b8650ba2bda.dir
+      size: 112598
       nfiles: 3
     - path: params.yaml
       hash: md5
@@ -86,8 +86,8 @@ stages:
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 92c758744162808b4b1c6229b5af92e9.dir
-      size: 2528221
+      md5: ecbc02a506ee20fea49b78f5cdc9e8bb.dir
+      size: 2529219
       nfiles: 1
   train:
     cmd: curl -X "POST" "http://train-service/train"
@@ -104,7 +104,7 @@ stages:
     outs:
     - path: models/train
       hash: md5
-      md5: f508065f636ed4032ae8a8c63d8c42e7.dir
+      md5: 1b108a08927c553e5c85a317bcdd435c.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -117,7 +117,7 @@ stages:
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: f508065f636ed4032ae8a8c63d8c42e7.dir
+      md5: 1b108a08927c553e5c85a317bcdd435c.dir
       size: 1682517
       nfiles: 1
     - path: params.yaml
