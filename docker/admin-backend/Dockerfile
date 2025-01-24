@@ -48,8 +48,8 @@ RUN .venv/bin/pip install --upgrade pip
 # Install packages in the virtual environment
 RUN .venv/bin/pip install --no-cache-dir -r requirements.txt
 
-CMD . .venv/bin/activate && \
+RUN . .venv/bin/activate && \
     dvc remote modify origin --local access_key_id ${DAGSHUB_ACCESS_KEY_ID} && \
     dvc remote modify origin --local secret_access_key ${DAGSHUB_ACCESS_KEY_ID} && \
-    dvc pull --force && \
-    exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS} --reload
+    dvc pull --force || true
+CMD . .venv/bin/activate && exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --workers ${WORKERS} --reload
