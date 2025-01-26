@@ -30,6 +30,14 @@ scrape_configs:
     static_configs:
       - targets: ['ms-sake-predict:80']
 
+  - job_name: 'admin-frontend-service'
+    static_configs:
+      - targets: ['admin-frontend-service:80']
+
+  - job_name: 'admin-backend-service'
+    static_configs:
+      - targets: ['admin-backend-service:80']
+
   - job_name: 'node-exporter-service'
     static_configs:
       - targets: ['node-exporter-service:9100']

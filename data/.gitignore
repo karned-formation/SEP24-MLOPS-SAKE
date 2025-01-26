@@ -1,11 +1,4 @@
-/raw
-/processed
-/cleaned
-/models
-/vectorizers
-dataset.csv
-/ocr_raw
-/ocr_raw_per_classes
-/cleaned_per_classes
-/images_to_predict
-/raw_per_classes
+raw_per_classes/*
+ocr_raw_per_classes/*
+cleaned_per_classes/*
+processed/*
