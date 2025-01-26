@@ -3,3 +3,6 @@ ocr_raw_per_classes/*
 cleaned_per_classes/*
 processed/*
 /raw_per_classes
+/ocr_raw_per_classes
+/cleaned_per_classes
+/processed

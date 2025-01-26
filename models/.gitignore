@@ -1,2 +1,4 @@
 train/*
 vectorizers/*
+/vectorizers
+/train
