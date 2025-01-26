@@ -42,9 +42,8 @@ async def train_model():
         git_push_output = run_command("git push")
       
         # Get commit hash
-        commit_hash_output = run_command("git rev-parse HEAD")
+        commit_hash_output = run_command("git rev-parse HEAD").stdout
         
-        logger.info("JUSTE AVANT SAVE TO MLFLOW")
         # Save ml flow run                  
         run_id = save_to_mlflow(commit_hash_output)
         logger.info(run_id)
