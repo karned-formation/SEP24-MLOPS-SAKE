@@ -1,11 +1,10 @@
-FROM python:3.11
-# la version "python:3.11-slim" provoque un probleme car "private_conn_dagshub.sh" s'appuie sur des fonctions non présentes dans ce docker
+FROM ubuntu:latest
+# ubuntu needed for installing git and openssh-server
 
 ARG COMMON_DIR
 ARG SOURCE_DIR
 ARG DOCKERFILE_DIR
 ARG DAGSHUB_ACCESS_KEY_ID
-
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -36,7 +35,6 @@ WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 RUN git switch -f admin_front 
 RUN git pull
 
-RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
 RUN chmod +x private_conn_dagshub.sh
