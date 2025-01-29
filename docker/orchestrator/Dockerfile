@@ -1,4 +1,18 @@
-FROM python:3.11
+FROM python:3.11-slim AS builder
+
+ENV LANG=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV APP_HOME=/app
+
+WORKDIR $APP_HOME
+
+RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
+
+COPY docker/orchestrator/requirements.txt requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.11-slim AS runtime
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
@@ -18,10 +32,7 @@ EXPOSE 80
 
 WORKDIR $APP_HOME
 
-RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
-
-COPY docker/orchestrator/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY --from=builder /install /usr/local
 
 COPY src/s3handler.py src/s3handler.py
 COPY src/orchestrator/orchestrator.py src/orchestrator/orchestrator.py
