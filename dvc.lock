@@ -35,36 +35,36 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: d05bce6a3eb958a15eee345239477c50.dir
-      size: 21895182
-      nfiles: 182
+      md5: 5f2fcd5ac7bcd1385595cfcf1c161cc9.dir
+      size: 23164543
+      nfiles: 183
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: cdfde88443b5b21954654ff45546c15b.dir
-      size: 173572
-      nfiles: 182
+      md5: 4bb2c3d797ce579fac815181d1cf4e68.dir
+      size: 173981
+      nfiles: 183
   clean:
     cmd: curl -X "POST" "http://etl-service/clean"
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: cdfde88443b5b21954654ff45546c15b.dir
-      size: 173572
-      nfiles: 182
+      md5: 4bb2c3d797ce579fac815181d1cf4e68.dir
+      size: 173981
+      nfiles: 183
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: cb4d1e0c6895c928a592cb918c6440e7.dir
-      size: 112840
+      md5: fff6d678dcf99d72b4bc02323610a381.dir
+      size: 113064
       nfiles: 3
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: cb4d1e0c6895c928a592cb918c6440e7.dir
-      size: 112840
+      md5: fff6d678dcf99d72b4bc02323610a381.dir
+      size: 113064
       nfiles: 3
     outs:
     - path: data/processed
@@ -74,8 +74,8 @@ stages:
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 52b69cb76bd57beedf37356083fdc66f.dir
-      size: 2528517
+      md5: 929e137bcb4facb703f3f87e3ef60da5.dir
+      size: 2528820
       nfiles: 1
   train:
     cmd: curl -X "POST" "http://train-service/train"
@@ -88,7 +88,7 @@ stages:
     outs:
     - path: models/train
       hash: md5
-      md5: b22fb340815b33d7ab44639a18ab16f2.dir
+      md5: aaf50f451ba4770bb61ce199d93a30e9.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -101,7 +101,7 @@ stages:
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: b22fb340815b33d7ab44639a18ab16f2.dir
+      md5: aaf50f451ba4770bb61ce199d93a30e9.dir
       size: 1682517
       nfiles: 1
     outs:
