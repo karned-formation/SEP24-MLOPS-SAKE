@@ -16,9 +16,7 @@ RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf 
 RUN apt-get update && apt-get install -y curl unzip
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
-    ./aws/install \
-
-RUN --mount=type=secret,id=aws cp /run/secrets/aws ~/.aws/credentials
+    ./aws/install
 
 RUN aws --version
 
