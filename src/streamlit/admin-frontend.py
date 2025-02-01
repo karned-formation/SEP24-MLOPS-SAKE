@@ -86,12 +86,12 @@ def show_training_page():
                     sns.heatmap(matrix, annot=True, cmap='Blues', fmt='d', 
                               xticklabels=['Facture', 'Identité', 'CV'],
                               yticklabels=['Facture', 'Identité', 'CV'],
-                              annot_kws={"fontsize":30})
-                    plt.title('Confusion Matrix', fontsize=30)
+                              annot_kws={"fontsize":16})
+                    plt.title('Confusion Matrix', fontsize=20)
                     plt.xlabel('Predicted', fontsize=12)
                     plt.ylabel('Actual', fontsize=12)
-                    plt.xticks(fontsize=20)
-                    plt.yticks(fontsize=20)
+                    plt.xticks(fontsize=16)
+                    plt.yticks(fontsize=16)
                     
                     # Display the plot in Streamlit
                     st.pyplot(fig)
