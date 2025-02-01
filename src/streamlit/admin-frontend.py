@@ -28,6 +28,7 @@ def main():
         show_version_management()
 
 
+
 def show_image_management():
     st.header("Image Management")
     
@@ -56,13 +57,44 @@ def show_image_management():
 
 def show_training_page():
     st.header("Training Management")
-        
     # Training button
     if st.button("Start Training"):
         with st.spinner("Training in progress..."):
             response = requests.post(f"{BACKEND_URL}/train")
             if response.status_code == 200:
+                result = json.loads(response.content)                
                 st.success("Training completed!")
+                
+                # Create two columns
+                col1, col2 = st.columns(2)
+                
+                # Left column with scores
+                with col1:
+                    st.subheader("Scores")
+                    scores = json.loads(result['scores'].replace("'", '"'))
+                    st.write(f"Overall Accuracy: {scores['accuracy']:.2%}")
+                    st.write(f"Overall f1 score: {scores['avg_f1']:.2%}")
+                    st.write(f"Overall Recall: {scores['avg_rec']:.2%}")
+
+                # Right column with confusion matrix
+                with col2:
+                    matrix_dict = json.loads(result['confusion_matrix'].replace("'", '"')) 
+                    matrix = pd.DataFrame.from_dict(matrix_dict)
+                    
+                    # Convert matplotlib plot to streamlit
+                    fig = plt.figure(figsize=(5,4))
+                    sns.heatmap(matrix, annot=True, cmap='Blues', fmt='d', 
+                              xticklabels=['Facture', 'Identité', 'CV'],
+                              yticklabels=['Facture', 'Identité', 'CV'],
+                              annot_kws={"fontsize":30})
+                    plt.title('Confusion Matrix', fontsize=30)
+                    plt.xlabel('Predicted', fontsize=12)
+                    plt.ylabel('Actual', fontsize=12)
+                    plt.xticks(fontsize=20)
+                    plt.yticks(fontsize=20)
+                    
+                    # Display the plot in Streamlit
+                    st.pyplot(fig)
             else:
                 st.error(response.content)
 
@@ -182,21 +214,6 @@ def add_image(folder, file):
         st.rerun()
     else:
         st.error("Failed to upload image")
-
-
-def plot_confusion_matrix(matrix):
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(matrix, annot=True, cmap='Blues', fmt='d', 
-                xticklabels=['Facture', 'Identité', 'CV'],
-                yticklabels=['Facture', 'Identité', 'CV'],
-                annot_kws={"fontsize":30})
-    plt.title('Confusion Matrix', fontsize=30)
-    plt.xlabel('Predicted', fontsize=12)
-    plt.ylabel('Actual', fontsize=12)
-    plt.xticks(fontsize=20)
-    plt.yticks(fontsize=20)
-    return plt
-
 
 
 if __name__ == "__main__":

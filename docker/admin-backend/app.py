@@ -10,10 +10,7 @@ import traceback
 def load_confusion_matrix(file_path='metrics/confusion_matrix.json'):
     with open(file_path, 'r') as f:
         data = json.load(f)
-    
-    # Convert nested dict to numpy array
-    matrix = np.array([[data[str(i)][str(j)] for j in range(3)] for i in range(3)])
-    return matrix
+        return data
 
 def load_scores(file_path='metrics/scores.json'):
     with open(file_path, 'r') as f:
