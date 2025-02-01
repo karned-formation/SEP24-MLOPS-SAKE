@@ -55,16 +55,16 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 12693917be8607e4d56337c8db7af09b.dir
-      size: 113047
+      md5: 05ef4a6490702bf63b555d043657f01f.dir
+      size: 113048
       nfiles: 3
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 12693917be8607e4d56337c8db7af09b.dir
-      size: 113047
+      md5: 05ef4a6490702bf63b555d043657f01f.dir
+      size: 113048
       nfiles: 3
     outs:
     - path: data/processed
