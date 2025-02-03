@@ -1,30 +1,51 @@
-FROM python:3.11
+FROM python:3.11-slim AS builder
 
-ARG SOURCE_DIR
-ARG DOCKERFILE_DIR
-ARG LOG_DIR
-ARG MODELS_DIR
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
 
-ENV LANG=C.UTF-8
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV APP_HOME=/app
-ENV PORT=80
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
-EXPOSE $PORT
+ENV LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR $APP_HOME
+WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl unzip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
 
-COPY $DOCKERFILE_DIR/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN aws --version
 
-COPY $DOCKERFILE_DIR/app.py app.py
-COPY $SOURCE_DIR/predict/predict.py $SOURCE_DIR/predict/predict.py
-COPY $LOG_DIR/custom_logger.py  $LOG_DIR/custom_logger.py
-COPY $SOURCE_DIR/s3handler.py $SOURCE_DIR/s3handler.py
-COPY $MODELS_DIR/vectorizers/tfidf_vectorizer.joblib $MODELS_DIR/vectorizers/tfidf_vectorizer.joblib
-COPY $MODELS_DIR/train/ovrc.joblib $MODELS_DIR/train/ovrc.joblib
+RUN pip install --upgrade pip
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --reload
+COPY docker/predict/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+RUN aws s3 cp s3://datascientest-mlops-classif/models/ovrc:latest.joblib /app/models/train/ovrc.joblib
+RUN aws s3 cp s3://datascientest-mlops-classif/models/tfidf_vectorizer.joblib /app/models/vectorizers/tfidf_vectorizer.joblib
+
+FROM python:3.11-slim AS runtime
+
+ENV LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /app
+EXPOSE 80
+
+COPY --from=builder /install /usr/local
+
+COPY docker/predict/app.py app.py
+COPY src/predict/predict.py src/predict/predict.py
+COPY src/custom_logger.py  src/custom_logger.py
+COPY src/s3handler.py src/s3handler.py
+
+COPY --from=builder /app/models/train/ovrc.joblib /app/models/train/ovrc.joblib
+COPY --from=builder /app/models/vectorizers/tfidf_vectorizer.joblib /app/models/vectorizers/tfidf_vectorizer.joblib
+
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
