@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 from src.predict.predict import main
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 class PredictionRequest(BaseModel):
     prediction_folder: str
