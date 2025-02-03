@@ -1,11 +1,5 @@
 FROM python:3.11-slim AS builder
 
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-
-ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-
 ENV LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
@@ -25,8 +19,10 @@ RUN pip install --upgrade pip
 COPY docker/predict/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-RUN aws s3 cp s3://datascientest-mlops-classif/models/ovrc:latest.joblib /app/models/train/ovrc.joblib
-RUN aws s3 cp s3://datascientest-mlops-classif/models/tfidf_vectorizer.joblib /app/models/vectorizers/tfidf_vectorizer.joblib
+RUN --mount=type=secret,id=aws_secrets \
+    export $(cat /run/secrets/aws_secrets | xargs) && \
+    aws s3 cp s3://datascientest-mlops-classif/models/ovrc:latest.joblib /app/models/train/ovrc.joblib && \
+    aws s3 cp s3://datascientest-mlops-classif/models/tfidf_vectorizer.joblib /app/models/vectorizers/tfidf_vectorizer.joblib
 
 FROM python:3.11-slim AS runtime
 
@@ -41,7 +37,7 @@ COPY --from=builder /install /usr/local
 
 COPY docker/predict/app.py app.py
 COPY src/predict/predict.py src/predict/predict.py
-COPY src/custom_logger.py  src/custom_logger.py
+COPY src/custom_logger.py src/custom_logger.py
 COPY src/s3handler.py src/s3handler.py
 
 COPY --from=builder /app/models/train/ovrc.joblib /app/models/train/ovrc.joblib
