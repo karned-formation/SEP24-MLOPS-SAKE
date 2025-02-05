@@ -1,7 +1,7 @@
 FROM nginx:latest
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY index.html /usr/share/nginx/html/index.html
+COPY docker/api_gateway/nginx.conf /etc/nginx/nginx.conf
+COPY docker/api_gateway/index.html /usr/share/nginx/html/index.html
 
 EXPOSE 80
 
