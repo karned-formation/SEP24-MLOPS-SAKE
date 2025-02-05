@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+COPY docker/frontend/requirements.txt requirements.txt
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir streamlit
@@ -24,6 +24,6 @@ ENV URL_BACKEND=https://api.sake.karned.bzh
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY frontend.py frontend.py
+COPY docker/frontend/frontend.py frontend.py
 
 ENTRYPOINT ["streamlit", "run", "frontend.py", "--server.port=80", "--server.address=0.0.0.0"]
