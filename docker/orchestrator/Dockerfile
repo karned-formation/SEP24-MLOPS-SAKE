@@ -29,6 +29,8 @@ EXPOSE 80
 
 WORKDIR $APP_HOME
 
+RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /install /usr/local
 
 COPY src/s3handler.py src/s3handler.py
