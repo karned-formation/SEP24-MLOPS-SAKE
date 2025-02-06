@@ -3,7 +3,7 @@ import base64
 import streamlit as st
 import requests
 
-endpoint_url = os.getenv('URL_BACKEND') + '/predict/'
+endpoint_url = os.getenv('URL_BACKEND') + '/predict'
 st.title("Classification de documents")
 
 reference = st.text_input("Votre référence")
