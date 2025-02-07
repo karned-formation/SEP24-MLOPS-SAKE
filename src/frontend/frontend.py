@@ -17,7 +17,11 @@ if st.button("Traiter"):
         data = {"reference": reference}
 
         with st.spinner("Envoi des données..."):
-            response = requests.post(endpoint_url, data = data, files = files)
+            response = requests.post(
+                url=endpoint_url,
+                data = data,
+                files = files
+            )
 
         if response.status_code == 200:
             st.success(f"Réponse du serveur : {response.text}")
