@@ -1,14 +1,12 @@
 import base64
 import os
 import shutil
-from cgitb import handler
 from pathlib import Path
 from uuid import uuid4
 
 import requests
 
 from src.s3handler import guess_extension, guess_mime_type, store_objects
-
 
 def get_env_var( name ):
     value = os.getenv(name)
@@ -56,34 +54,34 @@ def construct_objects_to_store( objects: list, prefix: str ):
     return objects_to_store
 
 
-def call_ingest( uuid ):
+def call_ingest( uri: str ):
     endpoint_url = (f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/"
-                    f"{get_env_var('DATA_ETL_ROUTE_ETL_INGEST_ALL')}")  # TODO
+                    f"{get_env_var('DATA_ETL_ROUTE_ETL_INGEST_ALL')}")
     response = requests.post(
         url=endpoint_url,
-        params={"prediction_folder": f'{uuid}/'}
+        params={"uri": f'{uri}/'}
     )
     if response.text:
         raise Exception("Le chemin fourni à ingest est invalide")
 
 
-def call_clean( uuid ):
+def call_clean( uri ):
     endpoint_url = f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/{get_env_var('DATA_ETL_ROUTE_ETL_CLEAN_ALL')}"  # TODO
     print(endpoint_url)
     response = requests.post(
         url=endpoint_url,
-        params={"prediction_folder": f'{uuid}/'}
+        params={"uri": f'{uri}/'}
     )
     if response.text:
         raise Exception("Le chemin fourni à clean est invalide")
 
 
-def call_predict( uuid ):
+def call_predict( uri ):
     endpoint_url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}"
     # TODO
     print(endpoint_url)
     response = requests.post(
-        endpoint_url, params={"prediction_folder": f'{uuid}/'}
+        endpoint_url, params={"uri": f'{uri}/'}
     )
     prediction = dict(response.json()).get('data', 0)
     if prediction:
