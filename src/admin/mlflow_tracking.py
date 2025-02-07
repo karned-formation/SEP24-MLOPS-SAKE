@@ -163,6 +163,7 @@ def git_revert_to_commit(commit_hash):
     
     except Exception as e:
         return False, f"Unexpected error: {str(e)}"
+    
 
 def initialize_s3_handler():
     """Initialize the S3 handler with environment variables."""

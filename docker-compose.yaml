@@ -212,6 +212,7 @@ services:
       - sake
     volumes:
       - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
       - ./${MODEL_EVAL_METRICS_DIR}:/app/SEP24-MLOPS-SAKE/${MODEL_EVAL_METRICS_DIR}
       - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_INGESTION_OCR_TEXT_DIR}
@@ -251,6 +252,20 @@ services:
     container_name: prometheus-service
     ports:
       - "9090:9090"
+    networks:
+      - sake
+
+  alertmanager:
+    profiles: ["training", "prediction"]
+    build:
+      context: .
+      dockerfile: docker/alertmanager/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/alertmanager
+    image: alertmanager:1.0
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
     networks:
       - sake
 

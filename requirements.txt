@@ -19,3 +19,4 @@ boto3~=1.34
 requests~=2.32.3
 pytest~=8.3.3
 uvicorn==0.22.0
+prometheus_fastapi_instrumentator~=7.0.0

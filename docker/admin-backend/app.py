@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 import json
 import numpy as np 
 import traceback
+from prometheus_fastapi_instrumentator import Instrumentator
 
 def load_confusion_matrix(file_path='metrics/confusion_matrix.json'):
     with open(file_path, 'r') as f:
@@ -18,6 +19,7 @@ def load_scores(file_path='metrics/scores.json'):
     return scores
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 @app.post("/train")
 async def train_model():
@@ -30,11 +32,9 @@ async def train_model():
         # Git add and commit
         git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc")     
 
-
         git_commit_output = run_command('git commit -m "Training completed."')
 
         dvc_push_output = run_command("dvc push")
-
         
         git_push_output = run_command("git push")
       
