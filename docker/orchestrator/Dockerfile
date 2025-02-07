@@ -1,11 +1,10 @@
 FROM python:3.11-slim AS builder
 
-ENV LANG=C.UTF-8
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV APP_HOME=/app
+ENV LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR $APP_HOME
+WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
 
@@ -14,20 +13,18 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.11-slim AS runtime
 
-ENV LANG=C.UTF-8
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV APP_HOME=/app
+ENV LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
 ENV DATA_ETL_DOCKER_SERVICE_ETL=etl-service
-ENV DATA_ETL_ROUTE_ETL_INGEST_ALL=ingest
-ENV DATA_ETL_ROUTE_ETL_CLEAN_ALL=clean
+ENV DATA_ETL_ROUTE_ETL_INGEST_ALL=etl/ingest
+ENV DATA_ETL_ROUTE_ETL_CLEAN_ALL=etl/clean
 ENV PREDICT_DOCKER_SERVICE_PREDICT=predict-service
 ENV PREDICT_ROUTE_PREDICT=predict
 
 EXPOSE 80
-
-WORKDIR $APP_HOME
+WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
 

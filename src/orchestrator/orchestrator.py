@@ -1,6 +1,7 @@
 import base64
 import os
 import shutil
+from cgitb import handler
 from pathlib import Path
 from uuid import uuid4
 
@@ -59,7 +60,8 @@ def call_ingest( uuid ):
     endpoint_url = (f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/"
                     f"{get_env_var('DATA_ETL_ROUTE_ETL_INGEST_ALL')}")  # TODO
     response = requests.post(
-        endpoint_url, params={"prediction_folder": f'{uuid}/'}
+        url=endpoint_url,
+        params={"prediction_folder": f'{uuid}/'}
     )
     if response.text:
         raise Exception("Le chemin fourni à ingest est invalide")
@@ -69,7 +71,8 @@ def call_clean( uuid ):
     endpoint_url = f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/{get_env_var('DATA_ETL_ROUTE_ETL_CLEAN_ALL')}"  # TODO
     print(endpoint_url)
     response = requests.post(
-        endpoint_url, params={"prediction_folder": f'{uuid}/'}
+        url=endpoint_url,
+        params={"prediction_folder": f'{uuid}/'}
     )
     if response.text:
         raise Exception("Le chemin fourni à clean est invalide")
@@ -89,11 +92,12 @@ def call_predict( uuid ):
         raise Exception("Le chemin fourni à predict est invalide")
 
 
-def main( files ):
+def treat( files ):
     batch_uuid = str(uuid4())
     objects_to_store = construct_objects_to_store(files, batch_uuid)
-    store_objects(objects_to_store)
-    call_ingest(batch_uuid)
-    call_clean(batch_uuid)
-    prediction = call_predict(batch_uuid)
+    bucket_handler = store_objects(objects_to_store)
+    uri = bucket_handler.get_bucket_uri() + batch_uuid
+    call_ingest(uri)
+    call_clean(uri)
+    prediction = call_predict(uri)
     return batch_uuid, prediction
