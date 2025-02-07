@@ -40,6 +40,10 @@ scrape_configs:
     static_configs:
       - targets: ['ms-sake-predict:80']
 
+  - job_name: 'predict-orchestrator-service'
+    static_configs:
+      - targets: ['predict-orchestrator-service:80']
+
   - job_name: 'admin-frontend-service'
     static_configs:
       - targets: ['admin-frontend-service:80']
