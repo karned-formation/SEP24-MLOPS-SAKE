@@ -32,8 +32,8 @@ RUN GIT_SSH_COMMAND="ssh -i /root/.ssh/id_rsa" git clone git@github.com:karned-f
 WORKDIR ${APP_HOME}/SEP24-MLOPS-SAKE
 
 # TODO : remove the following line when merging with main
-RUN git switch -f admin_front 
 RUN git pull
+RUN git switch -f prod 
 
 
 COPY ${DOCKERFILE_DIR}/private_conn_dagshub.sh ./
