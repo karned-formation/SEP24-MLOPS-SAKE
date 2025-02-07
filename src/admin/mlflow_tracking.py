@@ -146,45 +146,21 @@ def run_command(command):
 def git_revert_to_commit(commit_hash):
     """
     Attempt to revert to a specific commit hash
-    
-    Args:
-        commit_hash (str): Commit hash to revert to
-    
+        
     Returns:
         tuple: (success_flag, output_message)
     """
     try:
-         # Fetch the latest changes from remote
-        fetch_result = subprocess.run(
-            ['git', 'fetch', 'origin'], 
-            capture_output=True, 
-            text=True, 
-            check=True
-        )
+        logger.info(f"REVERTING TO {commit_hash}")
+        run_command(f"git resert --hard {commit_hash}")
 
-        logger.info(f"GIT FETCH ORIGIN: {fetch_result}")
-        
-        # Revert to the specific commit
-        revert_result = subprocess.run(
-            ['git', 'reset', '--hard', commit_hash], 
-            capture_output=True, 
-            text=True, 
-            check=True
-        )
+        logger.info(f"CALLING DVC PULL FORCE")
+        dvc_pull_result = run_command("dvc pull --force")
 
-        
-        logger.info(f"GIT REVERT: {revert_result}")
-
-        dvc_pull_result = run_command("dvc pull")
-
-        
         logger.info(f"DVC PULL: {dvc_pull_result}")
-
 
         return True, "Successfully reverted to commit"
     
-    except subprocess.CalledProcessError as e:
-        return False, f"Git revert failed: {e.stderr}"
     except Exception as e:
         return False, f"Unexpected error: {str(e)}"
 
