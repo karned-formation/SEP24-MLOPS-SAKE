@@ -2,11 +2,13 @@ import os
 from io import BytesIO
 from pathlib import Path
 from typing import Optional
-import magic
+
 import boto3
+import magic
 from botocore.exceptions import ClientError
 
 from src.custom_logger import logger
+
 
 def initialize_s3_handler():
     aws_bucket_name = os.environ.get("AWS_BUCKET_NAME")
@@ -42,10 +44,10 @@ def store_objects( objects_to_store: list ):
 
     for obj in objects_to_store:
         handler.upload_object(
-            obj['file_content'],
-            obj['file_name'],
-            obj['file_mime_type']
+            obj['file_content'], obj['file_name'], obj['file_mime_type']
         )
+
+    return handler
 
 
 class S3Handler:
@@ -205,3 +207,6 @@ class S3Handler:
         self.s3_client.upload_fileobj(
             BytesIO(file_data), self.bucket_name, key, ExtraArgs={'ContentType': mime_type}
         )
+
+    def get_bucket_uri(self):
+        return f"s3://{self.bucket_name}/"
