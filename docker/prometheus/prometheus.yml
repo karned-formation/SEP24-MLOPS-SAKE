@@ -45,6 +45,7 @@ scrape_configs:
       - targets: ['predict-orchestrator-service:80']
 
   - job_name: 'admin-frontend-service'
+    metrics_path: /_stcore/metrics
     static_configs:
       - targets: ['admin-frontend-service:80']
 
