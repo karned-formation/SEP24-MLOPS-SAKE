@@ -35,9 +35,9 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: 5f2fcd5ac7bcd1385595cfcf1c161cc9.dir
-      size: 23164543
-      nfiles: 183
+      md5: 460fc6895e432c42fd03c7e5fe6287ca.dir
+      size: 24866265
+      nfiles: 184
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
@@ -55,40 +55,40 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 6b7f812b921a3a8909e67e0c68520a97.dir
-      size: 113039
+      md5: 05ef4a6490702bf63b555d043657f01f.dir
+      size: 113048
       nfiles: 3
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 6b7f812b921a3a8909e67e0c68520a97.dir
-      size: 113039
+      md5: 05ef4a6490702bf63b555d043657f01f.dir
+      size: 113048
       nfiles: 3
     outs:
     - path: data/processed
       hash: md5
-      md5: 111a6676cb55e775aa40a773f6cac243.dir
-      size: 3098826
+      md5: 37407cdd30cb7c82f695cf8c3c98d85a.dir
+      size: 3099050
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 77adc587959d01631cced408d0159ae9.dir
-      size: 2528800
+      md5: e492382e04d69bb50078de823d95f90a.dir
+      size: 2528838
       nfiles: 1
   train:
     cmd: curl -X "POST" "http://train-service/train"
     deps:
     - path: data/processed/train
       hash: md5
-      md5: 0174680b963affec20049c82e98b98e6.dir
-      size: 2616933
+      md5: 2809b30c278cd5dfdea3134b08c09347.dir
+      size: 2616965
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
-      md5: 1b8b91173ea87cc608ccd12b74f30768.dir
+      md5: 69ceb4ed543061edb93fb938e8d60c7d.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -96,12 +96,12 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: afaab509c9e0e20675a26d705755244f.dir
-      size: 481893
+      md5: ab9d0e7f0235f9e7ecab9deeb63fab7b.dir
+      size: 482085
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: 1b8b91173ea87cc608ccd12b74f30768.dir
+      md5: 69ceb4ed543061edb93fb938e8d60c7d.dir
       size: 1682517
       nfiles: 1
     outs:
