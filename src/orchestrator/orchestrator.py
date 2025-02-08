@@ -41,7 +41,7 @@ def construct_objects_to_store( objects: list, prefix: str ):
         file_mime_type = guess_mime_type(file_content)
         file_extension = guess_extension(file_mime_type)
         file_name = f"{str(uuid4())}{file_extension}"
-        file_name = f"{prefix}/{file_name}" if prefix else file_name
+        file_name = f"{prefix}/original_raw/{file_name}" if prefix else file_name
         file_old_name = f"{index}"
         file_infos = {
             "file_name": file_name,
