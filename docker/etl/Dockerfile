@@ -22,6 +22,7 @@ ENV DATA_CLEANING_CLEAN_ENDPOINT=http://clean-service/clean
 ENV DATA_CLEANING_CLEANED_DATASETS_DIR=data/cleaned_per_classes/
 ENV BUCKET_OCR_SUBDIR=ocerized_raw/
 ENV BUCKET_CLEANED_SUBDIR=cleaned/
+ENV DATA_INGESTION_OCR_ENDPOINT=http://ocr-service/txt/blocks-words
 
 EXPOSE 80
 WORKDIR /app
