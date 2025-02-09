@@ -1,6 +1,6 @@
 import requests
 
-uri = 's3://datascientest-mlops-classif/007f9b53-d253-4abf-a6b4-07c5ef6f0d6c/'
+uri = 's3://datascientest-mlops-classif/147258c8-c6b8-4440-a7ac-3504e1da68a0/'
 
 endpoint_url = 'http://localhost:9092/etl/ingest'
 data_dict = {
@@ -13,4 +13,4 @@ response = requests.post(
     headers=headers
 )
 
-print(response.json())
+#print(response.json())

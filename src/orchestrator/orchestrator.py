@@ -67,7 +67,6 @@ def call_ingest( uri: str ):
 
 def call_clean( uri ):
     endpoint_url = f"http://{get_env_var('DATA_ETL_DOCKER_SERVICE_ETL')}/{get_env_var('DATA_ETL_ROUTE_ETL_CLEAN_ALL')}"  # TODO
-    print(endpoint_url)
     response = requests.post(
         url=endpoint_url,
         params={"uri": f'{uri}/'}
@@ -78,8 +77,6 @@ def call_clean( uri ):
 
 def call_predict( uri ):
     endpoint_url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}"
-    # TODO
-    print(endpoint_url)
     response = requests.post(
         endpoint_url, params={"uri": f'{uri}/'}
     )

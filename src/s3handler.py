@@ -1,7 +1,8 @@
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Tuple
+from urllib.parse import urlparse
 
 import boto3
 import magic
@@ -15,28 +16,27 @@ def initialize_s3_handler():
     return S3Handler(aws_bucket_name)
 
 
-def guess_extension( mime_type: str ) -> Optional[str]:
-    if mime_type == "image/jpeg":
-        return ".jpg"
-    elif mime_type == "image/png":
-        return ".png"
-    elif mime_type == "image/gif":
-        return ".gif"
-    elif mime_type == "image/bmp":
-        return ".bmp"
-    elif mime_type == "image/webp":
-        return ".webp"
-    elif mime_type == "image/tiff":
-        return ".tiff"
-    elif mime_type == "application/pdf":
-        return ".pdf"
-    else:
-        return ".bin"
+def guess_extension(mime_type: str) -> Optional[str]:
+    extensions = {
+        "image/jpeg": ".jpg",
+        "image/png": ".png",
+        "image/gif": ".gif",
+        "image/bmp": ".bmp",
+        "image/webp": ".webp",
+        "image/tiff": ".tiff",
+        "application/pdf": ".pdf"
+    }
+    return extensions.get(mime_type, ".bin")
 
 
-def guess_mime_type( file_data: bytes ) -> Optional[str]:
-    mime_type = magic.Magic(mime=True).from_buffer(file_data)
-    return mime_type
+def guess_mime_type(file_data: bytes) -> Optional[str]:
+    return magic.Magic(mime=True).from_buffer(file_data)
+
+def parse_s3_uri(uri: str) -> Tuple[str, str]:
+    parsed = urlparse(uri)
+    bucket_name = parsed.netloc
+    prefix = parsed.path.lstrip('/')
+    return bucket_name, prefix
 
 
 def store_objects( objects_to_store: list ):
@@ -210,3 +210,17 @@ class S3Handler:
 
     def get_bucket_uri(self):
         return f"s3://{self.bucket_name}/"
+
+    def list_objects( self, prefix: str ) -> List[str]:
+        response = self.s3_client.list_objects_v2(Bucket=self.bucket_name, Prefix=prefix)
+        return [content['Key'] for content in response.get('Contents', [])]
+
+    def download_object_to_content( self, key: str ) -> BytesIO:
+        buffer = BytesIO()
+        self.s3_client.download_fileobj(self.bucket_name, key, buffer)
+        buffer.seek(0)
+        return buffer
+
+    def upload_object_from_content( self, file_content: BytesIO, key: str ):
+        file_content.seek(0)
+        self.s3_client.upload_fileobj(file_content, self.bucket_name, key)
