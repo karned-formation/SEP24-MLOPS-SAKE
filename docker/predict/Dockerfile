@@ -35,13 +35,12 @@ EXPOSE 80
 
 COPY --from=builder /install /usr/local
 
-COPY docker/predict/app.py app.py
+COPY app.py app.py
 COPY src/predict/predict.py src/predict/predict.py
 COPY src/custom_logger.py src/custom_logger.py
 COPY src/s3handler.py src/s3handler.py
 
 COPY --from=builder /app/models/train/ovrc.joblib /app/models/train/ovrc.joblib
 COPY --from=builder /app/models/vectorizers/tfidf_vectorizer.joblib /app/models/vectorizers/tfidf_vectorizer.joblib
-
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
