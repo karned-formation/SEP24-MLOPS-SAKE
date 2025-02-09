@@ -7,7 +7,7 @@ import requests
 from fastapi import HTTPException
 
 from src.custom_logger import logger
-from src.s3handler import S3Handler
+from src.s3handler import S3Handler, parse_s3_uri
 
 
 def get_env_var( name ):
@@ -31,6 +31,21 @@ def clean_text( api_url: str, text: str ) -> Optional[str]:
     if response.status_code == 200:
         return response.text
     return None
+
+def clean_text_from_content( text_to_clean: str, clean_endpoint: str ) -> str:
+    logger.info(f"Ocerizing image...")
+    encoded_image = base64.b64encode(image.read()).decode('utf-8')
+
+    payload = {
+        "file": encoded_image,
+        "model_detection": "db_resnet34",
+        "model_recognition": "crnn_vgg16_bn"
+    }
+
+    headers = {"Content-Type": "application/json"}
+
+    response = requests.post(ocr_endpoint, json=payload, headers=headers)
+    return response.text
 
 
 def read_file_content( filename: str ) -> str:
@@ -184,7 +199,7 @@ def make_dataset_prediction( ocr_txts: List[str], cleaned_txts: List[str] ) -> p
     )
 
 
-def clean_prediction( remote_directory_name: str ):
+def clean_prediction( uri: str ):
     """ 
     Dans le dossier S3 fourni, on récupère les textes de ocr_raw/, on les océrise et on place le résultat (fichier
     csv) dans cleaned/
@@ -192,26 +207,30 @@ def clean_prediction( remote_directory_name: str ):
     try:
         logger.info(f">>>>> CLEAN PREDICTION/ START <<<<<")
 
-        bucket_name = get_env_var('AWS_BUCKET_NAME')
         clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT")
         ocr_dir = get_env_var("BUCKET_OCR_SUBDIR")
         cleaned_dir = get_env_var("BUCKET_CLEANED_SUBDIR")
 
-        # Initialisation de la connexion au bucket              
+        bucket_name, base_prefix = parse_s3_uri(uri)
         handler = S3Handler(bucket_name)
+        prefix = f"{base_prefix}{ocr_dir}"
 
-        # On vérifie que le dossier est bien créé et qu'il contient ocr_dir/
-        if not handler.folder_exists(f"{remote_directory_name}{ocr_dir}"):
-            raise HTTPException(status_code=404, detail="Le dossier fourni n'existe pas sur le bucket.")
+        object_keys = handler.list_objects(prefix)
+        if not object_keys:
+            raise Exception(f"Le dossier fourni n'existe pas sur le bucket. ({prefix})")
 
-        # On télécharge le dossier en local
-        ocr_texts = handler.download_directory(remote_directory_name=f"{remote_directory_name}{ocr_dir}")
-        logger.info(f"{len(ocr_texts)} texts to clean")
+        logger.info(f"{len(object_keys)} image(s) to clean")
 
-        # On nettoie chaque texte et on stocke le résultat dans un fichier csv 
-        cleaned_txts = []
-        for text in ocr_texts:
-            file_content = read_file_content(text)
+        for key in object_keys:
+            file_content = handler.download_object_to_content(key)
+
+            full_text = get_full_text_from_content(file_content, ocr_endpoint)
+
+            text_file_content = BytesIO(full_text.encode('utf-8'))
+            text_key = f"{base_prefix}{ocr_dir}{os.path.basename(key)}.txt"
+            handler.upload_object_from_content(text_file_content, text_key)
+
+
             cleaned_text = clean_text(clean_endpoint, file_content)
             cleaned_txts.append(cleaned_text)
 
