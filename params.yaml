@@ -10,7 +10,7 @@ data_ingestion: # => OCR
   docker_service_ocr: ocr-service # /!\ à synchroniser avec docker-compose.yaml
   port_ocr: 8901
   route_ocr: txt/blocks-words
-  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/${data_ingestion.route_ocr}"
+  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}/${data_ingestion.route_ocr}"
       # => endpoint_ocr
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
