@@ -24,7 +24,7 @@ EXPOSE 80
 
 COPY --from=builder /install /usr/local
 
-COPY docker/eval/app.py ./app.py
+COPY app.py app.py
 COPY src/eval/eval.py src/eval/eval.py
 COPY src/s3handler.py src/s3handler.py
 COPY src/custom_logger.py src/custom_logger.py
