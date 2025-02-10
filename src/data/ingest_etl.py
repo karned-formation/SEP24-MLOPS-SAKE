@@ -43,25 +43,6 @@ def get_full_text_from_content( image: BytesIO, ocr_endpoint: str ) -> str:
     return response.text
 
 
-def set_permissions_of_host_volume_owner( host_uid, host_gid ):
-    """ pour mettre en place les permissions du propriétaire hôte des volumes 
-        - sur chacun des volumes montés dans "/app/"
-        - pour tous les dossiers et fichiers dans ces volumes
-    """
-    if host_uid and host_gid:  # si les valeurs sont bien récupérées
-        with open('/proc/mounts', 'r') as mounts_file:
-            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
-
-        for mount_point in app_mounts:
-            try:
-                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
-                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
-    else:
-        logger.error("UID ou GID de l'hôte non définis.")
-
-
 def delete_old_ocr( ocr_to_delete: List[str], ocr_path: str ) -> None:
     for file_path in ocr_to_delete:
         # Ensure the path has .txt extension
