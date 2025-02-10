@@ -16,7 +16,7 @@ RUN aws --version
 
 RUN pip install --upgrade pip
 
-COPY docker/predict/requirements.txt /app/requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 RUN --mount=type=secret,id=aws_secrets \

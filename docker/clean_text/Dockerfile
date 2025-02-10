@@ -10,7 +10,7 @@ RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf 
 
 RUN pip install --upgrade pip
 
-COPY docker/clean_text/requirements.txt /app/requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.11-slim AS runtime
