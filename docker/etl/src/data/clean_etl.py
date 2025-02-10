@@ -1,5 +1,7 @@
+import base64
 import os
 import subprocess
+from io import BytesIO, StringIO
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -31,21 +33,6 @@ def clean_text( api_url: str, text: str ) -> Optional[str]:
     if response.status_code == 200:
         return response.text
     return None
-
-def clean_text_from_content( text_to_clean: str, clean_endpoint: str ) -> str:
-    logger.info(f"Ocerizing image...")
-    encoded_image = base64.b64encode(image.read()).decode('utf-8')
-
-    payload = {
-        "file": encoded_image,
-        "model_detection": "db_resnet34",
-        "model_recognition": "crnn_vgg16_bn"
-    }
-
-    headers = {"Content-Type": "application/json"}
-
-    response = requests.post(ocr_endpoint, json=payload, headers=headers)
-    return response.text
 
 
 def read_file_content( filename: str ) -> str:
@@ -220,25 +207,25 @@ def clean_prediction( uri: str ):
             raise Exception(f"Le dossier fourni n'existe pas sur le bucket. ({prefix})")
 
         logger.info(f"{len(object_keys)} image(s) to clean")
+        ocr_texts = []
+        cleaned_txts = []
 
         for key in object_keys:
+            ocr_texts.append(uri + key)
             file_content = handler.download_object_to_content(key)
-
-            full_text = get_full_text_from_content(file_content, ocr_endpoint)
-
-            text_file_content = BytesIO(full_text.encode('utf-8'))
-            text_key = f"{base_prefix}{ocr_dir}{os.path.basename(key)}.txt"
-            handler.upload_object_from_content(text_file_content, text_key)
-
+            file_content = file_content.getvalue().decode('utf-8')
 
             cleaned_text = clean_text(clean_endpoint, file_content)
             cleaned_txts.append(cleaned_text)
 
         dataset = make_dataset_prediction(ocr_texts, cleaned_txts)
-        save_cleaned_dataset(dataset, f"{remote_directory_name}{cleaned_dir}/cleaned.csv")
+        csv_buffer = StringIO()
+        dataset.to_csv(csv_buffer, index=False)
 
-        # On upload le dossier cleaned/ vers le bucket s3
-        handler.upload_directory(f"{remote_directory_name}{cleaned_dir}", f"{remote_directory_name}{cleaned_dir}")
+        csv_file_content = BytesIO(csv_buffer.getvalue().encode('utf-8'))
+        text_key = f"{base_prefix}{cleaned_dir}/cleaned.csv"
+        handler.upload_object_from_content(csv_file_content, text_key)
+
         logger.info(f">>>>> CLEAN PREDICTION / END successfully <<<<<")
 
     except Exception as e:
