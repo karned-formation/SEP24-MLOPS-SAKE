@@ -24,7 +24,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && rm -
 
 COPY --from=builder /install /usr/local
 
-COPY docker/etl/app.py ./app.py
+COPY app.py app.py
 COPY src/data/clean_etl.py src/data/clean_etl.py
 COPY src/data/ingest_etl.py src/data/ingest_etl.py
 COPY src/s3handler.py src/s3handler.py
