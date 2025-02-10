@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
 
-COPY docker/etl/requirements.txt /app/requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.11-slim AS runtime
