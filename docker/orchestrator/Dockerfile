@@ -24,9 +24,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && pip 
 
 COPY --from=builder /install /usr/local
 
+COPY app.py app.py
 COPY src/s3handler.py src/s3handler.py
 COPY src/orchestrator/orchestrator.py src/orchestrator/orchestrator.py
 COPY src/custom_logger.py src/custom_logger.py
-COPY docker/orchestrator/app.py app.py
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
