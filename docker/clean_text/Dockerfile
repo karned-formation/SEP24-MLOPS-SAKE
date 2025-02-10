@@ -24,8 +24,8 @@ EXPOSE 80
 
 COPY --from=builder /install /usr/local
 
-COPY docker/clean_text/app.py /app/
-COPY docker/clean_text/download_contents.py /app/
+COPY app.py app.py
+COPY download_contents.py download_contents.py
 COPY src/data/clean_text.py /app/src/data/clean_text.py
 COPY src/custom_logger.py /app/src/custom_logger.py
 

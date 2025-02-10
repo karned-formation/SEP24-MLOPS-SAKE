@@ -1,4 +1,3 @@
-import base64
 import os
 import subprocess
 from io import BytesIO, StringIO
@@ -6,7 +5,6 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 import requests
-from fastapi import HTTPException
 
 from src.custom_logger import logger
 from src.s3handler import S3Handler, parse_s3_uri
@@ -140,25 +138,6 @@ def save_cleaned_dataset( cleaned_dataset: pd.DataFrame, filepath: str ) -> None
     logger.info(f"Saving current class to {filepath}...")
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     cleaned_dataset.to_csv(filepath, index=False)
-
-
-def set_permissions_of_host_volume_owner( host_uid, host_gid ):
-    """ pour mettre en place les permissions du propriétaire hôte des volumes 
-        - sur chacun des volumes montés dans "/app/"
-        - pour tous les dossiers et fichiers dans ces volumes
-    """
-    if host_uid and host_gid:  # si les valeurs sont bien récupérées
-        with open('/proc/mounts', 'r') as mounts_file:
-            app_mounts = [line.split()[1] for line in mounts_file if line.split()[1].startswith("/app/")]
-
-        for mount_point in app_mounts:
-            try:
-                subprocess.run(["chown", "-R", f"{host_uid}:{host_gid}", mount_point], check=True)
-                logger.info(f"Permissions mises à jour pour {mount_point} avec UID={host_uid} et GID={host_gid}.")
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Erreur lors de la modification des permissions de {mount_point} : {e}")
-    else:
-        logger.error("UID ou GID de l'hôte non définis.")
 
 
 def clean_train():
