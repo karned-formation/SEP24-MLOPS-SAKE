@@ -202,7 +202,7 @@ def clean_prediction( uri: str ):
         dataset.to_csv(csv_buffer, index=False)
 
         csv_file_content = BytesIO(csv_buffer.getvalue().encode('utf-8'))
-        text_key = f"{base_prefix}{cleaned_dir}/cleaned.csv"
+        text_key = f"{base_prefix}{cleaned_dir}cleaned.csv"
         handler.upload_object_from_content(csv_file_content, text_key)
 
         logger.info(f">>>>> CLEAN PREDICTION / END successfully <<<<<")
