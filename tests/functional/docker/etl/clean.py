@@ -2,7 +2,7 @@ import requests
 
 uri = 's3://datascientest-mlops-classif/debug_killian/'
 
-endpoint_url = 'http://localhost:9092/etl/ingest'
+endpoint_url = 'http://localhost:9092/etl/clean'
 data_dict = {
     "uri": uri
 }
