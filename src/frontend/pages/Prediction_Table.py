@@ -10,6 +10,7 @@ from src.s3handler import S3Handler
 
 st.set_page_config(page_title="Dashboard Page")
 
+
 def get_env_var(name):
     """Retrieve environment variables securely."""
     value = os.getenv(name)
@@ -52,16 +53,35 @@ def parse_response(pred):
 
 # Fonction pour gérer le clic sur le bouton "Valider les corrections"
 def handle_submit(table_data, uuid):
-    # Sauvegarder les corrections dans un fichier CSV local
     df = pd.DataFrame(table_data)
-    output_dir = "corrections"
-    os.makedirs(output_dir, exist_ok=True)  # Crée le dossier s'il n'existe pas
-    csv_path = os.path.join(output_dir, f"corrections_{uuid}.csv")
-    df.to_csv(csv_path, index=False)
+
+    # Chemin pour sauvegarder corrections_{uuid}.csv à la racine de "corrections/"
+    corrections_dir = "corrections"
+    os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
+
+    corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
+    df.to_csv(corrections_csv_path, index=False)
+
+    # Création du fichier feedback.csv dans "corrections/{UUID}/prediction/"
+    feedback_dir = os.path.join(corrections_dir, uuid, "prediction")
+    os.makedirs(feedback_dir, exist_ok=True)  # Crée le dossier si nécessaire
+
+    df_feedback = df.copy()
+    df_feedback["Image"] = df_feedback["Image"].str.replace(r"^img/", "", regex=True)  # Supprime "img/" du chemin
+
+    feedback_csv_path = os.path.join(feedback_dir, "feedback.csv")
+    df_feedback.to_csv(feedback_csv_path, index=False)
+
+    # Upload du fichier feedback.csv vers le S3
+    remote_dir = os.path.join(uuid, "prediction")
+    handler.upload_directory(remote_path=remote_dir, local_directory_name=feedback_dir)
 
     # Afficher un message de confirmation
     st.success("Corrections enregistrées avec succès !")
-    st.info(f"Les corrections ont été enregistrées localement dans {csv_path}")
+    st.info(f"Les corrections ont été enregistrées dans :\n- {corrections_csv_path}\n- {feedback_csv_path}")
+
+
+
 
 handler = initialize_s3_handler()
 
@@ -115,35 +135,18 @@ if reference:  # Vérifie si une référence est entrée
                             }
 
                         # Structure du tableau
-                        table_data = []
                         with st.form(f"form_{uuid}"):
                             st.write("### Tableau des prédictions")
                             col_names = ["Image", "Classe Prédite", "Classe Réelle"]
-
-                            # En-têtes du tableau
-                            st.write(
-                                f"| **{col_names[0]}** | **{col_names[1]}** | **{col_names[2]}** |",
-                                unsafe_allow_html=True,
-                            )
-                            st.write("---")
 
                             for filename, pred_class in zip(filenames, predicted_classes):
                                 predicted_label = class_labels.get(pred_class, "Inconnu")
                                 image_path = f"img/{uuid}/original_raw/{filename}"
 
-                                # Ligne du tableau
-                                row = {
-                                    "Image": image_path,
-                                    "Classe Prédite": predicted_label,
-                                    "Classe Réelle": st.session_state[f"corrections_{uuid}"][filename]
-                                }
-                                table_data.append(row)
-
-                                # Affichage interactif
                                 cols = st.columns([3, 2, 2])  # Ajustez les largeurs des colonnes
                                 with cols[0]:
                                     if os.path.exists(image_path):
-                                        st.image(image_path)  # Réduisez la largeur de l'image si nécessaire
+                                        st.image(image_path)
                                     else:
                                         st.error(f"Image introuvable : {image_path}")
 
@@ -151,6 +154,7 @@ if reference:  # Vérifie si une référence est entrée
                                     st.markdown(f"**Classe Prédite :** {predicted_label}")
 
                                 with cols[2]:
+                                    # ✅ Met à jour `st.session_state` AVANT d'ajouter à `table_data`
                                     st.session_state[f"corrections_{uuid}"][filename] = st.selectbox(
                                         "**Classe réelle :**",
                                         options=correction_options,
@@ -158,11 +162,18 @@ if reference:  # Vérifie si une référence est entrée
                                         key=f"{uuid}_{filename}"
                                     )
 
-
-                            # Bouton pour soumettre les corrections
+                            # ✅ Construire table_data APRÈS que toutes les selectbox aient été mises à jour
                             submitted = st.form_submit_button("Valider les corrections")
                             if submitted:
-                                handle_submit(table_data, uuid)  # Appel de la fonction handle_submit
+                                table_data = [
+                                    {
+                                        "Image": f"img/{uuid}/original_raw/{filename}",
+                                        "Classe Prédite": class_labels.get(pred_class, "Inconnu"),
+                                        "Classe Réelle": st.session_state[f"corrections_{uuid}"][filename]  # ✅ MAJ après interaction
+                                    }
+                                    for filename, pred_class in zip(filenames, predicted_classes)
+                                ]
+                                handle_submit(table_data, uuid)
 
                     st.write("---")
                 else:
