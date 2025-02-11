@@ -9,7 +9,7 @@ def predict( data: str ):
         logger.info("Starting the prediction process.")
         vectorizer = joblib.load(VECTORIZER_PATH)
         model = joblib.load(MODEL_PATH)
-        data_vectorized = vectorizer.transform(data)
+        data_vectorized = vectorizer.transform([data])
         probabilities = model.predict_proba(data_vectorized)
         logger.info("Prediction process completed successfully.")
         return probabilities

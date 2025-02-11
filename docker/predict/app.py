@@ -20,9 +20,6 @@ class PredictionItem(BaseModel):
     ref: str
     data: str
 
-class PredictionRequest(BaseModel):
-    items: List[PredictionItem]
-
 class ClassProbability(BaseModel):
     id_class: int
     proba: float
@@ -36,10 +33,10 @@ class PredictionResponse(BaseModel):
     response_model=List[PredictionResponse],
     tags=["Predict"]
 )
-async def predict_folder( request: PredictionRequest ):
+async def predict_folder( request: List[PredictionItem] ):
     try:
         results = []
-        for item in request.items:
+        for item in request:
             prediction = predict(item.data)
             probabilities = [ClassProbability(id_class=key, proba=value) for key, value in prediction.items()]
             results.append(PredictionResponse(ref=item.ref, probabilities=probabilities))
