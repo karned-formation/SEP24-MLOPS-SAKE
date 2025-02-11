@@ -41,10 +41,4 @@ docker/admin-backend/id_rsa
 # DO NOT MODIFY : these are created inside the admin backend docker and should not be tracked by git
 private_conn_dagshub.sh
 
-secrets
-
-docker/predict/models/
-
 csv_files
-corrections
-img
