@@ -1,8 +1,7 @@
 fastapi[standard]==0.115.2
 joblib==1.4.2
-pandas==2.2.3
 scikit-learn==1.5.2
-requests==2.32.3
-boto3==1.35.67
 python-box==7.2.0
 prometheus_fastapi_instrumentator~=7.0.0
+typing==3.7.4.3
+uvicorn==0.22.0
