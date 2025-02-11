@@ -60,6 +60,13 @@ def show_image_management():
         if uploaded_file:
             add_image(folder, uploaded_file)
         
+        if st.button("Retrieve images from feedbacks"):
+            response = requests.get(f"{BACKEND_URL}/get_predictions_images")
+            if response.status_code == 200:
+                st.success("Images added to training set!")
+            else:
+                st.error("Retrieval failed!")
+
         if folder in st.session_state.folders_data:
             cols = st.columns(6)
             for idx, img_data in enumerate(st.session_state.folders_data[folder]):
@@ -67,6 +74,8 @@ def show_image_management():
                     st.image(img_data["thumbnail"], caption=img_data["name"])
                     if st.button(f"Delete {img_data['name']}", key=f"del_{folder}_{idx}"):
                         delete_image(folder, img_data["name"])
+        
+
 
 def show_training_page():
     st.header("Training Management")
