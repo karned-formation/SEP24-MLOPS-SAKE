@@ -4,9 +4,10 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
+import pandas as pd
 import requests
 
-from src.s3handler import guess_extension, guess_mime_type, store_objects
+from src.s3handler import guess_extension, guess_mime_type, store_objects, download_uri_to_content
 
 def get_env_var( name ):
     value = os.getenv(name)
@@ -75,10 +76,28 @@ def call_clean( uri ):
         raise Exception("Le chemin fourni à clean est invalide")
 
 
+def prepare_predict_payload( uri ):
+    csv_content = download_uri_to_content(uri)
+    df = pd.read_csv(csv_content)
+
+    payload = []
+    for _, row in df.iterrows():
+        payload.append(
+            {
+                "ref": str(row['filename']),
+                "data": str(row['cleaned_text'])
+            }
+        )
+
+    return payload
+
 def call_predict( uri ):
     endpoint_url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}"
+    payload = prepare_predict_payload(uri)
     response = requests.post(
-        endpoint_url, params={"uri": f'{uri}/'}
+        url=endpoint_url,
+        json=payload,
+        headers={"Content-Type": "application/json"}
     )
     prediction = dict(response.json()).get('data', 0)
     if prediction:
