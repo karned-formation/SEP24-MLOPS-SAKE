@@ -1,23 +1,50 @@
 from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
-from src.predict.predict import main
+from typing import List
 
-app = FastAPI()
-Instrumentator().instrument(app).expose(app)
+from src.predict.predict import predict
+
+app = FastAPI(
+    title="Predict",
+    description="API Predict.",
+    version="1.0.0"
+)
+Instrumentator().instrument(app).expose(
+    app=app,
+    endpoint="/predict/metrics"
+)
+
+
+class PredictionItem(BaseModel):
+    ref: str
+    data: str
 
 class PredictionRequest(BaseModel):
-    prediction_folder: str
+    items: List[PredictionItem]
 
-@app.post("/predict")
-async def predict_folder(prediction_folder:str = None):
-    """
-    Endpoint for triggering the prediction process.
-    """
+class ClassProbability(BaseModel):
+    id_class: int
+    proba: float
+
+class PredictionResponse(BaseModel):
+    ref: str
+    probabilities: List[ClassProbability]
+
+@app.post(
+    path="/predict",
+    response_model=List[PredictionResponse],
+    tags=["Predict"]
+)
+async def predict_folder( request: PredictionRequest ):
     try:
-        # Call the main function with the prediction folder
-        prediction = main(prediction_folder)
-        return {"message": "Prediction completed successfully.", "data": prediction}
+        results = []
+        for item in request.items:
+            prediction = predict(item.data)
+            probabilities = [ClassProbability(id_class=key, proba=value) for key, value in prediction.items()]
+            results.append(PredictionResponse(ref=item.ref, probabilities=probabilities))
+
+        return results
 
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=f"File not found: {str(e)}")
@@ -27,5 +54,3 @@ async def predict_folder(prediction_folder:str = None):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error during processing: {str(e)}")
-
-    
