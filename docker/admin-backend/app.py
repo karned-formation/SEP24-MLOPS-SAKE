@@ -1,5 +1,5 @@
 from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model_to_s3, run_command
-from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image, 
+from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image
 from src.admin.get_predictions_images import get_images
 from fastapi import FastAPI, UploadFile, File, Form
 from src.custom_logger import logger
