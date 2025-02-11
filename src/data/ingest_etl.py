@@ -1,12 +1,10 @@
 import base64
 import os
-import subprocess
 from io import BytesIO
 from pathlib import Path
 from typing import List
 
 import requests
-from fastapi import HTTPException
 
 from src.custom_logger import logger
 from src.s3handler import S3Handler, parse_s3_uri
