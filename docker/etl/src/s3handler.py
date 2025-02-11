@@ -49,6 +49,10 @@ def store_objects( objects_to_store: list ):
 
     return handler
 
+def download_uri_to_content( uri: str ) -> BytesIO:
+    bucket_name, key = parse_s3_uri(uri)
+    handler = S3Handler(bucket_name)
+    return handler.download_object_to_content(key)
 
 class S3Handler:
     def __init__( self, bucket_name: str ):

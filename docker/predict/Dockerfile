@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 RUN --mount=type=secret,id=aws_secrets \
     export $(cat /run/secrets/aws_secrets | xargs) && \
     mkdir -p /app/models && chmod 755 /app/models && \
-    aws s3 cp s3://datascientest-mlops-classif/models/ovrc:latest.joblib /app/models/ovrc.joblib --region=eu-north-1 && \
+    aws s3 cp s3://datascientest-mlops-classif/models/ovrc.joblib /app/models/ovrc.joblib --region=eu-north-1 && \
     aws s3 cp s3://datascientest-mlops-classif/models/tfidf_vectorizer.joblib /app/models/tfidf_vectorizer.joblib --region=eu-north-1
 
 FROM python:3.11-slim AS runtime

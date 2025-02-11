@@ -1,8 +1,10 @@
+import joblib
 from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 from typing import List
 
+from config import MODEL_PATH
 from src.predict.predict import predict
 
 app = FastAPI(
@@ -22,7 +24,7 @@ class PredictionItem(BaseModel):
 
 class ClassProbability(BaseModel):
     id_class: int
-    proba: float
+    confidence: float
 
 class PredictionResponse(BaseModel):
     ref: str
@@ -36,9 +38,15 @@ class PredictionResponse(BaseModel):
 async def predict_folder( request: List[PredictionItem] ):
     try:
         results = []
+        model = joblib.load(MODEL_PATH)
         for item in request:
             prediction = predict(item.data)
-            probabilities = [ClassProbability(id_class=key, proba=value) for key, value in prediction.items()]
+
+            probabilities = [
+                ClassProbability(id_class=cls, confidence=confidence)
+                for cls, confidence in zip(model.classes_, prediction[0])
+            ]
+
             results.append(PredictionResponse(ref=item.ref, probabilities=probabilities))
 
         return results
