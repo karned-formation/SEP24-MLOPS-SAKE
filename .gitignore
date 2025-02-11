@@ -42,6 +42,7 @@ docker/admin-backend/id_rsa
 app.py
 private_conn_dagshub.sh
 
+doc_classification.egg-info/
 corrections/
 img/
 
