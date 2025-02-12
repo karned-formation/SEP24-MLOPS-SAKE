@@ -5,10 +5,11 @@ import string
 from src.utils.files import encode_files
 
 random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-file_path = 'artefacts/cni.jpg'
 
-with open(file_path, 'rb') as file:
-    encoded_files = encode_files([file])
+file1 = open('artefacts/cni.jpg', 'rb')
+file2 = open('artefacts/cni2.jpg', 'rb')
+
+encoded_files = encode_files([file1, file2])
 
 endpoint_url = 'http://localhost:9091/predict'
 data_dict = {
@@ -22,4 +23,4 @@ response = requests.post(
     headers=headers
 )
 
-print(response.json())
+#print(response.json())

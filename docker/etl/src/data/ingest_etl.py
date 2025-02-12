@@ -1,20 +1,10 @@
-import base64
+import logging
 import os
-from io import BytesIO
 from pathlib import Path
 from typing import List
-
 import requests
-
 from src.custom_logger import logger
-from src.s3handler import S3Handler, parse_s3_uri
-
-
-def get_env_var( name ):
-    value = os.getenv(name)
-    if not value:
-        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
-    return value
+from src.utils.env import get_env_var
 
 
 def get_full_text( image: str, ocr_endpoint: str ) -> str:
@@ -25,20 +15,20 @@ def get_full_text( image: str, ocr_endpoint: str ) -> str:
         response = requests.post(ocr_endpoint, files=files)
         return response.text
 
-def get_full_text_from_content( image: BytesIO, ocr_endpoint: str ) -> str:
-    logger.info(f"Ocerizing image...")
-    encoded_image = base64.b64encode(image.read()).decode('utf-8')
-
+def call_ocr( image_base64: str ) -> str:
+    url = (get_env_var('ENDPOINT_URL_OCR'))
     payload = {
-        "file": encoded_image,
+        "file": f"{image_base64}",
         "model_detection": "db_resnet34",
         "model_recognition": "crnn_vgg16_bn"
     }
-
     headers = {"Content-Type": "application/json"}
-
-    response = requests.post(ocr_endpoint, json=payload, headers=headers)
-    return response.text
+    response = requests.post(
+        url=url,
+        json=payload,
+        headers=headers
+    )
+    return response.json()
 
 
 def delete_old_ocr( ocr_to_delete: List[str], ocr_path: str ) -> None:
@@ -140,45 +130,16 @@ def ingest_train():
         raise e
 
 
-def ingest_prediction( uri: str ):
-    """ 
-    Dans le dossier S3 fourni, on récupère les images de original_raw/, on les océrise et on place les résultats (
-    fichiers textes) dans ocerized_raw/
-    """
+def extract( files: list ):
     try:
-        logger.info(f">>>>> OCERIZE / START <<<<<")
-
-        ocr_endpoint = os.environ.get("DATA_INGESTION_OCR_ENDPOINT")
-        ocr_dir = os.environ.get("BUCKET_OCR_SUBDIR")
-        original_dir = os.environ.get("BUCKET_ORIGINAL_SUBDIR")
-
-        bucket_name, base_prefix = parse_s3_uri(uri)
-        handler = S3Handler(bucket_name)
-        prefix = f"{base_prefix}{original_dir}"
-
-        object_keys = handler.list_objects(prefix)
-        if not object_keys:
-            raise Exception(f"Le dossier fourni n'existe pas sur le bucket. ({prefix})")
-
-        logger.info(f"{len(object_keys)} image(s) to ocerize")
-
-        for key in object_keys:
-            file_content = handler.download_object_to_content(key)
-            full_text = get_full_text_from_content(file_content, ocr_endpoint)
-
-            text_file_content = BytesIO(full_text.encode('utf-8'))
-            text_key = f"{base_prefix}{ocr_dir}{os.path.basename(key)}.txt"
-            handler.upload_object_from_content(text_file_content, text_key)
-
-        logger.info(f">>>>> OCERIZE / END successfully <<<<<")
+        datas = []
+        for file in files:
+            text = call_ocr(image_base64=file.content)
+            print(text)
+            datas.append({"name": f"{file.name}.txt", "text": text})
+        print(datas)
+        return datas
 
     except Exception as e:
         logger.error(f"OCERIZE / An error occurred : {str(e)}")
         raise e
-
-
-if __name__ == '__main__':
-    ingest_train()
-
-    # Pour tester l'ingestion de prédiction, le bucket contient quelques données de test  # ingest_prediction(
-    # remote_directory_name="prediction_1731849628.762522/")

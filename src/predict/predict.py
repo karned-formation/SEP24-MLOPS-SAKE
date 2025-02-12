@@ -4,7 +4,6 @@ from src.custom_logger import logger
 
 
 def predict( data: str ):
-    """Main function to handle the prediction process."""
     try:
         logger.info("Starting the prediction process.")
         vectorizer = joblib.load(VECTORIZER_PATH)['vectorizer']

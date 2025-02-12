@@ -11,7 +11,7 @@ app = FastAPI(
 )
 Instrumentator().instrument(app).expose(
     app=app,
-    endpoint="/clean/metrics"
+    endpoint="/metrics"
 )
 
 @app.post(

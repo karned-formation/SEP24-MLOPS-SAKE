@@ -29,8 +29,9 @@ def guess_extension( mime_type: str ) -> Optional[str]:
     return extensions.get(mime_type, ".bin")
 
 
-def guess_mime_type( file_data: bytes ) -> Optional[str]:
-    return magic.Magic(mime=True).from_buffer(file_data)
+def guess_mime_type(file_data: bytes) -> Optional[str]:
+    mime = magic.Magic(mime=True)
+    return mime.from_buffer(file_data[:1024])
 
 
 def parse_s3_uri( uri: str ) -> Tuple[str, str]:
