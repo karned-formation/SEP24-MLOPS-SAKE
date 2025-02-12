@@ -13,4 +13,4 @@ response = requests.post(
     headers=headers
 )
 
-#print(response.json())
+print(response.json())

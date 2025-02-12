@@ -17,27 +17,35 @@ Instrumentator().instrument(app).expose(
 )
 
 
-class InputIngest(BaseModel):
+class InputExtract(BaseModel):
     uri: str
 
 
-class InputClean(BaseModel):
+class InputTransform(BaseModel):
     uri: str
 
 
-class OutputIngest(BaseModel):
+class InputLoad(BaseModel):
+    uri: str
+
+
+class OutputExtract(BaseModel):
     data: str
 
 
-class OutputClean(BaseModel):
+class OutputTransform(BaseModel):
+    data: str
+
+
+class OutputLoad(BaseModel):
     data: str
 
 
 @app.post(
-    path="/etl/ingest",
+    path="/extract",
     response_class=PlainTextResponse,
     tags=["ETL"])
-def ingest( input_data: InputIngest ):
+def extract( input_data: InputExtract ):
     try:
         ingest_prediction(input_data.uri)
     except Exception as e:
@@ -45,10 +53,21 @@ def ingest( input_data: InputIngest ):
 
 
 @app.post(
-    path="/etl/clean",
+    path="/transform",
     response_class=PlainTextResponse,
-    tags=["ETL : train"])
-def clean( input_data: InputClean ):
+    tags=["ETL"])
+def transform( input_data: InputClean ):
+    try:
+        clean_prediction(input_data.uri)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post(
+    path="/load",
+    response_class=PlainTextResponse,
+    tags=["ETL"])
+def load( input_data: InputClean ):
     try:
         clean_prediction(input_data.uri)
     except Exception as e:
@@ -69,7 +88,7 @@ def ingest():
 @app.post(
     path="/etl/clean/train",
     response_class=PlainTextResponse,
-    tags=["ETL"])
+    tags=["ETL : train"])
 def clean():
     try:
         clean_train()
