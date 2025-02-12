@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -14,10 +15,16 @@ Instrumentator().instrument(app).expose(
     endpoint="/metrics"
 )
 
+
+class InputText(BaseModel):
+    text: str
+
+
+
 @app.post(
     path="/clean",
     response_class = PlainTextResponse,
     tags=["Clean"]
 )
-def clean(text: str):
-    return tokenize_data(text)
+def clean(data: InputText):
+    return tokenize_data(data.text)

@@ -5,7 +5,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from starlette.responses import PlainTextResponse
 from typing import List
 
-from src.data.clean_etl import clean_prediction, clean_train
+from src.data.clean_etl import transform, clean_train
 from src.data.ingest_etl import extract, ingest_train
 from pydantic import BaseModel
 
@@ -28,6 +28,15 @@ class OutputExtractItem(BaseModel):
     name: str
     text: str
 
+class InputTransformItem(BaseModel):
+    name: str
+    text: str
+
+
+class OutputTransformItem(BaseModel):
+    name: str
+    text: str
+
 
 @app.post(
     path="/extract",
@@ -42,10 +51,11 @@ def api_extract( files: List[InputExtractItem] ):
 
 @app.post(
     path="/transform",
+    response_model=List[OutputTransformItem],
     tags=["ETL"])
-def api_transform(  ):
+def api_transform( files: List[InputTransformItem] ):
     try:
-        clean_prediction("uri")
+        return transform(files)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
