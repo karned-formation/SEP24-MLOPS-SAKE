@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -12,10 +13,8 @@ app = FastAPI(
 )
 Instrumentator().instrument(app).expose(
     app=app,
-    endpoint="/predict/metrics"
+    endpoint="/metrics"
 )
-
-database = {}
 
 
 class PredictionRequest(BaseModel):
@@ -33,15 +32,10 @@ class PredictionResult(BaseModel):
     response_model=PredictionResult,
     tags=["Prediction"])
 async def upload_images( request: PredictionRequest ):
-    files = request.files
     reference = request.reference
 
-    if database.get(reference, 0):
-        return {"message": "Reference should be unique. Try again."}
+    uuid, prediction = treat(request.files)
 
-    uuid, prediction = treat(files)
-    database[reference] = uuid
-    print(database)  # TODO Delete
     return {
         "message": "Files saved successfully",
         "reference": reference,

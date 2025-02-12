@@ -7,7 +7,6 @@ import pandas as pd
 import requests
 
 from src.custom_logger import logger
-from src.s3handler import S3Handler, parse_s3_uri
 
 
 def get_env_var( name ):
