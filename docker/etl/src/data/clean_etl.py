@@ -7,13 +7,10 @@ import pandas as pd
 import requests
 
 from src.custom_logger import logger
+from src.utils.env import get_env_var
 
 
-def get_env_var( name ):
-    value = os.getenv(name)
-    if not value:
-        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
-    return value
+
 
 
 def load_processed_dataset( filepath: str ) -> pd.DataFrame:

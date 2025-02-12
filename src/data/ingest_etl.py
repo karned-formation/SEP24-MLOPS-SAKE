@@ -6,15 +6,6 @@ import requests
 from src.custom_logger import logger
 from src.utils.env import get_env_var
 
-
-def get_full_text( image: str, ocr_endpoint: str ) -> str:
-    """Envoi une image à l'API d'océrisation et retourne le texte."""
-    logger.info(f"Ocerizing {image}...")
-    with open(image, "rb") as file:
-        files = {"file": file}
-        response = requests.post(ocr_endpoint, files=files)
-        return response.text
-
 def call_ocr( image_base64: str ) -> str:
     url = (get_env_var('ENDPOINT_URL_OCR'))
     payload = {
@@ -28,7 +19,29 @@ def call_ocr( image_base64: str ) -> str:
         json=payload,
         headers=headers
     )
-    return response.json()
+    return response.text
+
+
+def extract( files: list ):
+    try:
+        datas = []
+        for file in files:
+            text = call_ocr(image_base64=file.content)
+            datas.append({"name": f"{file.name}.txt", "text": text})
+        return datas
+
+    except Exception as e:
+        logger.error(f"OCERIZE / An error occurred : {str(e)}")
+        raise e
+
+
+def get_full_text( image: str, ocr_endpoint: str ) -> str:
+    """Envoi une image à l'API d'océrisation et retourne le texte."""
+    logger.info(f"Ocerizing {image}...")
+    with open(image, "rb") as file:
+        files = {"file": file}
+        response = requests.post(ocr_endpoint, files=files)
+        return response.text
 
 
 def delete_old_ocr( ocr_to_delete: List[str], ocr_path: str ) -> None:
@@ -127,19 +140,4 @@ def ingest_train():
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
-        raise e
-
-
-def extract( files: list ):
-    try:
-        datas = []
-        for file in files:
-            text = call_ocr(image_base64=file.content)
-            print(text)
-            datas.append({"name": f"{file.name}.txt", "text": text})
-        print(datas)
-        return datas
-
-    except Exception as e:
-        logger.error(f"OCERIZE / An error occurred : {str(e)}")
         raise e

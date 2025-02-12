@@ -10,7 +10,10 @@ def push_to_bucket(files: list, prefix: str):
 
     infos = []
     for file in files:
-        content = base64.b64decode(file.content)
+        try:
+            content = base64.b64decode(file.content)
+        except Exception as e:
+           content = file.content.encode('utf-8')
 
         if not file.name:
             name = str(uuid4())
