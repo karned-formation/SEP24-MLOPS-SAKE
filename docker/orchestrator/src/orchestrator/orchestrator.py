@@ -1,3 +1,4 @@
+import io
 import json
 import logging
 from uuid import uuid4
@@ -18,12 +19,15 @@ def call_extract( payload ):
     return response.text
 
 
-def call_transform( uri ):
+def call_transform( payload ):
     url = get_env_var('ENDPOINT_URL_TRANSFORM')
+    headers = {'Content-Type': 'application/json'}
     response = requests.post(
         url=url,
-        params={"uri": f'{uri}/'}
+        json=payload,
+        headers=headers
     )
+    return response.text
 
 
 def call_load( prefix: str, files: list ):
@@ -40,9 +44,8 @@ def call_load( prefix: str, files: list ):
     return response.json()
 
 
-def call_predict( uri_csv: str ):
-    url = f"http://{get_env_var('PREDICT_DOCKER_SERVICE_PREDICT')}/{get_env_var('PREDICT_ROUTE_PREDICT')}"
-    payload = prepare_predict_payload(uri_csv)
+def call_predict( payload: list ):
+    url = get_env_var('ENDPOINT_URL_PREDICT')
     response = requests.post(
         url=url,
         json=payload,
@@ -83,6 +86,30 @@ def prepare_load_payload_ocerized(files: str) -> list:
     return payload
 
 
+def prepare_load_payload_cleaned(files_infos: list, ocerized_files: str) -> list:
+    ocerized_files = json.loads(ocerized_files)
+    result = []
+    for p, f in zip(files_infos, ocerized_files):
+        merged = {**p, **f}
+        merged.pop('full_path', None)
+        merged.pop('name', None)
+        merged['name'] = merged.pop('filename')
+        result.append(merged)
+    return result
+
+
+def construct_dataset( original_files_infos: list, cleaned_files: str ) -> list:
+    cleaned_files = json.loads(cleaned_files)
+    dataset = []
+    for p, f in zip(original_files_infos, cleaned_files):
+        merged = {**p, **f}
+        merged.pop('full_path', None)
+        merged.pop('name', None)
+        merged['name'] = merged.pop('filename')
+        dataset.append(merged)
+    return dataset
+
+
 def prepare_predict_payload( uri_csv ):
     csv_content = download_uri_to_content(uri_csv)
     df = pd.read_csv(csv_content)
@@ -111,27 +138,53 @@ def push_ocerized_files_to_bucket( batch_uuid: str, files: str ):
     return call_load(path, files)
 
 
+def push_cleaned_files_to_bucket( batch_uuid: str, files: str ):
+    path = f"{batch_uuid}/cleaned"
+    files = prepare_load_payload_ocerized(files)
+    return call_load(path, files)
+
+
+def push_cleaned_dataset_to_bucket( batch_uuid: str, dataset: list ):
+    path = f"{batch_uuid}/cleaned"
+    df = pd.DataFrame(dataset)
+    csv_buffer = io.StringIO()
+    df.to_csv(csv_buffer, index=False, sep=";")
+    csv_str = csv_buffer.getvalue()
+    csv_buffer.close()
+    files = [{"name": "cleaned.csv", "content": csv_str}]
+    return call_load(path, files)
+
+
 def extract_texts( files: list, files_infos: list ) -> str:
     files_original = prepare_load_payload_original(files)
     files_to_extract = prepare_extract_payload(files_original, files_infos)
     return call_extract(files_to_extract)
 
 
+def clean_texts( files_infos: list, ocerized_files: str ) -> str:
+    payload = prepare_load_payload_cleaned(files_infos, ocerized_files)
+    return call_transform(payload)
+
+
 def treat( files: list ):
     batch_uuid = str(uuid4())
     batch_uuid = 'test1'
 
-    files_infos = push_original_files_to_bucket(batch_uuid, files)
+    original_files_infos = push_original_files_to_bucket(batch_uuid, files)
 
-    ocerized_files = extract_texts(files, files_infos)
-    files_infos = push_ocerized_files_to_bucket(batch_uuid, ocerized_files)
+    ocerized_files = extract_texts(files, original_files_infos)
+    ocerized_files_infos = push_ocerized_files_to_bucket(batch_uuid, ocerized_files)
 
-    cleaned_files = clean_texts(files, files_infos)
+    cleaned_files = clean_texts(original_files_infos, ocerized_files)
+    cleaned_files_infos = push_cleaned_files_to_bucket(batch_uuid, cleaned_files)
+
+    dataset = construct_dataset(original_files_infos, cleaned_files)
+    push_cleaned_dataset_to_bucket(batch_uuid, dataset)
+
+    prediction = call_predict(dataset)
     """
-    call_transform(base_uri)
-
     uri_csv = f'{base_uri}cleaned/cleaned.csv'
-    prediction = call_predict(uri_csv)
+    
 
     uri_csv_prediction = f'{base_uri}/prediction/predictions.csv'
     store_csv_prediction(prediction, uri_csv_prediction)
