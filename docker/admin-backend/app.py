@@ -131,7 +131,7 @@ async def add_image(file: UploadFile = File(...), folder: str = Form(...)):
             content={"error": str(e)}
         )
 
-@app.post("/get_predictions_images")
+@app.get("/get_predictions_images")
 async def get_predictions_images():
     try:
         get_predictions_images()
