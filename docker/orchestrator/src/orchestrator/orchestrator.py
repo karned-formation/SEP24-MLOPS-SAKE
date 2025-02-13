@@ -168,7 +168,6 @@ def clean_texts( files_infos: list, ocr_files: list ) -> list:
 
 def treat( files: list ):
     batch_uuid = str(uuid4())
-    batch_uuid = 'killian_3'
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
     ocr_files = extract_texts(files, original_files_infos)
