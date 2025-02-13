@@ -1,4 +1,5 @@
 import base64
+import logging
 from io import BytesIO
 from uuid import uuid4
 from src.s3handler import S3Handler, guess_extension, guess_mime_type
@@ -7,6 +8,7 @@ from src.utils.env import get_env_var
 
 def push_to_bucket(files: list, prefix: str):
     handler = S3Handler(get_env_var("AWS_BUCKET_NAME"))
+    logging.info(f"Uploading {len(files)} files to S3 bucket {handler.bucket_name}")
 
     infos = []
     for file in files:
@@ -22,6 +24,7 @@ def push_to_bucket(files: list, prefix: str):
             file.name = f"{name}{extension}"
         path = f"{prefix}/{file.name}" if prefix else file.name
         infos.append({"full_path": path, "filename": file.name})
+        logging.info(f"Uploading file {file.name} to {path}")
 
         content = BytesIO(content)
         handler.upload_object_from_content(content, path)
