@@ -14,20 +14,20 @@ app = FastAPI(
 )
 Instrumentator().instrument(app).expose(
     app=app,
-    endpoint="/predict/metrics"
+    endpoint="/metrics"
 )
 
 
 class PredictionItem(BaseModel):
-    ref: str
-    data: str
+    name: str
+    text: str
 
 class ClassProbability(BaseModel):
     id_class: int
     confidence: float
 
 class PredictionResponse(BaseModel):
-    ref: str
+    name: str
     probabilities: List[ClassProbability]
 
 @app.post(
@@ -40,14 +40,14 @@ async def predict_folder( request: List[PredictionItem] ):
         results = []
         model = joblib.load(MODEL_PATH)
         for item in request:
-            prediction = predict(item.data)
+            prediction = predict(item.text)
 
             probabilities = [
                 ClassProbability(id_class=cls, confidence=confidence)
                 for cls, confidence in zip(model.classes_, prediction[0])
             ]
 
-            results.append(PredictionResponse(ref=item.ref, probabilities=probabilities))
+            results.append(PredictionResponse(name=item.name, probabilities=probabilities))
 
         return results
 

@@ -77,7 +77,7 @@ def prepare_payload_ocr(files: list) -> list:
     return payload
 
 
-def prepare_payload_cleaned(files_infos: list, ocr_files: list) -> list:
+def prepare_payload_cleaned(files_infos: list, ocr_files: str) -> list:
     result = []
     for p, f in zip(files_infos, ocr_files):
         merged = {**p, **f}
@@ -88,7 +88,7 @@ def prepare_payload_cleaned(files_infos: list, ocr_files: list) -> list:
     return result
 
 
-def construct_dataset( original_files_infos: list, cleaned_files: list ) -> list:
+def construct_dataset( original_files_infos: list, cleaned_files: str ) -> list:
     dataset = []
     for p, f in zip(original_files_infos, cleaned_files):
         merged = {**p, **f}
@@ -146,8 +146,8 @@ def push_cleaned_dataset_to_bucket( batch_uuid: str, dataset: list ):
 
 def push_prediction_to_bucket( batch_uuid: str, prediction: list ):
     path = f"{batch_uuid}/prediction"
-    prediction = json.dumps(prediction)
     files = [{"name": "prediction.json", "content": prediction}]
+    print(files)
     payload = {
         "prefix": path,
         "files": files
@@ -161,14 +161,14 @@ def extract_texts( files: list, files_infos: list ) -> list:
     return call_extract(files_to_extract)
 
 
-def clean_texts( files_infos: list, ocr_files: list ) -> list:
+def clean_texts( files_infos: list, ocr_files: str ) -> list:
     payload = prepare_payload_cleaned(files_infos, ocr_files)
     return call_transform(payload)
 
 
 def treat( files: list ):
     batch_uuid = str(uuid4())
-    batch_uuid = 'killian_3'
+    batch_uuid = 'killian_0'
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
     ocr_files = extract_texts(files, original_files_infos)
