@@ -30,4 +30,4 @@ COPY src/data/ingest_etl.py src/data/ingest_etl.py
 COPY src/custom_logger.py src/custom_logger.py
 COPY src/utils/env.py src/utils/env.py
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
