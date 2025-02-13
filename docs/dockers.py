@@ -42,6 +42,7 @@ with (Diagram("sake.karned.bzh", show = False, graph_attr = graph_attr, node_att
         predict = Docker("Predict")
         orchestrator = Docker("Orchestrator")
         dvc = Docker("DVC")
+        file = Docker("File")
 
     with Cluster("Services", direction = "TB"):
         s3 = SimpleStorageServiceS3("S3")
@@ -62,13 +63,9 @@ with (Diagram("sake.karned.bzh", show = False, graph_attr = graph_attr, node_att
     etl >> ocr
     etl >> clean
 
-
-
-    orchestrator >> preprocessing
+    orchestrator >> etl
     orchestrator >> predict
+    orchestrator >> file
 
     dvc >> s3
-    orchestrator >> s3
-    etl >> s3
-    train >> s3
-    eval >> s3
+    file >> s3

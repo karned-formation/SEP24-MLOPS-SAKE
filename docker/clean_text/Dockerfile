@@ -34,4 +34,4 @@ RUN python3 -m spacy download fr_core_news_sm && \
 
 RUN python3 /app/download_contents.py
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
