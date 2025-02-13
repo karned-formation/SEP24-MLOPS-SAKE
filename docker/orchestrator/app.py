@@ -24,7 +24,7 @@ class PredictionRequest(BaseModel):
 
 class PredictionResult(BaseModel):
     uuid: str
-    prediction: dict
+    prediction: list
 
 
 @app.post(
