@@ -44,3 +44,7 @@ private_conn_dagshub.sh
 secrets
 
 docker/predict/models/
+
+csv_files
+corrections
+img
