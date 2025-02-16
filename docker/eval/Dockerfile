@@ -26,7 +26,6 @@ COPY --from=builder /install /usr/local
 
 COPY app.py app.py
 COPY src/eval/eval.py src/eval/eval.py
-COPY src/s3handler.py src/s3handler.py
 COPY src/custom_logger.py src/custom_logger.py
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]

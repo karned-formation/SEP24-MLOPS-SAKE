@@ -8,13 +8,7 @@ import os
 import joblib
 import pandas as pd
 
-
-def get_env_var(name):
-    value = os.getenv(name)
-    if not value:
-        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
-    return value
-
+from src.utils.env import get_env_var
 
 def fusionner_csv(chemin_dossier):
     # Vérifie si le dossier existe

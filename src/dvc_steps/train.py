@@ -4,12 +4,8 @@ import os
 import joblib
 import requests
 from src.custom_logger import logger
+from src.utils.env import get_env_var
 
-def get_env_var(name):
-    value = os.getenv(name)
-    if not value:
-        raise EnvironmentError(f"La variable d'environnement '{name}' n'est pas définie ou est vide.")
-    return value
 
 def save_object_locally(encoded_str, path):
     obj_bytes = base64.b64decode(encoded_str)  
@@ -37,14 +33,11 @@ def train():
     model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
     STAGE_NAME = "Stage: TRAIN"
     try:
-        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
         response = call_train(train_endpoint, joblib.load(X_train_path),joblib.load(y_train_path))
         json_response = response.json()  
         
         save_object_locally(json_response["ovrc"], model_path)
-
-        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
 
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
