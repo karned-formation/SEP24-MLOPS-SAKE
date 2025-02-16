@@ -1,6 +1,8 @@
 from src.custom_logger import logger
 import os
 import joblib
+import pandas as pd
+import sys
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -9,52 +11,52 @@ def get_env_var(name):
     return value
 
 
-def main() -> None:
-    try:
-        STAGE_NAME = "Stage: Pre-Processing"    
-        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
-        clean_dir_path = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+def fusionner_csv(chemin_dossier):
+    # Vérifie si le dossier existe
+    if not os.path.isdir(chemin_dossier):
+        logger.error(f"Le dossier {chemin_dossier} n'existe pas.")
+        return None
 
-        X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
-        X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
-        y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
-        y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+    # Liste pour stocker les DataFrames de tous les fichiers CSV
+    dataframes = []
 
-        tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
+    # Fonction pour lire un fichier CSV et l'ajouter à la liste
+    def ajouter_csv(chemin_fichier):
+        try:
+            df = pd.read_csv(chemin_fichier)
+            # Vérifie que le fichier CSV contient exactement 3 colonnes
+            if df.shape[1] == 3:
+                dataframes.append(df)
+            else:
+                logger.info(f"Avertissement : Le fichier {chemin_fichier} a {df.shape[1]} colonnes au lieu de 3. Il ne sera pas ajouté.")
+        except Exception as e:
+            logger.error(f"Erreur lors de la lecture de {chemin_fichier} : {e}")
+
+    # Parcourir les sous-dossiers pour trouver les fichiers CSV
+    for sous_dossier, _, fichiers in os.walk(chemin_dossier):
+        # Filtrer pour obtenir uniquement les fichiers CSV dans le sous-dossier en cours
+        fichiers_csv = [f for f in fichiers if f.endswith('.csv')]
         
+        # Vérifier s'il y a plus d'un fichier CSV dans le sous-dossier
+        if len(fichiers_csv) > 1:
+            logger.error(f"Erreur : Le sous-dossier '{sous_dossier}' contient plus d'un fichier CSV.")
+            return None
         
-        # Split the dataset into train and test sets
-        X_train, X_test, y_train, y_test = split_dataset(clean_dir_path)
-        logger.info(f"y_test shape : {y_test.shape}")
-        logger.info(f"y_train shape : {y_train.shape}")
-        
-        # Fit TF-IDF vectorizer on the training data
-        fitted_vectorizer = fit_tfidf_vectorizer(X_train)
-        
-        # Transform both train and test sets
-        X_train_vectorized = transform_with_tfidf(fitted_vectorizer, X_train)
-        X_test_vectorized = transform_with_tfidf(fitted_vectorizer, X_test)
+        # Ajouter le fichier CSV s'il n'y en a qu'un seul
+        for fichier in fichiers_csv:
+            chemin_fichier = os.path.join(sous_dossier, fichier)
+            ajouter_csv(chemin_fichier)
 
-        # Prepare variables to save, specifying the directory for each
-        variables_to_save = {
-            'X_train': (X_train_vectorized, X_train_path),
-            'X_test': (X_test_vectorized, X_test_path),
-            'y_train': (y_train, y_train_path),
-            'y_test': (y_test, y_test_path),
-            'tfid_vectorizer': (fitted_vectorizer, tfidf_vectorizer_path)
-        }
+    # Fusionner tous les DataFrames trouvés
+    if dataframes:
+        fusion = pd.concat(dataframes, ignore_index=True)
+        logger.info(fusion.shape)
+        return fusion
+    else:
+        logger.error("Aucun fichier CSV valide trouvé.")
+        return None
 
-        # Save the transformed data and labels using Joblib
-        save_variables_in_directories(variables_to_save)
 
-        # Save the fitted TF-IDF vectorizer
-        save_vectorizer(fitted_vectorizer, tfidf_vectorizer_path)
-
-        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
-            
-    except Exception as e:
-        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
-        raise e
     
 def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     """
@@ -80,6 +82,7 @@ def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     joblib.dump(vectorizer, tfidf_vectorizer_path)
     logger.info(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
 
+
 def save_variables_in_directories(variables: dict) -> None:
     """
     Serialize and save multiple variables using Joblib.
@@ -97,3 +100,27 @@ def save_variables_in_directories(variables: dict) -> None:
         # Save the variable
         joblib.dump(var_value, file_path)
         logger.info(f"Variable '{var_name}' saved to {file_path}")
+
+
+def preprocess_train():
+    cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
+    preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING")
+
+    STAGE_NAME = "Stage: preprocessing"
+    try:
+        logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
+
+        csvs = fusionner_csv(cleaned_datasets_dir)
+
+        process_dir(ocr_text_dir, cleaned_datasets_dir, clean_endpoint)
+
+
+        logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
+
+
+    except Exception as e:
+        logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
+        raise e
+
+if __name__ == "__main__":
+    preprocess_train()
