@@ -1,6 +1,6 @@
 stages:
   ingest:
-    cmd:  'curl -X "POST" "http://${data_ETL.docker_service_ETL}/ingest"'
+    cmd:  python3 src/dvc_steps/ingest.py
     deps:
     - ${data_structure_raw.raw_dataset_dir}
     outs:
@@ -8,7 +8,7 @@ stages:
         persist: true
 
   clean:
-    cmd: 'curl -X "POST" "http://${data_ETL.docker_service_ETL}/clean"'
+    cmd: python3 src/dvc_steps/clean.py
     deps:
     - ${data_ingestion.ocr_text_dir}
     outs:
@@ -16,7 +16,7 @@ stages:
         persist: true
 
   preprocessing:
-    cmd: 'curl -X "POST" "http://${data_preprocessing.docker_service_preprocessing}/process"'
+    cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - ${data_cleaning.cleaned_datasets_dir}
     outs:
@@ -26,7 +26,7 @@ stages:
         persist: true
 
   train:
-    cmd: 'curl -X "POST" "http://${model_train.docker_service_train}/train"'
+    cmd: python3 src/dvc_steps/train.py
     deps:
     - ${data_preprocessing.train_data_dir}
     outs:
@@ -34,7 +34,7 @@ stages:
         persist: true
 
   eval:
-    cmd: 'curl -X "POST" "http://${model_eval.docker_service_eval}/eval"'
+    cmd: python3 src/dvc_steps/eval.py
     deps:
     - ${data_preprocessing.test_data_dir}
     - ${model_train.model_train_dir}
