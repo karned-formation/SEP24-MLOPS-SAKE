@@ -10,7 +10,7 @@ data_ingestion: # => OCR
   docker_service_ocr: ocr-service # /!\ à synchroniser avec docker-compose.yaml
   port_ocr: 8901
   route_ocr: txt/blocks-words
-  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}:${data_ingestion.port_ocr}/${data_ingestion.route_ocr}"
+  ocr_endpoint: "http://${data_ingestion.docker_service_ocr}/${data_ingestion.route_ocr}"
       # => endpoint_ocr
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
@@ -71,6 +71,18 @@ model_eval:
   metrics_confusion_matrix_file: "confusion_matrix.json"
   model_path: "${model_train.model_train_path}"
 
+
+admin_backend: 
+  docker_service_admin_backend: admin-backend-service
+  port_admin_backend: 8910
+  endpoint_admin_backend: "http://${admin_backend.docker_service_admin_backend}"
+
+admin_frontend: 
+  docker_service_admin_frontend: admin-frontend-service
+  port_admin_frontend: 8911
+  endpoint_admin_frontend: "http://${admin_frontend.docker_service_admin_frontend}"
+
+
 label_encoder_mapping:
   facture: 0
   id_pieces: 1
@@ -106,5 +118,3 @@ orchestrator:
   docker_service_predict: predict-orchestrator-service
   port_orchestrator: 8908
 
-admin: 
-  port_admin: 8910

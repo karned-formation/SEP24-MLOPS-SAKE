@@ -189,36 +189,114 @@ services:
     networks:
       - sake
 
-  # Streamlit admin et gestion des données avec DVC et MLFLOW
-  admin-service:
+  # Backend d'administration et gestion des données avec DVC et MLFLOW
+  admin-backend-service:
     profiles: ["training"]
     env_file:
     - path: ./.env
     build:
       context: .  
-      dockerfile: docker/admin/Dockerfile  
+      dockerfile: docker/admin-backend/Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/admin
-        DOCKERFILE_DIR: docker/admin
-        STREAMLIT_DIR: src/streamlit
+        DOCKERFILE_DIR: docker/admin-backend
         DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - admin-service:cache
-    image: admin-service:1.0  
-    container_name: admin-service
+      cache_from:
+        - admin-backend-service:cache
+    image: admin-backend-service:1.0  
+    container_name: admin-backend-service
     ports:
-      - "${ADMIN_PORT_ADMIN}:80"
+      - "${ADMIN_BACKEND_PORT_ADMIN_BACKEND}:80"
     networks:
       - sake
     volumes:
       - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
       - ./${MODEL_EVAL_METRICS_DIR}:/app/SEP24-MLOPS-SAKE/${MODEL_EVAL_METRICS_DIR}
       - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
       - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_INGESTION_OCR_TEXT_DIR}
       - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_CLEANING_CLEANED_DATASETS_DIR}
       - ./${DATA_GENERAL_LOG_DIR}:/app/SEP24-MLOPS-SAKE/${DATA_GENERAL_LOG_DIR}
+
+   #Streamlit d'administration, envoi des requêtes vers admin-backend-service
+  admin-frontend-service:
+    profiles: ["training"]
+    env_file:
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/admin-frontend/Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/streamlit
+        DOCKERFILE_DIR: docker/admin-frontend
+      cache_from:
+        - admin-frontend-service:cache
+    image: admin-frontend-service:1.0  
+    container_name: admin-frontend-service
+    ports:
+      - "${ADMIN_FRONTEND_PORT_ADMIN_FRONTEND}:80"
+    networks:
+      - sake
+
+  # Prometheus Service
+  prometheus-service:
+    profiles: ["training", "prediction"]
+    build:
+      context: .
+      dockerfile: docker/prometheus/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/prometheus
+    image: prometheus-service:1.0
+    container_name: prometheus-service
+    ports:
+      - "9090:9090"
+    networks:
+      - sake
+
+  alertmanager:
+    profiles: ["training", "prediction"]
+    build:
+      context: .
+      dockerfile: docker/alertmanager/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/alertmanager
+    image: alertmanager:1.0
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    networks:
+      - sake
+
+  # Grafana Service
+  grafana-service:
+    profiles: ["training", "prediction"]
+    build:
+      context: .
+      dockerfile: docker/grafana/Dockerfile
+      args: 
+        DOCKERFILE_DIR: docker/grafana
+    image: grafana-service:1.0
+    container_name: grafana-service
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Set the admin password
+    ports:
+      - "3000:3000"
+    networks:
+      - sake
+  
       
+  node-exporter-service:
+    profiles: ["training", "prediction"]
+    image: prom/node-exporter:latest
+    container_name: node-exporter-service
+    networks:
+      - sake
+    ports:
+      - "9100:9100"
+
+
 networks:
   sake:
-    driver: bridge
+    driver: bridge  

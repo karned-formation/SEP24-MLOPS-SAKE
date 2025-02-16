@@ -1,3 +1,0 @@
-NameSpace: sake
-AppName: etl
-DockerImage: killiankopp/ms-sake-etl:1.0

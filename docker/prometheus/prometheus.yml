@@ -1,0 +1,58 @@
+global:
+  scrape_interval: 10s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093 
+
+rule_files:
+  - alerting_rules.yml
+
+
+scrape_configs:
+  - job_name: 'ocr-service'
+    static_configs:
+      - targets: ['ocr-service:80']
+
+  - job_name: 'clean-service'
+    static_configs:
+      - targets: ['clean-service:80']
+
+  - job_name: 'etl-service'
+    static_configs:
+      - targets: ['etl-service:80']
+
+  - job_name: 'preprocessing-service'
+    static_configs:
+      - targets: ['preprocessing-service:80']
+
+  - job_name: 'train-service'
+    static_configs:
+      - targets: ['train-service:80']
+
+  - job_name: 'eval-service'
+    static_configs:
+      - targets: ['eval-service:80']
+
+  - job_name: 'predict-service'
+    static_configs:
+      - targets: ['ms-sake-predict:80']
+
+  - job_name: 'predict-orchestrator-service'
+    static_configs:
+      - targets: ['predict-orchestrator-service:80']
+
+  - job_name: 'admin-frontend-service'
+    metrics_path: /_stcore/metrics
+    static_configs:
+      - targets: ['admin-frontend-service:80']
+
+  - job_name: 'admin-backend-service'
+    static_configs:
+      - targets: ['admin-backend-service:80']
+
+  - job_name: 'node-exporter-service'
+    static_configs:
+      - targets: ['node-exporter-service:9100']

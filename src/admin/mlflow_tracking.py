@@ -1,13 +1,13 @@
 import json
 import traceback
-
+import boto3
 import joblib
 from src.custom_logger import logger
 import mlflow
 import subprocess
 import dagshub
 import os 
-import pandas as pd
+from src.s3handler import S3Handler
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -98,12 +98,12 @@ def save_to_mlflow(commit_hash: str) -> str:
                                     "y_test": y_test_path,
                                     "confusion_matrix": confusion_matrix_path},
                                 commit_hash=commit_hash)
-
+    logger.info(run_id)
     return run_id
 
 def list_mlflow_runs():
     """
-    Retrieve all MLflow runs and convert them to a pandas DataFrame.
+    Retrieve all MLflow runs
     """
     initialize_ml_flow()
 
@@ -131,48 +131,61 @@ def list_mlflow_runs():
     display_runs = runs[columns_to_display].copy()
     display_runs.columns = [col.split('.')[-1] for col in display_runs.columns]
     
-    return display_runs
+    return display_runs.to_json()
 
 def run_command(command):
     """Run a shell command and return its output."""
     try:
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        return result.stdout.strip()
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)        
+        logger.info(result)
+        return result
     except Exception as e:
-        return "", str(e)
+        logger.error(command)
+        return "Exception in run_command"
 
 def git_revert_to_commit(commit_hash):
     """
     Attempt to revert to a specific commit hash
-    
-    Args:
-        commit_hash (str): Commit hash to revert to
-    
+        
     Returns:
         tuple: (success_flag, output_message)
     """
     try:
-        # Fetch the latest changes from remote
-        fetch_result = subprocess.run(
-            ['git', 'fetch', 'origin'], 
-            capture_output=True, 
-            text=True, 
-            check=True
-        )
-        
-        # Revert to the specific commit
-        revert_result = subprocess.run(
-            ['git', 'reset', '--hard', commit_hash], 
-            capture_output=True, 
-            text=True, 
-            check=True
-        )
+        logger.info(f"REVERTING TO {commit_hash}")
+        run_command(f"git resert --hard {commit_hash}")
 
-        dvc_pull_result = run_command("dvc pull")
-        
+        logger.info(f"CALLING DVC PULL FORCE")
+        dvc_pull_result = run_command("dvc pull --force")
+
+        logger.info(f"DVC PULL: {dvc_pull_result}")
+
         return True, "Successfully reverted to commit"
     
-    except subprocess.CalledProcessError as e:
-        return False, f"Git revert failed: {e.stderr}"
     except Exception as e:
         return False, f"Unexpected error: {str(e)}"
+    
+
+def initialize_s3_handler():
+    """Initialize the S3 handler with environment variables."""
+    aws_access_key_id = get_env_var("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = get_env_var("AWS_SECRET_ACCESS_KEY")
+    aws_bucket_name = get_env_var("AWS_BUCKET_NAME")
+    logger.info("S3 handler initialized.")
+    return S3Handler(aws_bucket_name)
+
+def register_model_to_s3() -> bool:
+    """Register current model to S3."""
+    try:
+        s3 = initialize_s3_handler()
+        
+        # Get latest model 
+        model_path = get_env_var("MODEL_TRAIN_MODEL_TRAIN_PATH")
+
+        s3.upload_file(model_path, "models/ovrc:latest.joblib")
+        
+        
+        
+        return True
+    except Exception as e:
+        print(f"Error registering model: {str(e)}")
+        return False

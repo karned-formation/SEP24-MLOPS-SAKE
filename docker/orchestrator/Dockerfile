@@ -1,27 +1,42 @@
-FROM python:3.11
-
-ARG SOURCE_DIR
-ARG DOCKERFILE_DIR
-ARG LOG_DIR
+FROM python:3.11-slim AS builder
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV APP_HOME=/app
-ENV PORT=80
-
-EXPOSE $PORT
 
 WORKDIR $APP_HOME
 
 RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
 
-COPY $DOCKERFILE_DIR/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY docker/orchestrator/requirements.txt requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-COPY $DOCKERFILE_DIR/app.py app.py
-COPY $SOURCE_DIR/orchestrator/orchestrator.py $SOURCE_DIR/orchestrator/orchestrator.py
-COPY $LOG_DIR/custom_logger.py  $LOG_DIR/custom_logger.py
-COPY $SOURCE_DIR/s3handler.py $SOURCE_DIR/s3handler.py
+FROM python:3.11-slim AS runtime
 
-CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT} --reload
+ENV LANG=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV APP_HOME=/app
+
+ENV AWS_ACCESS_KEY_ID=""
+ENV AWS_SECRET_ACCESS_KEY=""
+ENV AWS_REGION=eu-west-1
+ENV DATA_ETL_DOCKER_SERVICE_ETL=etl-service
+ENV DATA_ETL_ROUTE_ETL_INGEST_ALL=ingest
+ENV DATA_ETL_ROUTE_ETL_CLEAN_ALL=clean
+ENV PREDICT_DOCKER_SERVICE_PREDICT=predict-service
+ENV PREDICT_ROUTE_PREDICT=predict
+
+EXPOSE 80
+
+WORKDIR $APP_HOME
+
+COPY --from=builder /install /usr/local
+
+COPY src/s3handler.py src/s3handler.py
+COPY src/orchestrator/orchestrator.py src/orchestrator/orchestrator.py
+COPY src/custom_logger.py src/custom_logger.py
+COPY docker/orchestrator/app.py app.py
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]

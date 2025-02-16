@@ -2,7 +2,6 @@ stages:
   ingest:
     cmd:  'curl -X "POST" "http://${data_ETL.docker_service_ETL}/ingest"'
     deps:
-    - params.yaml
     - ${data_structure_raw.raw_dataset_dir}
     outs:
     - ${data_ingestion.ocr_text_dir}:
@@ -11,7 +10,6 @@ stages:
   clean:
     cmd: 'curl -X "POST" "http://${data_ETL.docker_service_ETL}/clean"'
     deps:
-    - params.yaml
     - ${data_ingestion.ocr_text_dir}
     outs:
     - ${data_cleaning.cleaned_datasets_dir}:
@@ -20,7 +18,6 @@ stages:
   preprocessing:
     cmd: 'curl -X "POST" "http://${data_preprocessing.docker_service_preprocessing}/process"'
     deps:
-    - params.yaml
     - ${data_cleaning.cleaned_datasets_dir}
     outs:
     - data/processed:
@@ -31,7 +28,6 @@ stages:
   train:
     cmd: 'curl -X "POST" "http://${model_train.docker_service_train}/train"'
     deps:
-    - params.yaml
     - ${data_preprocessing.train_data_dir}
     outs:
     - ${model_train.model_train_dir}:
@@ -40,7 +36,6 @@ stages:
   eval:
     cmd: 'curl -X "POST" "http://${model_eval.docker_service_eval}/eval"'
     deps:
-    - params.yaml
     - ${data_preprocessing.test_data_dir}
     - ${model_train.model_train_dir}
     metrics:

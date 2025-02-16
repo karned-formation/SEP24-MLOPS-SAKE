@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from src.eval.eval import main
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 @app.post('/eval')
 def eval(prediction_folder_S3:str = None):
