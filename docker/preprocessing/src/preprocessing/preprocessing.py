@@ -1,3 +1,4 @@
+from io import BytesIO
 import pandas as pd
 import numpy as np
 import joblib
@@ -120,13 +121,26 @@ def save_variables_in_directories(variables: dict) -> None:
         joblib.dump(var_value, file_path)
         logger.info(f"Variable '{var_name}' saved to {file_path}")
 
-
 def split_dataset(clean_dir_path: str, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """
     Split the dataset into training and testing sets
     """
     # Load dataset
     df = fusionner_csv(clean_dir_path, inclure_racine=False)
+    X = df.drop(['category'], axis=1)
+    y = df['category']
+
+    # Split dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
+    logger.info("Dataset split into training and testing sets.")
+    return X_train, X_test, pd.Series(y_train), pd.Series(y_test)
+
+def split_dataset_train(clean_csv: str, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+    """
+    Split the dataset into training and testing sets
+    """
+    # Load dataset
+    df = pd.read_csv(clean_csv)
     X = df.drop(['category'], axis=1)
     y = df['category']
 
@@ -290,6 +304,25 @@ def main(prediction_folder_S3:str = None) -> None:
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
+
+def generate_objects(clean_csv: str):
+    X_train, X_test, y_train, y_test = split_dataset_train(clean_csv)
+
+    tfidf_vectorizer =  fit_tfidf_vectorizer(X_train)
+    X_train_bytes = serialize_object(X_train)
+    y_train_bytes = serialize_object(y_train)
+    X_test_bytes = serialize_object(X_test)
+    y_test_bytes = serialize_object(y_test)
+    tfidf_vectorizer_bytes = serialize_object(tfidf_vectorizer)
+    
+    return X_train_bytes, y_train_bytes,X_test_bytes,y_test_bytes, tfidf_vectorizer_bytes
+
+def serialize_object(obj):
+    # Sérialiser l'objet en mémoire
+    buffer = BytesIO()
+    joblib.dump(obj, buffer)
+    buffer.seek(0)
+    return buffer.read()
 
 if __name__ == "__main__":
     main("training_essai_EJA/")
