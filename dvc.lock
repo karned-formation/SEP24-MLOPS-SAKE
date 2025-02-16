@@ -31,33 +31,33 @@ stages:
       size: 21840025
       nfiles: 181
   ingest:
-    cmd: curl -X "POST" "http://etl-service/ingest"
+    cmd: python3 src/dvc_steps/ingest.py
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: 5f2fcd5ac7bcd1385595cfcf1c161cc9.dir
-      size: 23164543
-      nfiles: 183
+      md5: 89e9766e6a422edf178c46a46b866268.dir
+      size: 59453
+      nfiles: 1
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 4bb2c3d797ce579fac815181d1cf4e68.dir
-      size: 173981
-      nfiles: 183
+      md5: 2770b831bdbd84b77e2fdf9017b9c1ed.dir
+      size: 1014
+      nfiles: 1
   clean:
-    cmd: curl -X "POST" "http://etl-service/clean"
+    cmd: python3 src/dvc_steps/clean.py
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: 4bb2c3d797ce579fac815181d1cf4e68.dir
-      size: 173981
-      nfiles: 183
+      md5: 2770b831bdbd84b77e2fdf9017b9c1ed.dir
+      size: 1014
+      nfiles: 1
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: d9539f975c15a43b7f6f348ede7f2938.dir
-      size: 113042
-      nfiles: 3
+      md5: 9f50219eb5a3c769c6e178b2b23cb331.dir
+      size: 603
+      nfiles: 1
   preprocessing:
     cmd: curl -X "POST" "http://preprocessing-service/process"
     deps:
