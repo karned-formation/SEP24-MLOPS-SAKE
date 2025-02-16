@@ -1,4 +1,5 @@
-from io import StringIO
+import base64
+from io import BytesIO, StringIO
 from typing import Optional
 
 import requests
@@ -7,6 +8,7 @@ import os
 import joblib
 import pandas as pd
 import sys
+
 
 def get_env_var(name):
     value = os.getenv(name)
@@ -55,12 +57,10 @@ def fusionner_csv(chemin_dossier):
     if dataframes:
         fusion = pd.concat(dataframes, ignore_index=True)
         logger.info(fusion.shape)
-        return StringIO(fusion.to_json())
+        return fusion.to_json(orient='records', index=False)
     else:
         logger.error("Aucun fichier CSV valide trouvé.")
         return None
-
-
     
 def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     """
@@ -87,48 +87,42 @@ def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
     logger.info(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
 
 
-def save_variables_in_directories(variables: dict) -> None:
-    """
-    Serialize and save multiple variables using Joblib.
-
-    Args:
-        variables (dict): A dictionary where keys are variable names, and values are
-                          tuples containing (variable, directory_path).
-    """
-    # Iterate over the dictionary and save each variable in its respective directory
-    for var_name, (var_value, file_path) in variables.items():
-        # Ensure the directory exists
-        directory = os.path.dirname(file_path)
-        os.makedirs(directory, exist_ok=True)
-
-        # Save the variable
-        joblib.dump(var_value, file_path)
-        logger.info(f"Variable '{var_name}' saved to {file_path}")
-
-
 def call_preprocess(api_url: str, clean_csv: str) -> Optional[str]:
     headers = {'Content-Type': 'application/json'}
     json_payload = {"clean_csv": clean_csv}
 
     response = requests.post(api_url, json=json_payload, headers=headers)
-    print(response.content)
     if response.status_code == 200:
-        return response.text
+        return response
     return None
 
+def save_object_locally(encoded_str, path):
+    buffer = BytesIO(base64.b64decode(encoded_str))
+    j = joblib.dump(buffer, path)
 
 def preprocess_train():
     cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
-    preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING")
+    preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING_TRAIN")
+    X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
+    X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
+    y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
+    y_test_path = get_env_var("DATA_PREPROCESSING_Y_TEST_PATH")
+    tfidf_vectorizer_path = get_env_var("DATA_PREPROCESSING_TFIDF_VECTORIZER_PATH")
 
     STAGE_NAME = "Stage: preprocessing"
     try:
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
         csvs = fusionner_csv(cleaned_datasets_dir)
-        response = call_preprocess(preprocess_endpoint, csvs.to_json(index=False))
-                
-
+        response = call_preprocess(preprocess_endpoint, csvs)
+        json_response = response.json()  
+        
+        save_object_locally(json_response["X_train"], X_train_path)
+        save_object_locally(json_response["y_train"], y_train_path)
+        save_object_locally(json_response["X_test"], X_test_path)
+        save_object_locally(json_response["y_test"], y_test_path)
+        save_object_locally(json_response["tfidf_vectorizer"], tfidf_vectorizer_path)
+        
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
 
     except Exception as e:

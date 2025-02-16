@@ -1,3 +1,4 @@
+import base64
 from io import BytesIO, StringIO
 import pandas as pd
 import numpy as np
@@ -309,6 +310,7 @@ def generate_objects(clean_csv: str):
     X_train, X_test, y_train, y_test = split_dataset_train(clean_csv)
 
     tfidf_vectorizer =  fit_tfidf_vectorizer(X_train)
+    
     X_train_bytes = serialize_object(X_train)
     y_train_bytes = serialize_object(y_train)
     X_test_bytes = serialize_object(X_test)
@@ -318,11 +320,10 @@ def generate_objects(clean_csv: str):
     return X_train_bytes, y_train_bytes,X_test_bytes,y_test_bytes, tfidf_vectorizer_bytes
 
 def serialize_object(obj):
-    # Sérialiser l'objet en mémoire
     buffer = BytesIO()
     joblib.dump(obj, buffer)
     buffer.seek(0)
-    return buffer.read()
+    return base64.b64encode(buffer.read()).decode('utf-8')  # Encode as Base64 string for pydantic
 
 if __name__ == "__main__":
     main("training_essai_EJA/")
