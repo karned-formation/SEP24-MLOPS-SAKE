@@ -1,7 +1,5 @@
 import os
-import subprocess
-from io import BytesIO, StringIO
-from typing import Dict, List, Optional
+from typing import List, Optional
 import pandas as pd
 import requests
 

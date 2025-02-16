@@ -20,7 +20,7 @@ def train(item: ProcessItem):
     """
     try:
         # Execute training process
-        ovrc_bytes= main(item.X_train, item.y_train)
+        ovrc_bytes = main(item.X_train, item.y_train)
 
         response = ProcessResponse(
             ovrc=ovrc_bytes

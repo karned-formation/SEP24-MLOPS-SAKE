@@ -48,9 +48,6 @@ RUN mkdir -p data/raw_per_classes/0 \
     models/train \
     models/vectorizers
 
-# Set the volume mount point
-VOLUME ["/mnt/dvc"]
-
 # Set up DVC credentials at runtime, not during build
 RUN . .venv/bin/activate && \
     --mount=type=secret,id=secrets \
