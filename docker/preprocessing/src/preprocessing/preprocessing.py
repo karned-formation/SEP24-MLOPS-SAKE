@@ -1,4 +1,4 @@
-from io import BytesIO
+from io import BytesIO, StringIO
 import pandas as pd
 import numpy as np
 import joblib
@@ -140,7 +140,7 @@ def split_dataset_train(clean_csv: str, test_size: float = 0.2, random_state: in
     Split the dataset into training and testing sets
     """
     # Load dataset
-    df = pd.read_csv(clean_csv)
+    df = pd.DataFrame(clean_csv)
     X = df.drop(['category'], axis=1)
     y = df['category']
 
