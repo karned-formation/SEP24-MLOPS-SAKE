@@ -140,7 +140,7 @@ def split_dataset_train(clean_csv: str, test_size: float = 0.2, random_state: in
     Split the dataset into training and testing sets
     """
     # Load dataset
-    df = pd.DataFrame(clean_csv)
+    df = pd.read_json(clean_csv)
     X = df.drop(['category'], axis=1)
     y = df['category']
 

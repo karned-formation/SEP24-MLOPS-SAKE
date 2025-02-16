@@ -1,3 +1,4 @@
+from io import StringIO
 from typing import Optional
 
 import requests
@@ -54,7 +55,7 @@ def fusionner_csv(chemin_dossier):
     if dataframes:
         fusion = pd.concat(dataframes, ignore_index=True)
         logger.info(fusion.shape)
-        return fusion
+        return StringIO(fusion.to_json())
     else:
         logger.error("Aucun fichier CSV valide trouvé.")
         return None
