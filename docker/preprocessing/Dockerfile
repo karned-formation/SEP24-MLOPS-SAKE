@@ -23,12 +23,12 @@ WORKDIR /app
 EXPOSE 80
 
 COPY --from=builder /install /usr/local
+RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && rm -rf /var/lib/apt/lists/*
+RUN pip install python-magic
 
 COPY app.py app.py
 COPY src/preprocessing/preprocessing.py src/preprocessing/preprocessing.py
 COPY src/s3handler.py src/s3handler.py
 COPY src/custom_logger.py src/custom_logger.py
-
-RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && rm -rf /var/lib/apt/lists/*
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]

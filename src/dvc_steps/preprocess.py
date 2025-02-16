@@ -1,3 +1,6 @@
+from typing import Optional
+
+import requests
 from src.custom_logger import logger
 import os
 import joblib
@@ -102,6 +105,17 @@ def save_variables_in_directories(variables: dict) -> None:
         logger.info(f"Variable '{var_name}' saved to {file_path}")
 
 
+def call_preprocess(api_url: str, clean_csv: str) -> Optional[str]:
+    headers = {'Content-Type': 'application/json'}
+    json_payload = {"clean_csv": clean_csv}
+
+    response = requests.post(api_url, json=json_payload, headers=headers)
+    print(response.content)
+    if response.status_code == 200:
+        return response.text
+    return None
+
+
 def preprocess_train():
     cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
     preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING")
@@ -111,12 +125,10 @@ def preprocess_train():
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
         csvs = fusionner_csv(cleaned_datasets_dir)
-
-        process_dir(ocr_text_dir, cleaned_datasets_dir, clean_endpoint)
-
+        response = call_preprocess(preprocess_endpoint, csvs.to_json(index=False))
+                
 
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
-
 
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
