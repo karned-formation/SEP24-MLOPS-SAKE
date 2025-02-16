@@ -34,16 +34,17 @@ class ProcessResponse(BaseModel):
 
 @app.post("/process_train", response_model=ProcessResponse)
 async def process_train(item: ProcessItem):
-    # Supposons que vous ayez une fonction qui génère les objets en mémoire
-    X_train_bytes, y_train_bytes,X_test_bytes,y_test_bytes, tfidf_vectorizer_bytes = generate_objects(item.clean_csv)
+    try:
+        X_train_bytes, y_train_bytes,X_test_bytes,y_test_bytes, tfidf_vectorizer_bytes = generate_objects(item.clean_csv)
 
-    # Créer des réponses de streaming pour chaque fichier
-    responses = {
-        "X_train": StreamingResponse(BytesIO(X_train_bytes), media_type='application/octet-stream', headers={'Content-Disposition': 'attachment; filename="X_train.joblib"'}),
-        "y_train": StreamingResponse(BytesIO(y_train_bytes), media_type='application/octet-stream', headers={'Content-Disposition': 'attachment; filename="y_train.joblib"'}),
-        "X_test": StreamingResponse(BytesIO(X_test_bytes), media_type='application/octet-stream', headers={'Content-Disposition': 'attachment; filename="X_test.joblib"'}),
-        "y_test": StreamingResponse(BytesIO(y_test_bytes), media_type='application/octet-stream', headers={'Content-Disposition': 'attachment; filename="y_test.joblib"'}),
-        "tfidf_vectorizer": StreamingResponse(BytesIO(tfidf_vectorizer_bytes), media_type='application/octet-stream', headers={'Content-Disposition': 'attachment; filename="tfidf_vectorizer.joblib"'}),
-    }
+        response = ProcessResponse(
+            X_train= X_train_bytes,
+            y_train=y_train_bytes,
+            X_test=X_test_bytes,
+            y_test=y_test_bytes,
+            tfidf_vectorizer=tfidf_vectorizer_bytes
+        )
+        return response
     
-    return responses
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error during processing: {e}")
