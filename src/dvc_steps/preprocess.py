@@ -1,5 +1,5 @@
 import base64
-from io import BytesIO, StringIO
+from io import BytesIO
 from typing import Optional
 
 import requests
@@ -7,7 +7,6 @@ from src.custom_logger import logger
 import os
 import joblib
 import pandas as pd
-import sys
 
 
 def get_env_var(name):
@@ -61,48 +60,24 @@ def fusionner_csv(chemin_dossier):
     else:
         logger.error("Aucun fichier CSV valide trouvé.")
         return None
-    
-def save_vectorizer(vectorizer, tfidf_vectorizer_path: str) -> None:
-    """
-    Save a trained TF-IDF vectorizer to the specified path, 
-    along with metadata about Python and Joblib versions.
-
-    Args:
-        vectorizer (TfidfVectorizer): The trained TF-IDF vectorizer to save.
-        tfidf_vectorizer_path (str): The file path where the vectorizer will be saved.
-    """
-    # Ensure the directory exists
-    directory = os.path.dirname(tfidf_vectorizer_path)
-    os.makedirs(directory, exist_ok=True)
-
-    # Prepare metadata about the environment
-    metadata = {
-        'python_version': sys.version,
-        'joblib_version': joblib.__version__
-    }
-    logger.info(metadata)
-
-    # Save vectorizer with metadata
-    joblib.dump(vectorizer, tfidf_vectorizer_path)
-    logger.info(f"Vectorizer saved to {tfidf_vectorizer_path} with metadata: {metadata}")
 
 
 def call_preprocess(api_url: str, clean_csv: str) -> Optional[str]:
     headers = {'Content-Type': 'application/json'}
     json_payload = {"clean_csv": clean_csv}
 
-    response = requests.post(api_url, json=json_payload, headers=headers)
-    if response.status_code == 200:
-        return response
-    return None
+    return requests.post(api_url, json=json_payload, headers=headers)
+
 
 def save_object_locally(encoded_str, path):
-    buffer = BytesIO(base64.b64decode(encoded_str))
-    j = joblib.dump(buffer, path)
+    obj_bytes = base64.b64decode(encoded_str)  
+    buffer = BytesIO(obj_bytes)  
+    obj = joblib.load(buffer)  
+    joblib.dump(obj, path) 
 
-def preprocess_train():
+def preprocess():
     cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
-    preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING_TRAIN")
+    preprocess_endpoint = get_env_var("DATA_PREPROCESSING_ENDPOINT_PREPROCESSING")
     X_train_path = get_env_var("DATA_PREPROCESSING_X_TRAIN_PATH")
     X_test_path = get_env_var("DATA_PREPROCESSING_X_TEST_PATH")
     y_train_path = get_env_var("DATA_PREPROCESSING_Y_TRAIN_PATH")
@@ -130,4 +105,4 @@ def preprocess_train():
         raise e
 
 if __name__ == "__main__":
-    preprocess_train()
+    preprocess()

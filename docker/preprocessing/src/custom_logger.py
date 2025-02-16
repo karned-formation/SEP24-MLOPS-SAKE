@@ -1,6 +1,5 @@
 import logging
 import os
-import subprocess
 
 # Create logs directory if it doesn't exist
 logs_dir = "logs"
