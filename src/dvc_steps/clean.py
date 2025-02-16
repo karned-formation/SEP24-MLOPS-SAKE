@@ -9,7 +9,7 @@ from src.utils.env import get_env_var
 
 def clean_train():
     ocr_text_dir = get_env_var("DATA_INGESTION_OCR_TEXT_DIR")
-    clean_endpoint = get_env_var("DATA_CLEANING_CLEAN_ENDPOINT")
+    clean_endpoint = get_env_var('ENDPOINT_URL_TRANSFORM')
     cleaned_datasets_dir = get_env_var("DATA_CLEANING_CLEANED_DATASETS_DIR")
 
     STAGE_NAME = "Stage: clean_all"
@@ -21,14 +21,11 @@ def clean_train():
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
     
-def clean_text(api_url: str, text: str) -> Optional[str]:
+def clean_text(api_url: str, texts) -> Optional[str]:
     headers = {'Content-Type': 'application/json'}
-    json_payload = {"text": text}
-
-    response = requests.post(api_url, json=json_payload, headers=headers)
-    print(response)
+    response = requests.post(api_url, json=texts, headers=headers)
     if response.status_code == 200:
-        return response.text
+        return response.json()
     return None
 
 
@@ -48,17 +45,25 @@ def process_dir(
         cleaned_texts = clean_ocr_files(api_url, ocr_text_dir, ocr_text_files)
         save_cleaned_dataset_for_dir(root, ocr_text_files, cleaned_texts, cleaned_datasets_dir)
 
+
 def read_file_content( filename: str ) -> str:
     with open(filename, 'r', encoding='utf-8') as file:
         return file.read()
-    
+
+
 def clean_ocr_files( api_url: str, ocr_text_dir: str, ocr_text_files: list ) -> list:
-    cleaned_texts = []
+    to_clean = []
     for file in ocr_text_files:
-        file_content = read_file_content(os.path.join(ocr_text_dir, file))
-        cleaned_text = clean_text(api_url, file_content)
-        cleaned_texts.append(cleaned_text)
-    return cleaned_texts
+        to_clean.append({
+            "name":file,
+            "text":read_file_content(os.path.join(ocr_text_dir, file))
+        })
+        
+    cleaned_texts = clean_text(api_url, to_clean)
+    text_list = [item["text"] for item in cleaned_texts]
+
+    return text_list
+
 
 def save_cleaned_dataset_for_dir(
         root: str, ocr_text_files: list, cleaned_texts: list, cleaned_datasets_dir: str
@@ -88,7 +93,7 @@ def get_ocr_text_files( root: str, ocr_text_dir: str, files: list ) -> list:
 def check_input_dir( ocr_text_dir ):
     if not os.path.exists(ocr_text_dir):
         raise Exception("OCR text directory not found")
-    
+
 
 if __name__ == "__main__":
     clean_train()
