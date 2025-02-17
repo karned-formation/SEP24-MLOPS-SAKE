@@ -1,3 +1,4 @@
+import base64
 import requests
 from typing import List, Optional
 from src.custom_logger import logger
@@ -36,37 +37,45 @@ def ingest_train():
     """
     raw_dataset_dir = get_env_var("DATA_STRUCTURE_RAW_RAW_DATASET_DIR")
     ocr_text_dir = get_env_var("DATA_INGESTION_OCR_TEXT_DIR")
-    ocr_endpoint = get_env_var("DATA_INGESTION_OCR_ENDPOINT")
+    ocr_endpoint = get_env_var("ENDPOINT_URL_EXTRACT")
 
     STAGE_NAME = "Stage: ingest_all"
     try:
         logger.info(f">>>>> {STAGE_NAME} / START <<<<<")
 
         # On récupère les images qui n'ont pas encore été océrisées
-        ocrs_to_delete, images_to_ocerize = get_new_images_to_ocerize(raw_dataset_dir, ocr_text_dir)
-        logger.info(f"{len(images_to_ocerize)} new image(s) to ocerize")
-
+        ocrs_to_delete, new_images = get_new_images_to_ocerize(raw_dataset_dir, ocr_text_dir)
+        logger.info(f"{len(new_images)} new image(s) to ocerize")
+        
         delete_old_ocr(ocrs_to_delete, ocr_text_dir)
 
         # On océrise les images et on enregistre le texte dans un fichier .txt dans e répertoire correspondant à son
         # répertoire d'origine
-        for image in images_to_ocerize:
-            full_text = get_full_text(f"{raw_dataset_dir}{image}", ocr_endpoint)
-            text_file_path = f"{ocr_text_dir}{image}.txt"
-            save_text_to_file(full_text, text_file_path)
+        if(len(new_images)>0):
+            to_ocr = []
+            for image in new_images:
+                with open(f"{raw_dataset_dir}{image}", "rb") as file:
+                    to_ocr.append({
+                        "name":image,
+                        "content": base64.b64encode(file.read()).decode('utf-8')
+                    })
+            response = get_full_text(to_ocr, ocr_endpoint)
+            for text in response.json():
+                text_file_path = f"{ocr_text_dir}{text['name']}"
+                save_text_to_file(text['text'], text_file_path)
 
         logger.info(f">>>>> {STAGE_NAME} / END successfully <<<<<")
     except Exception as e:
         logger.error(f"{STAGE_NAME} / An error occurred : {str(e)}")
         raise e
 
-def get_full_text( image: str, ocr_endpoint: str ) -> str:
+
+def get_full_text( images: List, ocr_endpoint: str ):
     """Envoi une image à l'API d'océrisation et retourne le texte."""
-    logger.info(f"Ocerizing {image}...")
-    with open(image, "rb") as file:
-        files = {"file": file}
-        response = requests.post(ocr_endpoint, files=files)
-        return response.text
+    logger.info(f"Ocerizing...")
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(ocr_endpoint, json=images, headers=headers)
+    return response
     
 
 def delete_old_ocr( ocr_to_delete: List[str], ocr_path: str ) -> None:
