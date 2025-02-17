@@ -29,6 +29,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY app.py app.py
 COPY pages/Prediction_Table.py pages/Prediction_Table.py
 COPY src/s3handler.py src/s3handler.py 
+COPY src/custom_logger.py src/custom_logger.py 
 COPY src/utils/files.py src/utils/files.py
 
 ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=80", "--server.address=0.0.0.0"]
