@@ -23,7 +23,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY app.py app.py
-COPY src/pages/Prediction_Table.py src/pages/Prediction_Table.py
+COPY pages/Prediction_Table.py pages/Prediction_Table.py
 COPY src/s3handler.py src/s3handler.py 
 COPY src/utils/files.py src/utils/files.py
 
