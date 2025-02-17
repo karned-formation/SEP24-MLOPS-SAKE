@@ -20,8 +20,6 @@ ENV LANG=C.UTF-8 \
 EXPOSE 80
 WORKDIR /app
 
-RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && rm -rf /var/lib/apt/lists/*
-
 COPY --from=builder /install /usr/local
 
 COPY app.py app.py
