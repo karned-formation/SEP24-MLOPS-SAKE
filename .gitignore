@@ -45,5 +45,8 @@ private_conn_dagshub.sh
 doc_classification.egg-info/
 corrections/
 img/
+data/images_to_predict/
+data/raw/
+report/Projet_classification_MLOps_Partie3_Aymen.pptx:Zone.Identifier
 
 csv_files
