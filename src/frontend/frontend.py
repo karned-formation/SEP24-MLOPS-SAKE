@@ -1,8 +1,10 @@
 import os
 import streamlit as st
 import requests
+from src.utils.files import encode_files
 
-endpoint_url = os.getenv('URL_BACKEND') + '/predict'
+
+endpoint_url = 'http://localhost:8908/predict'
 
 st.title("Classification de documents")
 reference = st.text_input("Votre référence")
@@ -10,14 +12,18 @@ uploaded_files = st.file_uploader("Documents", accept_multiple_files = True)
 
 if st.button("Traiter"):
     if reference and uploaded_files:
-        files = []
-        for uploaded_file in uploaded_files:
-            files.append(("files", (uploaded_file.name, uploaded_file, uploaded_file.type)))
-
-        data = {"reference": reference}
+        data_dict = {
+            "reference": reference,
+            "files": encode_files(uploaded_files)
+        }
 
         with st.spinner("Envoi des données..."):
-            response = requests.post(endpoint_url, data = data, files = files)
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post(
+                url=endpoint_url,
+                json=data_dict,
+                headers=headers
+            )
 
         if response.status_code == 200:
             st.success(f"Réponse du serveur : {response.text}")

@@ -10,7 +10,7 @@ RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf 
 
 RUN pip install --upgrade pip
 
-COPY docker/clean_text/requirements.txt /app/requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.11-slim AS runtime
@@ -24,8 +24,8 @@ EXPOSE 80
 
 COPY --from=builder /install /usr/local
 
-COPY docker/clean_text/app.py /app/
-COPY docker/clean_text/download_contents.py /app/
+COPY app.py app.py
+COPY download_contents.py download_contents.py
 COPY src/data/clean_text.py /app/src/data/clean_text.py
 COPY src/custom_logger.py /app/src/custom_logger.py
 

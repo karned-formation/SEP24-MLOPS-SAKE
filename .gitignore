@@ -39,7 +39,6 @@ NOT_USED_FOR_DAGSHUB/
 docker/admin-backend/id_rsa
 
 # DO NOT MODIFY : these are created inside the admin backend docker and should not be tracked by git
-app.py
 private_conn_dagshub.sh
 
 doc_classification.egg-info/
@@ -55,3 +54,5 @@ data/raw/
 img/
 report/Projet_classification_MLOps_Partie3_Aymen.pptx:Zone.Identifier
 secrets/
+
+docker/predict/models/
