@@ -6,6 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
+RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
@@ -15,6 +17,8 @@ FROM python:3.11-slim
 
 EXPOSE 80
 WORKDIR /app
+
+RUN apt-get update && apt-get upgrade -y && apt-get install libmagic1 -y && rm -rf /var/lib/apt/lists/*
 
 ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
