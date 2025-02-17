@@ -4,7 +4,7 @@ import requests
 from src.utils.files import encode_files
 
 
-endpoint_url = 'http://localhost:8908/predict'
+endpoint_url = os.getenv('URL_BACKEND') + '/predict'
 
 st.title("Classification de documents")
 reference = st.text_input("Votre référence")
