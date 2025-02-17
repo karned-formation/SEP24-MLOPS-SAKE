@@ -168,28 +168,40 @@ services:
       - sake
   
   # Service de prédiction
+  # predict-service:
+  #   profiles: ["training", "prediction"]
+  #   env_file:
+  #   - path: ./.env
+  #   build:
+  #     context: .  
+  #     dockerfile: docker/predict/Dockerfile  
+  #     args:
+  #       SOURCE_DIR: src/
+  #       DOCKERFILE_DIR: docker/predict
+  #       LOG_DIR: src
+  #       MODELS_DIR: models/
+  #       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  #       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  #     cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+  #       - ms-sake-predict:cache
+  #   image: ms-sake-predict:1.0  
+  #   container_name: ms-sake-predict
+  #   ports:
+  #     - "${PREDICT_PORT_PREDICT}:80"
+  #   networks:
+  #     - sake
+    # Service de prédiction
   predict-service:
     profiles: ["training", "prediction"]
     env_file:
-    - path: ./.env
-    build:
-      context: .  
-      dockerfile: docker/predict/Dockerfile  
-      args:
-        SOURCE_DIR: src/
-        DOCKERFILE_DIR: docker/predict
-        LOG_DIR: src
-        MODELS_DIR: models/
-        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
-        - ms-sake-predict:cache
-    image: ms-sake-predict:1.0  
+      - path: ./.env
+    image: abenayoub/sake-predict:reload  # Utilisation de l'image Docker spécifique
     container_name: ms-sake-predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"
     networks:
       - sake
+
 
   # Backend d'administration et gestion des données avec DVC et MLFLOW
   # admin-backend-service:

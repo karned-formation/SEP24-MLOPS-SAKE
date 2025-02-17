@@ -41,6 +41,22 @@ def process_prediction_dataframe(prediction):
     df.index.name = 'Filename'
     return df
 
+def process_new_prediction(prediction_response):
+    predictions = prediction_response['prediction']
+    
+    # Create a list of dictionaries for DataFrame creation
+    data = []
+    for item in predictions:
+        image_name = item['name']
+        probabilities = {f"Prob_class_{p['id_class']}": p['confidence'] for p in item['probabilities']}
+        probabilities['Filename'] = image_name
+        data.append(probabilities)
+    
+    # Create DataFrame
+    df = pd.DataFrame(data)
+    df.set_index('Filename', inplace=True)
+    return df
+
 # Fonction pour analyser la réponse de l'API
 def parse_response(pred):
     timestamp = pred['metadata']['time']

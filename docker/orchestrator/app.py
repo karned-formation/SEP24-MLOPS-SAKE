@@ -20,7 +20,7 @@ def process_images(uuid: str):
     logger.info("Lancement de la Background Task")
     database[uuid]['status'] = 'IN_PROGRESS'
     database[uuid]['prediction'] = main(uuid)
-    logger.info("Prediction ajoutée à la databse")
+    logger.info("Prediction ajoutée à la database")
     database[uuid]['status'] = 'COMPLETED'
 
 
