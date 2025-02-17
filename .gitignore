@@ -42,3 +42,6 @@ docker/admin-backend/id_rsa
 private_conn_dagshub.sh
 
 csv_files
+secrets
+img
+corrections
