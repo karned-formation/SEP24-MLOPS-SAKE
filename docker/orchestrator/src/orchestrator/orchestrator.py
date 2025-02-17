@@ -166,8 +166,7 @@ def clean_texts( files_infos: list, ocr_files: list ) -> list:
     return call_transform(payload)
 
 
-def treat( files: list ):
-    batch_uuid = str(uuid4())
+def treat(batch_uuid: str, files: list ):
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
     ocr_files = extract_texts(files, original_files_infos)
@@ -181,4 +180,3 @@ def treat( files: list ):
     push_prediction_to_bucket(batch_uuid, prediction)
 
     return batch_uuid, prediction
-

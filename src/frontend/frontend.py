@@ -26,7 +26,7 @@ if st.button("Traiter"):
             )
 
         if response.status_code == 200:
-            st.success(f"Réponse du serveur : {response.text}")
+            st.success(f"Réponse du serveur : {response.json}")
         else:
             st.error(f"Erreur {response.status_code} : {response.text}")
     else:

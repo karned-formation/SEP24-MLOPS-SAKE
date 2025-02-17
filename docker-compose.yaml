@@ -4,7 +4,7 @@ services:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/ms-ocr-ia:1.1
+    image: killiankopp/ms-ocr-ia:1.3
     # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
     container_name: ocr-service
@@ -19,8 +19,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/clean_text/Dockerfile  
+      context: docker/clean_text  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/data
@@ -42,8 +42,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/etl/Dockerfile  
+      context: docker/etl/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/data
@@ -71,8 +71,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/preprocessing/Dockerfile  
+      context: docker/preprocessing/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/preprocessing
@@ -97,8 +97,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/train/Dockerfile  
+      context: docker/train/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/train
@@ -122,8 +122,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/eval/Dockerfile  
+      context: docker/eval/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/eval
@@ -149,8 +149,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/orchestrator/Dockerfile  
+      context: docker/orchestrator/  
+      dockerfile: Dockerfile  
       args:
         SOURCE_DIR: src/
         DOCKERFILE_DIR: docker/orchestrator
@@ -309,7 +309,28 @@ services:
       - sake
     ports:
       - "9100:9100"
-
+  
+  frontend-service:
+    profiles: ["training", "prediction"]
+    env_file:
+      - path: ./.env
+    image: killiankopp/sake-frontend:2.0  # Utilisation de l'image Docker spécifique
+    container_name: ms-sake-frontend
+    ports:
+      - "${FRONTEND_PORT_PREDICT}:80"
+    networks:
+      - sake
+  
+  file-service:
+    profiles: ["training", "prediction"]
+    env_file:
+      - path: ./.env
+    image: killiankopp/sake-file:2.0  # Utilisation de l'image Docker spécifique
+    container_name: ms-sake-file
+    ports:
+      - "${FILE_PORT_PREDICT}:80"
+    networks:
+      - sake
 
 networks:
   sake:

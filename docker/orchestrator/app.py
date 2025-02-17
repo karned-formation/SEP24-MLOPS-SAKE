@@ -31,8 +31,11 @@ class PredictionRequest(BaseModel):
 
 
 class PredictionResult(BaseModel):
+    message: str
+    reference: str
     uuid: str
-    prediction: list
+    nb: int
+    time: float
 
 
 def process_images(batch_uuid: str, files: list):
@@ -65,4 +68,4 @@ async def upload_images(background_task: BackgroundTasks, request: PredictionReq
     reference_uuid_map[reference].append(batch_uuid)
     reference_uuid_map[batch_uuid].append(batch_uuid)
     background_task.add_task(process_images, batch_uuid, request.files)
-    return {"message": "Files saved successfully", "reference": reference, "uuid": batch_uuid, "len": metadata['n_files'], "time": metadata['time']}
+    return {"message": "Files saved successfully", "reference": reference, "uuid": batch_uuid, "nb": metadata['n_files'], "time": metadata['time']}
