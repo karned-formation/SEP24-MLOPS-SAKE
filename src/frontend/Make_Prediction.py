@@ -1,11 +1,12 @@
-# Classifier des images
 import streamlit as st
 import requests
+import os
+from src.utils.files import encode_files
 
-endpoint_url = 'http://localhost:8908/predict'
+endpoint_url = os.getenv('URL_BACKEND') + '/predict'
 
 st.set_page_config(
-    page_title="Images Classification  App",  # Title of the page in the browser tab and left panel
+    page_title="Images Classification App",  # Title of the page in the browser tab and left panel
     page_icon="📊",  # Optional: Emoji or icon for the page
 )
 st.title("Classification de documents")
@@ -15,13 +16,19 @@ uploaded_files = st.file_uploader("Documents", accept_multiple_files=True)
 if st.button("Traiter"):
     if reference and uploaded_files:
         files = []
-        for uploaded_file in uploaded_files:
-            files.append(("files", (uploaded_file.name, uploaded_file, uploaded_file.type)))
+        data_dict = {
+            "reference": reference,
+            "files": encode_files(uploaded_files)
+        }
 
-        data = {"reference": reference}
 
         with st.spinner("Envoi des données..."):
-            response = requests.post(endpoint_url, data=data, files=files)
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post(
+                url=endpoint_url,
+                json=data_dict,
+                headers=headers
+            )
 
         # Check if the response is JSON and parse it
         try:

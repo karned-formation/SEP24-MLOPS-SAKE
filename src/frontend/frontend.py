@@ -3,9 +3,12 @@ import streamlit as st
 import requests
 from src.utils.files import encode_files
 
-
 endpoint_url = os.getenv('URL_BACKEND') + '/predict'
 
+st.set_page_config(
+    page_title="Images Classification App",  # Title of the page in the browser tab and left panel
+    page_icon="📊",  # Optional: Emoji or icon for the page
+)
 st.title("Classification de documents")
 reference = st.text_input("Votre référence")
 uploaded_files = st.file_uploader("Documents", accept_multiple_files = True)

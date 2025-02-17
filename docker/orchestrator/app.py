@@ -26,7 +26,7 @@ Instrumentator().instrument(app).expose(
 
 
 class PredictionRequest(BaseModel):
-    files: List[str]
+    files: List[dict]
     reference: str
 
 
