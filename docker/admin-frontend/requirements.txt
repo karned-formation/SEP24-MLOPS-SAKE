@@ -2,6 +2,3 @@ streamlit~=1.40.2
 requests~=2.32.3
 seaborn==0.13.2
 streamlit-extras
-
-
-streamlit-extras

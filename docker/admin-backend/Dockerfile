@@ -32,6 +32,10 @@ RUN python3 -m venv .venv && \
     .venv/bin/pip install --upgrade pip && \
     .venv/bin/pip install --no-cache-dir -r requirements.txt
 
+# Create and set up virtual environment
+RUN python3 -m venv .venv && \
+    .venv/bin/pip install --upgrade pip && \
+    .venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Ensure the data structure exists
 RUN mkdir -p data/raw_per_classes/0 \
