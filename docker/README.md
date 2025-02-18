@@ -49,3 +49,20 @@
 - ADMIN-Grafana = Docker "**grafana**"
 - ADMIN-Frontend = Docker "**admin-frontend**"
 - TRAINING-Admin-Backend = Docker "**admin-backend**"
+
+See [Business case High Level overview](project_overview_business_cases.md) (click to see the differents steps)
+
+# User Prediction Pipeline (docker architecture)
+![User_predictions_overview](../docs/User_predictions_overview.png)
+
+# User Feedback Management (docker architecture)
+![User_Feedback_overview](../docs/User_Feedback_overview.png)
+
+# User Feedback Loop (docker architecture)
+![Admin_Feedback_Loop_overview](../docs/Admin_Feedback_Loop_overview.png)
+
+# Admin Training Pipeline (docker architecture)
+![Admin_train_Overview](../docs/Admin_train_Overview.png)
+
+# Admin Monitoring (docker architecture)
+![Admin_Monitoring](../docs/Admin_Monitoring.png
