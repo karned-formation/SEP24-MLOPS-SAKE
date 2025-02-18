@@ -50,7 +50,7 @@
 │ DOCKER definitions
 ├── docker-compose.yaml         How to build locally the Dockers
 ```
-- [docker/](../docker/README_docker.md) : read details
+- [docker/](../docker/README.md) : read details
 ```
 └──────────────────────────────────────────────────────────────────────────────────────
 ┌──────────────────────────────────────────────────────────────────────────────────────

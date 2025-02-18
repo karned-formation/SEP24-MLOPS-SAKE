@@ -41,5 +41,5 @@ Deux acteurs principaux:
 ## Step n°4 : l'admin enregistre son modèle préféré (celui qui a été restauré)
 ![Step4_register_model](../docs/Project_overview_Step4_register_model.png)
 
-## L 'admin réalise le monitoring de ses dockers
+## En parallèle de toutes ces étapes, l'admin peut surveiller l'état de ses dockers (monitoring)
 ![Step5_monitoring](../docs/Project_overview_Step5_monitor.png)
