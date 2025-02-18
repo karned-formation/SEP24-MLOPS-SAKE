@@ -20,10 +20,9 @@ ENV LANG=C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-ENV URL_BACKEND=https://api.sake.karned.bzh
-
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY frontend.py frontend.py
+COPY app.py app.py
+COPY src/utils/files.py src/utils/files.py
 
-ENTRYPOINT ["streamlit", "run", "frontend.py", "--server.port=80", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=80", "--server.address=0.0.0.0"]

@@ -1,25 +1,44 @@
-from fastapi import FastAPI, File, UploadFile, Form
-from pathlib import Path
-from src.orchestrator.orchestrator import *
+import logging
+from typing import List
+from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
+from pydantic import BaseModel
 
-app = FastAPI()
-Instrumentator().instrument(app).expose(app)
+from src.orchestrator.orchestrator import treat
 
-# En attendant la mise en place de BDD
-database = {}
+app = FastAPI(
+    title="Predict API (frontend)",
+    description="API de prédiction de classe d'un ou plusieurs documents.",
+    version="1.0.0"
+)
+Instrumentator().instrument(app).expose(
+    app=app,
+    endpoint="/metrics"
+)
 
-# Endpoint to receive and save images
-@app.post("/predict")
-async def upload_images(
-    files: list[UploadFile] = File(...),
-    reference: str = Form(...)
-):
-    if database.get(reference, 0):
-        return {"message": "Reference should be unique. Try again."}
-    uuid, prediction = main(files)
-    database[reference] = uuid
-    print(database) #TODO Delete
-    return {"message": "Files saved successfully", "reference": reference, "uuid": uuid, "prediction": prediction}
 
-    
+class PredictionRequest(BaseModel):
+    files: List[str]
+    reference: str
+
+
+class PredictionResult(BaseModel):
+    uuid: str
+    prediction: list
+
+
+@app.post(
+    path="/predict",
+    response_model=PredictionResult,
+    tags=["Prediction"])
+async def upload_images( request: PredictionRequest ):
+    reference = request.reference
+
+    uuid, prediction = treat(request.files)
+
+    return {
+        "message": "Files saved successfully",
+        "reference": reference,
+        "uuid": uuid,
+        "prediction": prediction
+    }
