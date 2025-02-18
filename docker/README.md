@@ -65,4 +65,4 @@ See [Business case High Level overview](project_overview_business_cases.md) (cli
 ![Admin_train_Overview](../docs/Admin_train_Overview.png)
 
 # Admin Monitoring (docker architecture)
-![Admin_Monitoring](../docs/Admin_Monitoring.png
+![Admin_Monitoring](../docs/Admin_Monitoring.png)
