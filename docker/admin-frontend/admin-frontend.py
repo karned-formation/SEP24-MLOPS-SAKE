@@ -33,22 +33,6 @@ if 'mlflow_runs' not in st.session_state:
 if 'selected_runs' not in st.session_state:
     st.session_state.selected_runs = pd.DataFrame()
 
-# Handle session state
-if "selected_folder" not in st.session_state:
-    st.session_state.selected_folder = None
-
-if "training_result" not in st.session_state:
-    st.session_state.training_result = None
-
-if 'training_status' not in st.session_state:
-    st.session_state.training_status = None
-
-if 'mlflow_runs' not in st.session_state:
-    st.session_state.mlflow_runs = None
-
-if 'selected_runs' not in st.session_state:
-    st.session_state.selected_runs = pd.DataFrame()
-
 def main():    
     # Sidebar for navigation
     page = st.sidebar.selectbox("Choose a page", ['Select Images', 'Train', 'ML Flow Runs'])

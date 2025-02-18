@@ -1,13 +1,11 @@
 from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model_to_s3, run_command
 from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image
-from src.admin.get_predictions_images import get_images
 from fastapi import FastAPI, UploadFile, File, Form
 from src.custom_logger import logger
 from fastapi.responses import JSONResponse
 import json
 import numpy as np 
 import traceback
-from prometheus_fastapi_instrumentator import Instrumentator
 
 def load_confusion_matrix(file_path='metrics/confusion_matrix.json'):
     with open(file_path, 'r') as f:
@@ -20,7 +18,6 @@ def load_scores(file_path='metrics/scores.json'):
     return scores
 
 app = FastAPI()
-Instrumentator().instrument(app).expose(app)
 
 @app.post("/train")
 async def train_model():
@@ -33,9 +30,11 @@ async def train_model():
         # Git add and commit
         git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc")     
 
+
         git_commit_output = run_command('git commit -m "Training completed."')
 
         dvc_push_output = run_command("dvc push")
+
         
         git_push_output = run_command("git push")
       
@@ -125,20 +124,6 @@ async def add_image(file: UploadFile = File(...), folder: str = Form(...)):
                 status_code=500,
                 content={"error": "Failed to upload image"}
             )
-    except Exception as e:
-        return JSONResponse(
-            status_code=500,
-            content={"error": str(e)}
-        )
-
-@app.get("/get_predictions_images")
-async def get_predictions_images():
-    try:
-        get_predictions_images()
-        return JSONResponse(
-            status_code=200,
-            content={"message": "Images retrieved successfully"}
-        )
     except Exception as e:
         return JSONResponse(
             status_code=500,

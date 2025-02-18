@@ -5,11 +5,10 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-            - alertmanager:9093 
+            - alertmanager-service 
 
 rule_files:
   - alerting_rules.yml
-
 
 scrape_configs:
   - job_name: 'ocr-service'
@@ -38,7 +37,11 @@ scrape_configs:
 
   - job_name: 'predict-service'
     static_configs:
-      - targets: ['ms-sake-predict:80']
+      - targets: ['predict-service:80']
+
+  - job_name: 'predict-orchestrator-service'
+    static_configs:
+      - targets: ['predict-orchestrator-service:80']
 
   - job_name: 'predict-orchestrator-service'
     static_configs:
@@ -53,6 +56,19 @@ scrape_configs:
     static_configs:
       - targets: ['admin-backend-service:80']
 
+  - job_name: 'frontend-service'
+    metrics_path: /_stcore/metrics
+    static_configs:
+      - targets: ['frontend-service:80']
+
+  - job_name: 'orchestrator-service'
+    static_configs:
+      - targets: ['orchestrator-service:80']
+
+  - job_name: 'file-service'
+    static_configs:
+      - targets: ['file-service:80']
+
   - job_name: 'node-exporter-service'
     static_configs:
-      - targets: ['node-exporter-service:9100']
+      - targets: ['node-exporter-service:80']

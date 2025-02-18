@@ -1,12 +1,9 @@
-import logging
-
 from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
-from starlette.responses import PlainTextResponse
 from typing import List
 
-from src.data.clean_etl import transform, clean_train
-from src.data.ingest_etl import extract, ingest_train
+from src.data.clean_etl import transform
+from src.data.ingest_etl import extract
 from pydantic import BaseModel
 
 app = FastAPI(
@@ -59,23 +56,3 @@ def api_transform( files: List[InputTransformItem] ):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.post(
-    path="/etl/ingest/train",
-    tags=["ETL : train"])
-def ingest():
-    try:
-        ingest_train()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post(
-    path="/etl/clean/train",
-    response_class=PlainTextResponse,
-    tags=["ETL : train"])
-def clean():
-    try:
-        clean_train()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
