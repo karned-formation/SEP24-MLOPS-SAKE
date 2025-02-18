@@ -50,19 +50,19 @@
 │ DOCKER definitions
 ├── docker-compose.yaml         How to build locally the Dockers
 ```
-├── [docker](../docker/README_docker.md) : read details
+- [docker/](../docker/README_docker.md) : read details
 ```
 └──────────────────────────────────────────────────────────────────────────────────────
 ┌──────────────────────────────────────────────────────────────────────────────────────
 │ SOURCE CODE
 ```
-├── [src](../src/README_src.md) : read details
+- [src/](../src/README_src.md) : read details
 ```
 └──────────────────────────────────────────────────────────────────────────────────────
 ┌──────────────────────────────────────────────────────────────────────────────────────
 │ TESTS of the source folders "src" and "docker"
 ├── tests
 ```
-├── [tests](../tests/README_tests.md) : read details
+- [tests/](../tests/README_tests.md) : read details
 ```
 └──────────────────────────────────────────────────────────────────────────────────────

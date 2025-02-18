@@ -1,4 +1,4 @@
-# Project folder structure
+# docker/ folder structure
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────
 │ DOCKER definitions
@@ -39,3 +39,13 @@
 │   │ DOCKER for Deployment
 │   ├── gateway         Manage interface open to Streamlit User/Admin frontend
 └──────────────────────────────────────────────────────────────────────────────────────
+```
+
+# Overview of the Docker architecture
+![Project_overview](../docs/Project_overview.png)
+
+- USER-Frontend = Docker "**frontend**"
+- Predict-Orchestrator = Docker "**orchestrator**"
+- ADMIN-Grafana = Docker "**grafana**"
+- ADMIN-Frontend = Docker "**admin-frontend**"
+- TRAINING-Admin-Backend = Docker "**admin-backend**"

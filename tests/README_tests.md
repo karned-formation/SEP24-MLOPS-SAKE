@@ -1,4 +1,4 @@
-# Project folder structure
+# test/ folder structure
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────
 │ TESTS of the source folders "src" and "docker"

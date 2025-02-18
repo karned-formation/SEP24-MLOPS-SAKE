@@ -1,4 +1,4 @@
-# Project folder structure
+# src/ folder structure
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────
 │ SOURCE CODE
