@@ -40,6 +40,7 @@
 │   ├── gateway         Manage interface open to Streamlit User/Admin frontend
 └──────────────────────────────────────────────────────────────────────────────────────
 ```
+[Source documentation](../src/README.md) (click to see documentation on /src folder)
 
 # Overview of the Docker architecture
 ![Project_overview](../docs/Project_overview.png)
@@ -50,19 +51,25 @@
 - ADMIN-Frontend = Docker "**admin-frontend**"
 - TRAINING-Admin-Backend = Docker "**admin-backend**"
 
-See [Business case High Level overview](project_overview_business_cases.md) (click to see the differents steps)
+See [Business case High Level overview](../docs.md/project_overview_business_cases.md) (click to see the differents steps)
 
-# User Prediction Pipeline (docker architecture)
+## User Prediction Pipeline (docker architecture)
 ![User_predictions_overview](../docs/User_predictions_overview.png)
 
-# User Feedback Management (docker architecture)
+## User Feedback Management (docker architecture)
 ![User_Feedback_overview](../docs/User_Feedback_overview.png)
 
-# User Feedback Loop (docker architecture)
+## User Feedback Loop (docker architecture)
 ![Admin_Feedback_Loop_overview](../docs/Admin_Feedback_Loop_overview.png)
 
-# Admin Training Pipeline (docker architecture)
+## Admin Training Pipeline (docker architecture)
 ![Admin_train_Overview](../docs/Admin_train_Overview.png)
 
-# Admin Monitoring (docker architecture)
+## Admin Monitoring
 ![Admin_Monitoring](../docs/Admin_Monitoring.png)
+
+# Overview of deployed Docker Architecture (using Gateway)
+![Gateway](../docs/sake.karned.bzh.png)
+- Admin = Docker "**admin-frontend**"
+- DVC = Docker "**admin-backend**"
+- clean = Docker "**clean_text**"

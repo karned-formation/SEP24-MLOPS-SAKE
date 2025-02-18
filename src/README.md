@@ -17,13 +17,13 @@
 │   ├── save_commit_hash.py
 │   └── utils               
 │   ┌───────────────────────────────────────────────────────────────
-│   │ COMMON SOURCE CODE for the several dockers
+│   │ COMMON SOURCE CODE for several dockers
 │   ├── data            To manage the ingest and cleaning of pictures
-│   │                   Used by docker "etl" and "clean_text"
+│   │                   Used by docker "etl" and docker "clean_text"
 │   ├── file            To manage the usage of Amazon S3
 │   │                   Used by docker "admin-backend" and "orchestrator"
 │   ┌───────────────────────────────────────────────────────────────
-│   │ SOURCE CODE for the dockers involved in PIPELINE TRAINING or MONITORING
+│   │ SOURCE CODE for the dockers involved in PIPELINE TRAINING 
 │   ├── streamlit       To manage the Admin FrontEnd
 │   │                   Used by docker "admin-backend"
 │   ├── admin           To manange the Pipeline Training
@@ -39,3 +39,5 @@
 │   │                   Used by docker "orchestrator"
 │   ├── predict         To manage the predictions
 └──────────────────────────────────────────────────────────────────────────────────────
+```
+[Docker documentation](../docker/README.md) (click to see details)
