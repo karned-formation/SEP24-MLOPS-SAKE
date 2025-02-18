@@ -1606,7 +1606,6 @@
         "wideLayout": true
       },
       "pluginVersion": "11.5.1",
-      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1615,7 +1614,6 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum by(instance) (http_requests_total{handler!=\"/metrics\"})",
           "expr": "sum by(instance) (http_requests_total{handler!=\"/metrics\"})",
           "format": "time_series",
           "fullMetaSearch": false,
@@ -1722,7 +1720,6 @@
         "w": 24,
         "x": 0,
         "y": 11
-        "y": 11
       },
       "id": 4,
       "options": {
@@ -1734,12 +1731,10 @@
         },
         "tooltip": {
           "hideZeros": false,
-          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.1",
       "pluginVersion": "11.5.1",
       "targets": [
         {
@@ -1767,7 +1762,6 @@
           "useBackend": false
         }
       ],
-      "title": "Average request duration per service",
       "title": "Average request duration per service",
       "type": "timeseries"
     },
@@ -1851,13 +1845,10 @@
   },
   "time": {
     "from": "now-15m",
-    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "MLOps",
-  "uid": "cecfzm0ju4v0ga",
   "title": "MLOps",
   "uid": "cecfzm0ju4v0ga",
   "version": 1,
