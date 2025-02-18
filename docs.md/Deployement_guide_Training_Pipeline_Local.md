@@ -1,7 +1,8 @@
 
-# Overview of ML_Experiment_Pipeline
+# Overview of Training Pipeline
 ![Admin_train_Overview](../docs/Admin_train_Overview.png)
 
+See [Admin Training Pipeline Steps](../docs.md/Admin_Training_Pipeline_Steps.md) (click to see the differents steps)
 
 
 # Run Microservices : API REST
@@ -25,7 +26,7 @@
     - ms-sake-train : http://localhost:8905/docs
     - ms-sake-eval : http://localhost:8906/docs
 
-# Run ML_Experiment_Pipeline
+# Run Training pipeline
 
 - [OPTIONAL] if you want to run the pipeline from scratch
   1) Remove DVC history  (DVC cache + DVC data folders + DVC lock file)
@@ -36,8 +37,8 @@
         rm -Rf .dvc/cache .dvc/tmp
         rm -Rf data/raw data/processed data/cleaned 
         rm dvc.lock
-        dvc fetch data/raw.dvc
-        dvc checkout
+        dvc fetch data/raw_per_classes.dvc
+        dvc checkout --force
         ```
     - Windows
         ```powershell
@@ -51,7 +52,7 @@
         dvc checkout
         ```
 
-- Run ML_Experiment_Pipeline
+- Run Training pipeline
     ```sh
     dvc repro
     ```
