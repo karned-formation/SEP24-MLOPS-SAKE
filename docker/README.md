@@ -56,20 +56,33 @@ See [Business case High Level overview](../docs.md/project_overview_business_cas
 ## User Prediction Pipeline (docker architecture)
 ![User_predictions_overview](../docs/User_predictions_overview.png)
 
+See [User Prediction Details](../docs.md/User_Prediction_Details.md) (click to see the details)
+
 ## User Feedback Management (docker architecture)
 ![User_Feedback_overview](../docs/User_Feedback_overview.png)
+
+See [Prediction Pipeline details](../docs.md/frontend.md) (click to see the details)
 
 ## User Feedback Loop (docker architecture)
 ![Admin_Feedback_Loop_overview](../docs/Admin_Feedback_Loop_overview.png)
 
+See [Prediction Pipeline details](../docs.md/frontend.md) (click to see the details)
+
 ## Admin Training Pipeline (docker architecture)
 ![Admin_train_Overview](../docs/Admin_train_Overview.png)
 
+See [Admin Training Pipeline Steps](../docs.md/Admin_Training_Pipeline_Steps.md) (click to see the differents steps)
+
 ## Admin Monitoring
 ![Admin_Monitoring](../docs/Admin_Monitoring.png)
+
+See [Admin Monitoring Details](../docs.md/Admin_Monitoring_Details.md) (click to see the details)
 
 # Overview of deployed Docker Architecture (using Gateway)
 ![Gateway](../docs/sake.karned.bzh.png)
 - Admin = Docker "**admin-frontend**"
 - DVC = Docker "**admin-backend**"
 - clean = Docker "**clean_text**"
+
+See [Deployement Details](../docs.md/Deployement_Details.md) (click to see the details)
+

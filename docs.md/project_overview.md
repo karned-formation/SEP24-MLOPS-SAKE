@@ -26,6 +26,6 @@ Deux acteurs principaux:
 # Overview of the Docker architecture
 ![Project_overview](../docs/Project_overview.png)
 
-[Business case overview](project_overview_business_cases.md) (click to see the differents steps)
+[Business cases overview](project_overview_business_cases.md) (click to see the differents steps)
 
 
