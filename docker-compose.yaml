@@ -195,7 +195,7 @@ services:
     profiles: ["training", "prediction"]
     env_file:
       - path: ./.env
-    image: killiankopp/sake-predict:2.0  # Utilisation de l'image Docker spécifique
+    image: killiankopp/sake-predict:2.1  # Utilisation de l'image Docker spécifique
     container_name: ms-sake-predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"
