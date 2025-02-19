@@ -84,4 +84,4 @@ See [Admin Monitoring Details](../docs.md/Admin_Monitoring_Details.md) (click to
 - DVC = Docker "**admin-backend**"
 - clean = Docker "**clean_text**"
 
-See [Deployement Details](../docs.md/Deployement_Details.md) (click to see the details)
+See [Deployement Details (CI/CD)](../docs.md/Deployement_Details.md) (click to see the details)

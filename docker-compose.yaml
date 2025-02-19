@@ -3,7 +3,7 @@ services:
   ocr-service:
     profiles: ["training", "prediction"]
     env_file:
-    - path: ./.env
+    - ./.env
     image: killiankopp/ms-ocr-ia:1.1
     # le code source est dans ce repo: https://github.com/karned-kapla/ms-ocr-ia
     # l'hébergement DockerHub: https://hub.docker.com/r/killiankopp/ms-ocr-ia
@@ -17,7 +17,7 @@ services:
   clean-service:
     profiles: ["training", "prediction"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/clean_text/Dockerfile  
@@ -40,7 +40,7 @@ services:
   etl-service:
     profiles: ["training", "prediction"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/etl/Dockerfile  
@@ -69,7 +69,7 @@ services:
   preprocessing-service:
     profiles: ["training"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/preprocessing/Dockerfile  
@@ -95,7 +95,7 @@ services:
   train-service:
     profiles: ["training"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/train/Dockerfile  
@@ -120,7 +120,7 @@ services:
   eval-service:
     profiles: ["training"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/eval/Dockerfile  
@@ -147,7 +147,7 @@ services:
   predict-orchestrator-service:
     profiles: ["prediction"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/orchestrator/Dockerfile  
@@ -171,7 +171,7 @@ services:
   predict-service:
     profiles: ["prediction"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/predict/Dockerfile  
@@ -193,7 +193,7 @@ services:
   admin-backend-service:
     profiles: ["training"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/admin-backend/Dockerfile  
@@ -223,7 +223,7 @@ services:
   admin-frontend-service:
     profiles: ["training"]
     env_file:
-    - path: ./.env
+    - ./.env
     build:
       context: .  
       dockerfile: docker/admin-frontend/Dockerfile  

@@ -6,4 +6,4 @@
 
 Detailed documentation
 - [Local deployement of Training Pipeline](Deployement_guide_Training_Pipeline_Local.md) 
-- [Deployement Details](../docs.md/Deployement_Details.md) 
+- [Deployement Details (CI/CD)](../docs.md/Deployement_Details.md) 
