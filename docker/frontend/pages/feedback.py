@@ -8,7 +8,13 @@ import os
 from src.s3handler import S3Handler
 
 
-st.set_page_config(page_title="Dashboard Page")
+# 🔹 Configuration de la page
+st.set_page_config(page_title="Analyse des Prédictions", layout="wide")
+
+# 🔹 Menu de navigation
+st.sidebar.title("Navigation")
+st.sidebar.page_link("app.py", label="🏠 Accueil")
+st.sidebar.page_link("pages/feedback.py", label="📊 Analyse")
 
 
 def get_env_var(name):
