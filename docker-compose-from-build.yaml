@@ -85,8 +85,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: docker/train/  
-      dockerfile: Dockerfile  
+      context: .  
+      dockerfile: docker/train/Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/train
@@ -99,10 +99,6 @@ services:
       - ${MODEL_TRAIN_PORT_TRAIN}:80
     networks:
       - sake
-    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
-      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
-      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
-      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'évaluation
   eval-service:
