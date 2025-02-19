@@ -8,7 +8,14 @@ import os
 from src.s3handler import S3Handler
 
 
-st.set_page_config(page_title="Dashboard Page")
+# 🔹 Configuration de la page
+st.set_page_config(page_title="Analyse des Prédictions", layout="wide")
+
+# 🔹 Menu de navigation
+st.sidebar.title("Navigation")
+st.sidebar.page_link("app.py", label="📤 Déposer & Classifier")
+st.sidebar.page_link("pages/feedback.py", label="📊 Vérifier & Corriger")
+
 
 
 def get_env_var(name):
@@ -42,7 +49,7 @@ def process_prediction_dataframe(prediction):
     return df
 
 def process_new_prediction(prediction_response):
-    predictions = prediction_response['prediction']
+    predictions = prediction_response[1]
     
     # Create a list of dictionaries for DataFrame creation
     data = []
@@ -64,7 +71,7 @@ def parse_response(pred):
     n_images = pred['metadata']['n_files']
     status = pred['status']
     uuid = pred['metadata']['uuid']
-    prediction = process_prediction_dataframe(pred['prediction']) if status == 'COMPLETED' else None
+    prediction = process_new_prediction(pred['prediction']) if status == 'COMPLETED' else None
     return date, n_images, status, uuid, prediction
 
 # Fonction pour gérer le clic sur le bouton "Valider les corrections"
@@ -73,10 +80,10 @@ def handle_submit(table_data, uuid):
 
     # Chemin pour sauvegarder corrections_{uuid}.csv à la racine de "corrections/"
     corrections_dir = "corrections"
-    os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
+    # os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
 
-    corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
-    df.to_csv(corrections_csv_path, index=False)
+    # corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
+    # df.to_csv(corrections_csv_path, index=False)
 
     # Création du fichier feedback.csv dans "corrections/{UUID}/prediction/"
     feedback_dir = os.path.join(corrections_dir, uuid, "prediction")
@@ -94,7 +101,6 @@ def handle_submit(table_data, uuid):
 
     # Afficher un message de confirmation
     st.success("Corrections enregistrées avec succès !")
-    st.info(f"Les corrections ont été enregistrées dans :\n- {corrections_csv_path}\n- {feedback_csv_path}")
 
 
 
@@ -107,7 +113,7 @@ st.title("Afficher les prédictions")
 reference = st.text_input("Entrez une référence pour récupérer les prédictions :")
 
 if reference:  # Vérifie si une référence est entrée
-    endpoint_url = f'http://localhost:8908/predict/{reference}'
+    endpoint_url = f'http://predict-orchestrator-service/predict/{reference}'
 
     with st.spinner("Récupération des prédictions..."):
         response = requests.get(endpoint_url)
@@ -179,7 +185,9 @@ if reference:  # Vérifie si une référence est entrée
                                     )
 
                             # ✅ Construire table_data APRÈS que toutes les selectbox aient été mises à jour
-                            submitted = st.form_submit_button("Valider les corrections")
+                            cols = st.columns([2, 2, 2])  # Colonne centrale plus étroite
+                            with cols[1]:  # Met le bouton au centre
+                                submitted = st.form_submit_button("✅ Valider les corrections")
                             if submitted:
                                 table_data = [
                                     {

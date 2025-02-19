@@ -4,12 +4,13 @@ import os
 from src.utils.files import encode_files
 
 # 🔹 Configuration de la page
-st.set_page_config(page_title="Analyse des Prédictions", layout="wide")
+st.set_page_config(page_title="Analyse des Prédictions", layout="centered")
 
 # 🔹 Menu de navigation
 st.sidebar.title("Navigation")
-st.sidebar.page_link("app.py", label="🏠 Accueil")
-st.sidebar.page_link("pages/feedback.py", label="📊 Analyse")
+st.sidebar.page_link("app.py", label="📤 Déposer & Classifier")
+st.sidebar.page_link("pages/feedback.py", label="📊 Vérifier & Corriger")
+
 
 
 # 🔹 Chargement de l'URL Backend depuis les variables d'environnement

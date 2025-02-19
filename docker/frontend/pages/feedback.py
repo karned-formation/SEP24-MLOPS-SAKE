@@ -13,8 +13,9 @@ st.set_page_config(page_title="Analyse des Prédictions", layout="wide")
 
 # 🔹 Menu de navigation
 st.sidebar.title("Navigation")
-st.sidebar.page_link("app.py", label="🏠 Accueil")
-st.sidebar.page_link("pages/feedback.py", label="📊 Analyse")
+st.sidebar.page_link("app.py", label="📤 Déposer & Classifier")
+st.sidebar.page_link("pages/feedback.py", label="📊 Vérifier & Corriger")
+
 
 
 def get_env_var(name):
@@ -184,7 +185,9 @@ if reference:  # Vérifie si une référence est entrée
                                     )
 
                             # ✅ Construire table_data APRÈS que toutes les selectbox aient été mises à jour
-                            submitted = st.form_submit_button("Valider les corrections")
+                            cols = st.columns([2, 2, 2])  # Colonne centrale plus étroite
+                            with cols[1]:  # Met le bouton au centre
+                                submitted = st.form_submit_button("✅ Valider les corrections")
                             if submitted:
                                 table_data = [
                                     {
