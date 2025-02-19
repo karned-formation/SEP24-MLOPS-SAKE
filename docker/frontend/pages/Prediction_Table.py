@@ -72,7 +72,7 @@ def handle_submit(table_data, uuid):
     df = pd.DataFrame(table_data)
 
     # Chemin pour sauvegarder corrections_{uuid}.csv à la racine de "corrections/"
-    # corrections_dir = "corrections"
+    corrections_dir = "corrections"
     # os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
 
     # corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
