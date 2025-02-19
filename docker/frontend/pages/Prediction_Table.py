@@ -94,7 +94,6 @@ def handle_submit(table_data, uuid):
 
     # Afficher un message de confirmation
     st.success("Corrections enregistrées avec succès !")
-    st.info(f"Les corrections ont été enregistrées dans :\n- {corrections_csv_path}\n- {feedback_csv_path}")
 
 
 
