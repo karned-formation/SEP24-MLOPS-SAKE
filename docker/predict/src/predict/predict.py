@@ -6,7 +6,7 @@ from src.custom_logger import logger
 def predict( data: str ):
     try:
         logger.info("Starting the prediction process.")
-        vectorizer = joblib.load(VECTORIZER_PATH)['vectorizer']
+        vectorizer = joblib.load(VECTORIZER_PATH)
         model = joblib.load(MODEL_PATH)
         data_vectorized = vectorizer.transform([data])
         probabilities = model.predict_proba(data_vectorized)

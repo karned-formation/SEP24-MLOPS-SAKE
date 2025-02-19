@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from urllib.parse import quote
 import os
 from streamlit_extras.let_it_rain import rain
+from streamlit_extras.stylable_container import stylable_container
 
 # Set page configuration
 st.set_page_config(
@@ -75,7 +76,19 @@ def show_image_management():
         uploaded_file = st.file_uploader(f"Add image to {folder}", type=["jpg", "png"])
         if uploaded_file:
             add_image(folder, uploaded_file)
-        
+        with stylable_container(key="button", css_styles="""
+                   button { 
+                        background-color: #0000ff; 
+                        color: white;
+                    }
+                    """):
+            if st.button("Retrieve images from feedbacks"):
+                response = requests.get(f"{BACKEND_URL}/get_predictions_images")
+                if response.status_code == 200:
+                    st.success("Images added to training set!")
+                else:
+                    st.error("Retrieval failed!")
+
         if folder in st.session_state.folders_data:
             cols = st.columns(6)
             for idx, img_data in enumerate(st.session_state.folders_data[folder]):
@@ -83,6 +96,8 @@ def show_image_management():
                     st.image(img_data["thumbnail"], caption=img_data["name"])
                     if st.button(f"Delete {img_data['name']}", key=f"del_{folder}_{idx}"):
                         delete_image(folder, img_data["name"])
+        
+
 
 def show_training_page():
     st.header("Training Management")

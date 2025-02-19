@@ -18,7 +18,16 @@ services:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-clean:2.0
+    build:
+      context: docker/clean_text  
+      dockerfile: Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/data
+        DOCKERFILE_DIR: docker/clean_text  
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - clean-service:cache
+    image: clean-service:1.0
     container_name: clean-service
     ports:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
@@ -32,7 +41,16 @@ services:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-etl:2.0
+    build:
+      context: docker/etl/  
+      dockerfile: Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/data
+        DOCKERFILE_DIR: docker/etl  
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - etl-service:cache  
+    image: etl-service:1.0
     container_name: etl-service
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - ocr-service
@@ -41,13 +59,27 @@ services:
       - ${DATA_ETL_PORT_ETL}:80
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}:/app/${DATA_STRUCTURE_RAW_RAW_DATASET_DIR}
+      - ./${DATA_INGESTION_OCR_TEXT_DIR}:/app/${DATA_INGESTION_OCR_TEXT_DIR}
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
     
   # Service de prétraitement
   preprocessing-service:
     profiles: ["training"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-preprocessing:2.0
+    build:
+      context: docker/preprocessing/  
+      dockerfile: Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/preprocessing
+        DOCKERFILE_DIR: docker/preprocessing
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - preprocessing-service:cache
+    image: preprocessing-service:1.0
     container_name: preprocessing-service
     ports:
       - ${DATA_PREPROCESSING_PORT_PREPROCESSING}:80
@@ -64,7 +96,16 @@ services:
     profiles: ["training"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-train:2.0
+    build:
+      context: docker/train/  
+      dockerfile: Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/train
+        DOCKERFILE_DIR: docker/train
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - train-service:cache
+    image: train-service:1.0
     container_name: train-service
     ports:
       - ${MODEL_TRAIN_PORT_TRAIN}:80
@@ -80,7 +121,16 @@ services:
     profiles: ["training"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-eval:2.0
+    build:
+      context: docker/eval/  
+      dockerfile: Dockerfile  
+      args:
+        COMMON_DIR: src
+        SOURCE_DIR: src/eval
+        DOCKERFILE_DIR: docker/eval
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - eval-service:cache
+    image: eval-service:1.0
     container_name: eval-service
     ports:
       - ${MODEL_EVAL_PORT_EVAL}:80
@@ -95,10 +145,19 @@ services:
 
   # Service d'Orchestration
   predict-orchestrator-service:
-    profiles: ["prediction"]
+    profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-orchestrator:2.0
+    build:
+      context: docker/orchestrator/  
+      dockerfile: Dockerfile  
+      args:
+        SOURCE_DIR: src/
+        DOCKERFILE_DIR: docker/orchestrator
+        LOG_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - predict-orchestrator:cache
+    image: predict-orchestrator:1.0  
     container_name: predict-orchestrator
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - etl-service
@@ -109,8 +168,31 @@ services:
       - sake
   
   # Service de prédiction
+  # predict-service:
+  #   profiles: ["training", "prediction"]
+  #   env_file:
+  #   - path: ./.env
+  #   build:
+  #     context: .  
+  #     dockerfile: docker/predict/Dockerfile  
+  #     args:
+  #       SOURCE_DIR: src/
+  #       DOCKERFILE_DIR: docker/predict
+  #       LOG_DIR: src
+  #       MODELS_DIR: models/
+  #       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  #       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  #     cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+  #       - ms-sake-predict:cache
+  #   image: ms-sake-predict:1.0  
+  #   container_name: ms-sake-predict
+  #   ports:
+  #     - "${PREDICT_PORT_PREDICT}:80"
+  #   networks:
+  #     - sake
+    # Service de prédiction
   predict-service:
-    profiles: ["prediction"]
+    profiles: ["training", "prediction"]
     env_file:
       - path: ./.env
     image: killiankopp/sake-predict:2.1  # Utilisation de l'image Docker spécifique
@@ -120,14 +202,15 @@ services:
     networks:
       - sake
 
+
   # Backend d'administration et gestion des données avec DVC et MLFLOW
   # admin-backend-service:
   #   profiles: ["training"]
   #   env_file:
   #   - path: ./.env
   #   build:
-  #     context: .
-  #     dockerfile: docker/admin-backend/Dockerfile
+  #     context: .  
+  #     dockerfile: docker/admin-backend/Dockerfile  
   #     args:
   #       COMMON_DIR: src
   #       SOURCE_DIR: src/admin
@@ -135,7 +218,7 @@ services:
   #       DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
   #     cache_from:
   #       - admin-backend-service:cache
-  #   image: admin-backend-service:1.0
+  #   image: admin-backend-service:1.0  
   #   container_name: admin-backend-service
   #   ports:
   #     - "${ADMIN_BACKEND_PORT_ADMIN_BACKEND}:80"
@@ -156,15 +239,15 @@ services:
   #   env_file:
   #   - path: ./.env
   #   build:
-  #     context: .
-  #     dockerfile: docker/admin-frontend/Dockerfile
+  #     context: .  
+  #     dockerfile: docker/admin-frontend/Dockerfile  
   #     args:
   #       COMMON_DIR: src
   #       SOURCE_DIR: src/streamlit
   #       DOCKERFILE_DIR: docker/admin-frontend
   #     cache_from:
   #       - admin-frontend-service:cache
-  #   image: admin-frontend-service:1.0
+  #   image: admin-frontend-service:1.0  
   #   container_name: admin-frontend-service
   #   ports:
   #     - "${ADMIN_FRONTEND_PORT_ADMIN_FRONTEND}:80"
@@ -226,9 +309,9 @@ services:
       - sake
     ports:
       - "9100:9100"
-
+  
   frontend-service:
-    profiles: ["prediction"]
+    profiles: ["training", "prediction"]
     env_file:
       - path: ./.env
     image: killiankopp/sake-frontend:2.0  # Utilisation de l'image Docker spécifique
@@ -237,7 +320,7 @@ services:
       - "${FRONTEND_PORT_PREDICT}:80"
     networks:
       - sake
-
+  
   file-service:
     profiles: ["training", "prediction"]
     env_file:

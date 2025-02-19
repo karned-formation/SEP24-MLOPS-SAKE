@@ -51,14 +51,30 @@ def call_predict( payload ):
     return response.json()
 
 
-def prepare_payload_original(files: List[bytes], names: Optional[List[str]] = None):
+from typing import List, Optional
+
+def prepare_payload_original(files: List[dict], names: Optional[List[str]] = None):
+    payload = []
+
     if names:
         if len(names) != len(files):
             raise ValueError("La longueur de 'names' doit être égale à celle de 'files'.")
-        payload = [{"name": name, "content": file} for name, file in zip(names, files)]
+        for file, name in zip(files, names):
+            payload.append({
+                "name": name,
+                "original_name": file.get("name", name),
+                "content": file["content"]
+            })
     else:
-        payload = [{"content": file} for file in files]
+        for file in files:
+            payload.append({
+                "name": file.get("name", "unknown_file"),
+                "original_name": file.get("name", "unknown_file"),
+                "content": file["content"]
+            })
+    
     return payload
+
 
 
 def prepare_extract_payload( files_original: list, files_infos: list ) -> list:
@@ -166,8 +182,7 @@ def clean_texts( files_infos: list, ocr_files: list ) -> list:
     return call_transform(payload)
 
 
-def treat( files: list ):
-    batch_uuid = str(uuid4())
+def treat(batch_uuid: str, files: list ):
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
     ocr_files = extract_texts(files, original_files_infos)
@@ -181,4 +196,3 @@ def treat( files: list ):
     push_prediction_to_bucket(batch_uuid, prediction)
 
     return batch_uuid, prediction
-

@@ -1,6 +1,5 @@
 import io
 import json
-import logging
 from uuid import uuid4
 import pandas as pd
 import requests
@@ -16,10 +15,10 @@ def call_extract( payload ):
         json=payload,
         headers=headers
     )
-    return response.text
+    return response.json()
 
 
-def call_transform( payload ):
+def call_transform( payload):
     url = get_env_var('ENDPOINT_URL_TRANSFORM')
     headers = {'Content-Type': 'application/json'}
     response = requests.post(
@@ -27,39 +26,32 @@ def call_transform( payload ):
         json=payload,
         headers=headers
     )
-    return response.text
+    return response.json()
 
 
-def call_load( prefix: str, files: list ):
+def call_load(payload):
     url = get_env_var('ENDPOINT_URL_LOAD')
-    payload = {
-        "prefix": prefix,
-        "files": files
-    }
+    headers = {'Content-Type': 'application/json'}
     response = requests.post(
         url=url,
         json=payload,
-        headers={"Content-Type": "application/json"}
+        headers=headers
     )
     return response.json()
 
 
-def call_predict( payload: list ):
+def call_predict( payload ):
     url = get_env_var('ENDPOINT_URL_PREDICT')
+    headers = {'Content-Type': 'application/json'}
     response = requests.post(
         url=url,
         json=payload,
-        headers={"Content-Type": "application/json"}
+        headers=headers
     )
-    logging.info(response.text)
-    prediction = dict(response.json()).get('data', 0)
-    if prediction:
-        return prediction
-    else:
-        raise Exception("Le chemin fourni à predict est invalide")
+    return response.json()
 
 
-def prepare_load_payload_original(files: List[bytes], names: Optional[List[str]] = None):
+def prepare_payload_original(files: List[bytes], names: Optional[List[str]] = None):
     if names:
         if len(names) != len(files):
             raise ValueError("La longueur de 'names' doit être égale à celle de 'files'.")
@@ -80,16 +72,14 @@ def prepare_extract_payload( files_original: list, files_infos: list ) -> list:
     return result
 
 
-def prepare_load_payload_ocerized(files: str) -> list:
-    files = json.loads(files)
+def prepare_payload_ocr(files: list) -> list:
     payload = [{"name": file['name'], "content": file['text']} for file in files]
     return payload
 
 
-def prepare_load_payload_cleaned(files_infos: list, ocerized_files: str) -> list:
-    ocerized_files = json.loads(ocerized_files)
+def prepare_payload_cleaned(files_infos: list, ocr_files: list) -> list:
     result = []
-    for p, f in zip(files_infos, ocerized_files):
+    for p, f in zip(files_infos, ocr_files):
         merged = {**p, **f}
         merged.pop('full_path', None)
         merged.pop('name', None)
@@ -98,8 +88,7 @@ def prepare_load_payload_cleaned(files_infos: list, ocerized_files: str) -> list
     return result
 
 
-def construct_dataset( original_files_infos: list, cleaned_files: str ) -> list:
-    cleaned_files = json.loads(cleaned_files)
+def construct_dataset( original_files_infos: list, cleaned_files: list ) -> list:
     dataset = []
     for p, f in zip(original_files_infos, cleaned_files):
         merged = {**p, **f}
@@ -110,38 +99,34 @@ def construct_dataset( original_files_infos: list, cleaned_files: str ) -> list:
     return dataset
 
 
-def prepare_predict_payload( uri_csv ):
-    csv_content = download_uri_to_content(uri_csv)
-    df = pd.read_csv(csv_content)
-
-    payload = []
-    for _, row in df.iterrows():
-        payload.append(
-            {
-                "ref": str(row['filename']),
-                "data": str(row['cleaned_text'])
-            }
-        )
-
-    return payload
-
-
 def push_original_files_to_bucket( batch_uuid: str, files: list ):
     path_original = f"{batch_uuid}/original_raw"
-    files_original = prepare_load_payload_original(files)
-    return call_load(path_original, files_original)
+    files_original = prepare_payload_original(files)
+    payload = {
+        "prefix": path_original,
+        "files": files_original
+    }
+    return call_load(payload)
 
 
-def push_ocerized_files_to_bucket( batch_uuid: str, files: str ):
-    path = f"{batch_uuid}/ocerized_raw"
-    files = prepare_load_payload_ocerized(files)
-    return call_load(path, files)
+def push_ocr_files_to_bucket( batch_uuid: str, files: list ):
+    path = f"{batch_uuid}/ocr_raw"
+    files = prepare_payload_ocr(files)
+    payload = {
+        "prefix": path,
+        "files": files
+    }
+    return call_load(payload)
 
 
-def push_cleaned_files_to_bucket( batch_uuid: str, files: str ):
+def push_cleaned_files_to_bucket( batch_uuid: str, files: list ):
     path = f"{batch_uuid}/cleaned"
-    files = prepare_load_payload_ocerized(files)
-    return call_load(path, files)
+    files = prepare_payload_ocr(files)
+    payload = {
+        "prefix": path,
+        "files": files
+    }
+    return call_load(payload)
 
 
 def push_cleaned_dataset_to_bucket( batch_uuid: str, dataset: list ):
@@ -152,46 +137,46 @@ def push_cleaned_dataset_to_bucket( batch_uuid: str, dataset: list ):
     csv_str = csv_buffer.getvalue()
     csv_buffer.close()
     files = [{"name": "cleaned.csv", "content": csv_str}]
-    return call_load(path, files)
+    payload = {
+        "prefix": path,
+        "files": files
+    }
+    return call_load(payload)
 
 
-def extract_texts( files: list, files_infos: list ) -> str:
-    files_original = prepare_load_payload_original(files)
+def push_prediction_to_bucket( batch_uuid: str, prediction: list ):
+    path = f"{batch_uuid}/prediction"
+    prediction = json.dumps(prediction)
+    files = [{"name": "prediction.json", "content": prediction}]
+    payload = {
+        "prefix": path,
+        "files": files
+    }
+    return call_load(payload)
+
+
+def extract_texts( files: list, files_infos: list ) -> list:
+    files_original = prepare_payload_original(files)
     files_to_extract = prepare_extract_payload(files_original, files_infos)
     return call_extract(files_to_extract)
 
 
-def clean_texts( files_infos: list, ocerized_files: str ) -> str:
-    payload = prepare_load_payload_cleaned(files_infos, ocerized_files)
+def clean_texts( files_infos: list, ocr_files: list ) -> list:
+    payload = prepare_payload_cleaned(files_infos, ocr_files)
     return call_transform(payload)
 
 
-def treat( files: list ):
-    batch_uuid = str(uuid4())
-    batch_uuid = 'test1'
+def treat(batch_uuid: str, files: list ):
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
-
-    ocerized_files = extract_texts(files, original_files_infos)
-    ocerized_files_infos = push_ocerized_files_to_bucket(batch_uuid, ocerized_files)
-
-    cleaned_files = clean_texts(original_files_infos, ocerized_files)
-    cleaned_files_infos = push_cleaned_files_to_bucket(batch_uuid, cleaned_files)
-
+    ocr_files = extract_texts(files, original_files_infos)
+    cleaned_files = clean_texts(original_files_infos, ocr_files)
     dataset = construct_dataset(original_files_infos, cleaned_files)
-    push_cleaned_dataset_to_bucket(batch_uuid, dataset)
-
     prediction = call_predict(dataset)
-    """
-    uri_csv = f'{base_uri}cleaned/cleaned.csv'
-    
 
-    uri_csv_prediction = f'{base_uri}/prediction/predictions.csv'
-    store_csv_prediction(prediction, uri_csv_prediction)
+    push_ocr_files_to_bucket(batch_uuid, ocr_files)
+    push_cleaned_files_to_bucket(batch_uuid, cleaned_files)
+    push_cleaned_dataset_to_bucket(batch_uuid, dataset)
+    push_prediction_to_bucket(batch_uuid, prediction)
 
-    uri_json_prediction = f'{base_uri}/prediction/predictions.json'
-    store_json_prediction(prediction, uri_json_prediction)
-    """
-    prediction = {"WIP": "WIP"}
     return batch_uuid, prediction
-

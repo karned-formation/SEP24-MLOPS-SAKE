@@ -5,10 +5,11 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-            - alertmanager-service 
+            - alertmanager:9093 
 
 rule_files:
   - alerting_rules.yml
+
 
 scrape_configs:
   - job_name: 'ocr-service'
@@ -38,10 +39,6 @@ scrape_configs:
   - job_name: 'predict-service'
     static_configs:
       - targets: ['predict-service:80']
-
-  - job_name: 'predict-orchestrator-service'
-    static_configs:
-      - targets: ['predict-orchestrator-service:80']
 
   - job_name: 'predict-orchestrator-service'
     static_configs:
