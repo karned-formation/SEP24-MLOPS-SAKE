@@ -72,11 +72,11 @@ def handle_submit(table_data, uuid):
     df = pd.DataFrame(table_data)
 
     # Chemin pour sauvegarder corrections_{uuid}.csv à la racine de "corrections/"
-    corrections_dir = "corrections"
-    os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
+    # corrections_dir = "corrections"
+    # os.makedirs(corrections_dir, exist_ok=True)  # Crée le dossier si nécessaire
 
-    corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
-    df.to_csv(corrections_csv_path, index=False)
+    # corrections_csv_path = os.path.join(corrections_dir, f"corrections_{uuid}.csv")
+    # df.to_csv(corrections_csv_path, index=False)
 
     # Création du fichier feedback.csv dans "corrections/{UUID}/prediction/"
     feedback_dir = os.path.join(corrections_dir, uuid, "prediction")
@@ -107,7 +107,7 @@ st.title("Afficher les prédictions")
 reference = st.text_input("Entrez une référence pour récupérer les prédictions :")
 
 if reference:  # Vérifie si une référence est entrée
-    endpoint_url = f'http://localhost:8908/predict/{reference}'
+    endpoint_url = f'http://predict-orchestrator-service/predict/{reference}'
 
     with st.spinner("Récupération des prédictions..."):
         response = requests.get(endpoint_url)
