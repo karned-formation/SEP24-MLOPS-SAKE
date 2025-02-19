@@ -289,11 +289,22 @@ services:
       - "9100:9100"
   
   frontend-service:
-    profiles: ["training", "prediction"]
+    profiles: ["prediction"]
     env_file:
-      - path: ./.env
-    image: killiankopp/sake-frontend:2.0  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-frontend
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/frontend/Dockerfile  
+      args:
+        SOURCE_DIR: src/frontend
+        DOCKERFILE_DIR: docker/frontend
+        COMMON_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - frontend-service:cache
+    image: frontend-service:1.0  
+    container_name: frontend-service
+    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+      - predict-orchestrator-service
     ports:
       - "${FRONTEND_PORT_PREDICT}:80"
     networks:
