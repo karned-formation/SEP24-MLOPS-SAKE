@@ -1,22 +1,32 @@
 from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
 from src.train.train import main
+from pydantic import BaseModel
 
 app = FastAPI()
 Instrumentator().instrument(app).expose(app)
 
-@app.post('/train')
-def train(prediction_folder_S3:str = None):
+class ProcessItem(BaseModel):
+    X_train: str
+    y_train: str
+
+class ProcessResponse(BaseModel):
+    ovrc: str # modèle entrainé 
+
+@app.post('/train', response_model=ProcessResponse)
+def train(item: ProcessItem):
     """
-    Trains the model using the specified data directory and saves it to the specified model path.
+    Trains the model using the specified data and returns a trained model
     """
     try:
         # Execute training process
-        main(prediction_folder_S3)
-        return {"message": "Model trained and saved successfully"}
-    
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    
+        ovrc_bytes = main(item.X_train, item.y_train)
+
+        response = ProcessResponse(
+            ovrc=ovrc_bytes
+        )    
+
+        return response
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")

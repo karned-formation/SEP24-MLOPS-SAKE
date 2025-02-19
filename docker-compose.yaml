@@ -24,6 +24,8 @@ services:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service ETL
   etl-service:
@@ -32,6 +34,9 @@ services:
     - path: ./.env
     image: killiankopp/sake-etl:2.0
     container_name: etl-service
+    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+      - ocr-service
+      - clean-service
     ports:
       - ${DATA_ETL_PORT_ETL}:80
     networks:
@@ -48,6 +53,11 @@ services:
       - ${DATA_PREPROCESSING_PORT_PREPROCESSING}:80
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'entraînement
   train-service:
@@ -60,6 +70,10 @@ services:
       - ${MODEL_TRAIN_PORT_TRAIN}:80
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
 
   # Service d'évaluation
   eval-service:
@@ -72,6 +86,12 @@ services:
       - ${MODEL_EVAL_PORT_EVAL}:80
     networks:
       - sake
+    volumes: # /!\ les variables d'environnement UID et GID doivent être définies pour désigner le propriétaire hôte de ces volumes
+      - ./${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}:/app/${DATA_PREPROCESSING_PREPROCESSED_DATA_DIR}
+      - ./${DATA_PREPROCESSING_MODELS_DIR}:/app/${DATA_PREPROCESSING_MODELS_DIR}
+      - ./${MODEL_EVAL_METRICS_DIR}:/app/${MODEL_EVAL_METRICS_DIR}
+      - ./${DATA_GENERAL_LOG_DIR}:/app/${DATA_GENERAL_LOG_DIR}
+      - ./${DATA_CLEANING_CLEANED_DATASETS_DIR}:/app/${DATA_CLEANING_CLEANED_DATASETS_DIR}
 
   # Service d'Orchestration
   predict-orchestrator-service:
@@ -100,15 +120,14 @@ services:
     networks:
       - sake
 
-
   # Backend d'administration et gestion des données avec DVC et MLFLOW
   # admin-backend-service:
   #   profiles: ["training"]
   #   env_file:
   #   - path: ./.env
   #   build:
-  #     context: .  
-  #     dockerfile: docker/admin-backend/Dockerfile  
+  #     context: .
+  #     dockerfile: docker/admin-backend/Dockerfile
   #     args:
   #       COMMON_DIR: src
   #       SOURCE_DIR: src/admin
@@ -116,7 +135,7 @@ services:
   #       DAGSHUB_ACCESS_KEY_ID: ${DAGSHUB_ACCESS_KEY_ID}
   #     cache_from:
   #       - admin-backend-service:cache
-  #   image: admin-backend-service:1.0  
+  #   image: admin-backend-service:1.0
   #   container_name: admin-backend-service
   #   ports:
   #     - "${ADMIN_BACKEND_PORT_ADMIN_BACKEND}:80"
@@ -137,15 +156,15 @@ services:
   #   env_file:
   #   - path: ./.env
   #   build:
-  #     context: .  
-  #     dockerfile: docker/admin-frontend/Dockerfile  
+  #     context: .
+  #     dockerfile: docker/admin-frontend/Dockerfile
   #     args:
   #       COMMON_DIR: src
   #       SOURCE_DIR: src/streamlit
   #       DOCKERFILE_DIR: docker/admin-frontend
   #     cache_from:
   #       - admin-frontend-service:cache
-  #   image: admin-frontend-service:1.0  
+  #   image: admin-frontend-service:1.0
   #   container_name: admin-frontend-service
   #   ports:
   #     - "${ADMIN_FRONTEND_PORT_ADMIN_FRONTEND}:80"
@@ -207,7 +226,7 @@ services:
       - sake
     ports:
       - "9100:9100"
-  
+
   frontend-service:
     profiles: ["prediction"]
     env_file:
@@ -218,7 +237,7 @@ services:
       - "${FRONTEND_PORT_PREDICT}:80"
     networks:
       - sake
-  
+
   file-service:
     profiles: ["training", "prediction"]
     env_file:
@@ -232,4 +251,4 @@ services:
 
 networks:
   sake:
-    driver: bridge
+    driver: bridge  

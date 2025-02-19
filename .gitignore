@@ -56,3 +56,8 @@ report/Projet_classification_MLOps_Partie3_Aymen.pptx:Zone.Identifier
 secrets/
 
 docker/predict/models/
+
+csv_files
+secrets
+img
+corrections
