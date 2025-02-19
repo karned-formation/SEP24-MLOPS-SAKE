@@ -127,12 +127,12 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: docker/orchestrator/  
-      dockerfile: Dockerfile  
+      context: .  
+      dockerfile: docker/orchestrator/Dockerfile  
       args:
-        SOURCE_DIR: src/
+        SOURCE_DIR: src/orchestrator
         DOCKERFILE_DIR: docker/orchestrator
-        LOG_DIR: src
+        COMMON_DIR: src
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - predict-orchestrator:cache
     image: predict-orchestrator:1.0  
