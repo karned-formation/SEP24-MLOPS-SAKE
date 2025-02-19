@@ -69,3 +69,10 @@ async def upload_images(background_task: BackgroundTasks, request: PredictionReq
     reference_uuid_map[batch_uuid].append(batch_uuid)
     background_task.add_task(process_images, batch_uuid, request.files)
     return {"message": "Files saved successfully", "reference": reference, "uuid": batch_uuid, "nb": metadata['n_files'], "time": metadata['time']}
+
+@app.get('/predict/{reference}')
+def get_prediction(reference):
+    predictions = []
+    for uuid in reference_uuid_map[reference]:
+        predictions.append(database[uuid])
+    return predictions 
