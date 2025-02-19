@@ -14,6 +14,8 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.11-slim AS runtime
+ARG SOURCE_DIR
+ARG COMMON_DIR
 
 ENV LANG=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
@@ -26,8 +28,8 @@ COPY --from=builder /install /usr/local
 
 COPY app.py app.py
 COPY download_contents.py download_contents.py
-COPY src/data/clean_text.py /app/src/data/clean_text.py
-COPY src/custom_logger.py /app/src/custom_logger.py
+COPY ${COMMON_DIR}/custom_logger.py /app/src/custom_logger.py
+COPY ${SOURCE_DIR}/clean_text.py /app/src/data/clean_text.py
 
 RUN python3 -m spacy download fr_core_news_sm && \
     python3 -m spacy download en_core_web_sm
