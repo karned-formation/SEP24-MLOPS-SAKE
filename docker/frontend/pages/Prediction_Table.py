@@ -42,7 +42,7 @@ def process_prediction_dataframe(prediction):
     return df
 
 def process_new_prediction(prediction_response):
-    predictions = prediction_response['prediction']
+    predictions = prediction_response[1]
     
     # Create a list of dictionaries for DataFrame creation
     data = []
@@ -61,10 +61,10 @@ def process_new_prediction(prediction_response):
 def parse_response(pred):
     timestamp = pred['metadata']['time']
     date = convert_timestamp(timestamp)
-    n_images = pred['metadata']['nb']
+    n_images = pred['metadata']['n_files']
     status = pred['status']
     uuid = pred['metadata']['uuid']
-    prediction = process_prediction_dataframe(pred['prediction']) if status == 'COMPLETED' else None
+    prediction = process_new_prediction(pred['prediction']) if status == 'COMPLETED' else None
     return date, n_images, status, uuid, prediction
 
 # Fonction pour gérer le clic sur le bouton "Valider les corrections"

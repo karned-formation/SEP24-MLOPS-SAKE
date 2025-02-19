@@ -61,7 +61,7 @@ def process_new_prediction(prediction_response):
 def parse_response(pred):
     timestamp = pred['metadata']['time']
     date = convert_timestamp(timestamp)
-    n_images = pred['metadata']['nb']
+    n_images = pred['metadata']['n_files']
     status = pred['status']
     uuid = pred['metadata']['uuid']
     prediction = process_prediction_dataframe(pred['prediction']) if status == 'COMPLETED' else None
