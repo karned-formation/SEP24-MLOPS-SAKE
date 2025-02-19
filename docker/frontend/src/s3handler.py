@@ -104,9 +104,9 @@ class S3Handler:
             logger.error(f"Erreur lors de l'upload: {e}")
             return False
 
-    def download_directory( self, remote_directory_name ):
+    def download_directory(self, remote_directory_name, local_path="./"):
         """Télécharge l'intégralité d'un dossier du bucket sur la machine local"""
-        local_path = Path("./")
+        local_path = Path(local_path)
         local_path.mkdir(parents=True, exist_ok=True)
 
         downloaded_files = {}
