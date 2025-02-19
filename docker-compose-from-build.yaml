@@ -313,9 +313,18 @@ services:
   file-service:
     profiles: ["training", "prediction"]
     env_file:
-      - path: ./.env
-    image: killiankopp/sake-file:2.0  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-file
+    - path: ./.env
+    build:
+      context: .  
+      dockerfile: docker/file/Dockerfile  
+      args:
+        SOURCE_DIR: src/file
+        DOCKERFILE_DIR: docker/file
+        COMMON_DIR: src
+      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+        - file-service:cache
+    image: file-service:1.0  
+    container_name: file-service
     ports:
       - "${FILE_PORT_PREDICT}:80"
     networks:
