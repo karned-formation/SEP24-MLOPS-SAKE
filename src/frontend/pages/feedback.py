@@ -49,7 +49,7 @@ def process_prediction_dataframe(prediction):
     return df
 
 def process_new_prediction(prediction_response):
-    predictions = prediction_response[1]
+    predictions = prediction_response
     
     # Create a list of dictionaries for DataFrame creation
     data = []
