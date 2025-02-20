@@ -320,7 +320,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -780,11 +779,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 20,
-        "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 0
+        "x": 20
       },
       "id": 15,
       "options": {
@@ -1147,7 +1142,6 @@
         "y": 3
       },
       "id": 16,
-      "id": 15,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -1510,10 +1504,8 @@
       "id": 16,
       "options": {
         "colorMode": "background",
-        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -1525,18 +1517,11 @@
         },
         "showPercentChange": false,
         "textMode": "name",
-        "textMode": "name",
         "wideLayout": true
       },
       "pluginVersion": "11.5.1",
-      "pluginVersion": "11.5.1",
       "targets": [
         {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "up{job=\"predict-service\"}",
-          "format": "heatmap",
-          "instant": false,
           "editorMode": "code",
           "exemplar": false,
           "expr": "up{job=\"predict-service\"}",
@@ -1546,10 +1531,8 @@
           "legendFormat": "{{job}}",
           "range": true,
           "refId": "A"
-          "refId": "A"
         }
       ],
-      "title": "",
       "title": "",
       "type": "stat"
     },
@@ -1578,10 +1561,6 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 6
         "h": 5,
         "w": 24,
         "x": 0,
@@ -1695,23 +1674,8 @@
                   "fixedColor": "dark-red",
                   "mode": "fixed"
                 }
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "/docs"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
               }
             ]
-          }
-        ]
           }
         ]
       },
@@ -1742,15 +1706,6 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum by(job) (rate(http_request_duration_seconds_sum{handler=~\".+\"}[5m]))",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
           "disableTextWrap": false,
           "editorMode": "builder",
           "expr": "sum by(job) (rate(http_request_duration_seconds_sum{handler=~\".+\"}[5m]))",
