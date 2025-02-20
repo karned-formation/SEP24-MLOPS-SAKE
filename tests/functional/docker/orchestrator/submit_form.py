@@ -14,11 +14,18 @@ encoded_files = encode_files([file1, file2])
 
 file1 = open('artefacts/cni.jpg', 'rb')
 encoded_files = encode_files([file1])
+names = ['cni.jpg']
+datas = []
+for i in range(len(encoded_files)):
+    datas.append({
+        "name": names[i],
+        "content": encoded_files[i]
+    })
 
 url = 'http://localhost:9091/predict'
 data_dict = {
     "reference": random_string,
-    "files": encoded_files
+    "files": datas
 }
 headers = {'Content-Type': 'application/json'}
 response = requests.post(
@@ -27,4 +34,4 @@ response = requests.post(
     headers=headers
 )
 
-#print(response.json())
+print(response.json())
