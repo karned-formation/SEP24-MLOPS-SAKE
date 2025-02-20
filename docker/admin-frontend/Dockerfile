@@ -24,4 +24,4 @@ COPY --from=builder /install /usr/local
 
 COPY admin-frontend.py admin-frontend.py
 
-CMD ["streamlit", "run", "admin-frontend.py", "--server.port", "80"]
+ENTRYPOINT ["streamlit", "run", "admin-frontend.py", "--server.port=80", "--server.address=0.0.0.0"]
