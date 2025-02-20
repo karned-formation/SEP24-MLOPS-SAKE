@@ -19,7 +19,7 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: docker/clean_text  
+      context: docker/clean_text/ 
       dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
@@ -40,8 +40,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: . 
-      dockerfile: docker/etl/Dockerfile  
+      context: docker/etl/ 
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/data
@@ -64,8 +64,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: . 
-      dockerfile: docker/preprocessing/Dockerfile  
+      context: docker/preprocessing/ 
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/preprocessing
@@ -85,8 +85,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/train/Dockerfile  
+      context: docker/train/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/train
@@ -106,8 +106,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/eval/Dockerfile  
+      context: docker/eval/  
+      dockerfile: Dockerfile  
       args:
         COMMON_DIR: src
         SOURCE_DIR: src/eval
@@ -121,14 +121,28 @@ services:
     networks:
       - sake
 
+  # Service de prédiction
+  predict-service:
+    profiles: ["training", "prediction"]
+    env_file:
+      - path: ./.env
+    image: killiankopp/sake-predict:2.1  # Utilisation de l'image Docker spécifique
+    container_name: ms-sake-predict
+    ports:
+      - "${PREDICT_PORT_PREDICT}:80"
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+    networks:
+      - sake
+
+  
   # Service d'Orchestration
   predict-orchestrator-service:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/orchestrator/Dockerfile  
+      context: docker/orchestrator/  
+      dockerfile: Dockerfile  
       args:
         SOURCE_DIR: src/orchestrator
         DOCKERFILE_DIR: docker/orchestrator
@@ -145,21 +159,23 @@ services:
     networks:
       - sake
   
-  # Service de prédiction
+  
   # predict-service:
-  #   profiles: ["training", "prediction"]
+  #   profiles: ["prediction"]
   #   env_file:
   #   - path: ./.env
+  #   environment:
+  #     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  #     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
   #   build:
   #     context: .  
   #     dockerfile: docker/predict/Dockerfile  
   #     args:
-  #       SOURCE_DIR: src/
+  #       SOURCE_DIR: src/predict
   #       DOCKERFILE_DIR: docker/predict
-  #       LOG_DIR: src
-  #       MODELS_DIR: models/
-  #       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-  #       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  #       COMMON_DIR: src
+  #       # AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  #       # AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
   #     cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
   #       - ms-sake-predict:cache
   #   image: ms-sake-predict:1.0  
@@ -168,17 +184,6 @@ services:
   #     - "${PREDICT_PORT_PREDICT}:80"
   #   networks:
   #     - sake
-    # Service de prédiction
-  predict-service:
-    profiles: ["training", "prediction"]
-    env_file:
-      - path: ./.env
-    image: killiankopp/sake-predict:2.1  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-predict
-    ports:
-      - "${PREDICT_PORT_PREDICT}:80"
-    networks:
-      - sake
 
 
   # Backend d'administration et gestion des données avec DVC et MLFLOW
@@ -236,8 +241,8 @@ services:
   prometheus-service:
     profiles: ["training", "prediction"]
     build:
-      context: .
-      dockerfile: docker/prometheus/Dockerfile
+      context: docker/prometheus/
+      dockerfile: Dockerfile
       args: 
         DOCKERFILE_DIR: docker/prometheus
     image: prometheus-service:1.0
@@ -250,8 +255,8 @@ services:
   alertmanager:
     profiles: ["training", "prediction"]
     build:
-      context: .
-      dockerfile: docker/alertmanager/Dockerfile
+      context: docker/alertmanager/
+      dockerfile: Dockerfile
       args: 
         DOCKERFILE_DIR: docker/alertmanager
     image: alertmanager:1.0
@@ -265,8 +270,8 @@ services:
   grafana-service:
     profiles: ["training", "prediction"]
     build:
-      context: .
-      dockerfile: docker/grafana/Dockerfile
+      context: docker/grafana/
+      dockerfile: Dockerfile
       args: 
         DOCKERFILE_DIR: docker/grafana
     image: grafana-service:1.0
@@ -293,8 +298,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/frontend/Dockerfile  
+      context: docker/frontend/  
+      dockerfile: Dockerfile  
       args:
         SOURCE_DIR: src/frontend
         DOCKERFILE_DIR: docker/frontend
@@ -315,8 +320,8 @@ services:
     env_file:
     - path: ./.env
     build:
-      context: .  
-      dockerfile: docker/file/Dockerfile  
+      context: docker/file/  
+      dockerfile: Dockerfile  
       args:
         SOURCE_DIR: src/file
         DOCKERFILE_DIR: docker/file
@@ -332,4 +337,4 @@ services:
 
 networks:
   sake:
-    driver: bridge  
+    driver: bridge
