@@ -60,7 +60,6 @@ stages:
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
-    cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
@@ -80,7 +79,6 @@ stages:
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
-    cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
@@ -94,7 +92,6 @@ stages:
       size: 1682517
       nfiles: 1
   eval:
-    cmd: python3 src/dvc_steps/eval.py
     cmd: python3 src/dvc_steps/eval.py
     deps:
     - path: data/processed/test
