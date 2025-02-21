@@ -78,6 +78,7 @@ admin_backend:
   endpoint_admin_backend: "http://${admin_backend.docker_service_admin_backend}"
 
 admin_frontend: 
+  port: 8501
   docker_service_admin_frontend: admin-frontend-service
   port_admin_frontend: 8911
   endpoint_admin_frontend: "http://${admin_frontend.docker_service_admin_frontend}"
@@ -123,9 +124,6 @@ file:
 
 frontend:
   port_predict: 8920
-
-admin_frontend:
-  port: 8501
 
 endpoint_url:
   extract: http://etl-service/extract
