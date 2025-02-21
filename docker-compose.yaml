@@ -146,14 +146,6 @@ services:
     networks:
       - sake
 
-  alertmanager:
-    profiles: ["training", "prediction"]
-    image: belwen/sake-alertmanager:1.1
-    container_name: alertmanager
-    ports:
-      - "9093:9093"
-    networks:
-      - sake
 
   # Grafana Service
   grafana-service:
@@ -176,6 +168,17 @@ services:
       - sake
     ports:
       - "9100:9100"
+
+  
+  # Alert Service
+  alertmanager-service:
+    profiles: ["training", "prediction"]
+    image: belwen/sake-alertmanager:1.1
+    container_name: alertmanager-service
+    ports:
+      - "9093:9093"
+    networks:
+      - sake
 
   frontend-service:
     profiles: ["prediction"]

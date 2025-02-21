@@ -118,3 +118,26 @@ orchestrator:
   docker_service_predict: predict-orchestrator-service
   port_orchestrator: 8908
 
+file:
+  port_predict: 8930
+
+frontend:
+  port_predict: 8920
+
+admin_frontend:
+  port: 8501
+
+endpoint_url:
+  extract: http://etl-service/extract
+  transform: http://etl-service/transform
+  load: http://file-service/load
+  predict: http://predict-service/predict
+  ocr: http://ocr-service/txt/blocks-words
+  clean: http://clean-service/clean
+
+admin_backend:
+  url: http://admin-backend-service
+  port: 8940
+
+url:
+  backend: http://predict-orchestrator-service
