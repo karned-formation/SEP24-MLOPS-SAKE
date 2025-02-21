@@ -1,6 +1,6 @@
 from src.admin.mlflow_tracking import list_mlflow_runs, git_revert_to_commit, save_to_mlflow, register_model_to_s3, run_command
 from src.admin.select_images import delete_image_file,get_image_list,save_uploaded_image
-from src.admin.get_predictions_images import get_images
+from src.admin.get_predictions_images import get_images_pred
 from fastapi import FastAPI, UploadFile, File, Form
 from src.custom_logger import logger
 from fastapi.responses import JSONResponse
@@ -31,12 +31,9 @@ async def train_model():
         dvc_repro_output = run_command("dvc repro --force")
 
         # Git add and commit
-        git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc")     
-
+        git_add_output  = run_command("git add dvc.lock data/raw_per_classes.dvc") 
         git_commit_output = run_command('git commit -m "Training completed."')
-
-        dvc_push_output = run_command("dvc push")
-        
+        dvc_push_output = run_command("dvc push")        
         git_push_output = run_command("git push")
       
         # Get commit hash
@@ -134,11 +131,17 @@ async def add_image(file: UploadFile = File(...), folder: str = Form(...)):
 @app.get("/get_predictions_images")
 async def get_predictions_images():
     try:
-        get_predictions_images()
-        return JSONResponse(
-            status_code=200,
-            content={"message": "Images retrieved successfully"}
-        )
+        success = get_images_pred()
+        if success:
+            return JSONResponse(
+                status_code=200,
+                content={"message": "Images retrieved successfully"}
+            )
+        else:
+            return JSONResponse(
+                status_code=500,
+                content={"message": "Error during image retrieval"}
+            )
     except Exception as e:
         return JSONResponse(
             status_code=500,

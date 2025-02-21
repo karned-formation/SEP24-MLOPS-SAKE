@@ -68,4 +68,8 @@ scrape_configs:
 
   - job_name: 'node-exporter-service'
     static_configs:
-      - targets: ['node-exporter-service:80']
+      - targets: ['node-exporter-service:9100']
+
+  - job_name: 'alertmanager-service'
+    static_configs:
+      - targets: ['alertmanager-service:9093']

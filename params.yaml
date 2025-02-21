@@ -11,15 +11,13 @@ data_ingestion: # => OCR
   port_ocr: 8901
   route_ocr: txt/blocks-words
   ocr_endpoint: "http://${data_ingestion.docker_service_ocr}/${data_ingestion.route_ocr}"
-      # => endpoint_ocr
   ocr_text_dir: "data/ocr_raw_per_classes/"
   
 data_cleaning: # => clean_text
   docker_service_clean_text: clean-service # /!\ à synchroniser avec docker-compose.yaml
   port_clean_text: 8903
   route_clean_text: clean
-  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}/clean"
-      # => endpoint_clean_text
+  clean_endpoint: "http://${data_cleaning.docker_service_clean_text}/clean" # => endpoint_clean_text
   cleaned_datasets_dir: "data/cleaned_per_classes/"
 
 data_ETL:
@@ -71,17 +69,18 @@ model_eval:
   metrics_confusion_matrix_file: "confusion_matrix.json"
   model_path: "${model_train.model_train_path}"
 
-
-admin_backend: 
+admin_backend:
+  url: http://admin-backend-service
+  port: 8940
   docker_service_admin_backend: admin-backend-service
   port_admin_backend: 8910
   endpoint_admin_backend: "http://${admin_backend.docker_service_admin_backend}"
 
 admin_frontend: 
+  port: 8501
   docker_service_admin_frontend: admin-frontend-service
   port_admin_frontend: 8911
   endpoint_admin_frontend: "http://${admin_frontend.docker_service_admin_frontend}"
-
 
 label_encoder_mapping:
   facture: 0
@@ -103,15 +102,11 @@ bucket:
   original_subdir: 'original_raw/'
   ocr_subdir: 'ocerized_raw/'
   cleaned_subdir: "cleaned/"
-
   preprocessed_train_subdir: "processed/train/"
   preprocessed_test_subdir: "processed/test/"
   vectorizer_subdir: "models/vectorizers/"
-
   model_train_subdir: "models/train/"
-
   metrics_subdir: "metrics/"
-
   predictions_subdir: "prediction/"
 
 orchestrator:
@@ -124,9 +119,6 @@ file:
 frontend:
   port_predict: 8920
 
-admin_frontend:
-  port: 8501
-
 endpoint_url:
   extract: http://etl-service/extract
   transform: http://etl-service/transform
@@ -134,10 +126,6 @@ endpoint_url:
   predict: http://predict-service/predict
   ocr: http://ocr-service/txt/blocks-words
   clean: http://clean-service/clean
-
-admin_backend:
-  url: http://admin-backend-service
-  port: 8940
 
 url:
   backend: http://predict-orchestrator-service

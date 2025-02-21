@@ -18,7 +18,7 @@ services:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-clean:2.0
+    image: belwen/sake-clean:2.0
     container_name: clean-service
     ports:
       - ${DATA_CLEANING_PORT_CLEAN_TEXT}:80
@@ -30,7 +30,7 @@ services:
     profiles: ["training", "prediction"]
     env_file:
     - path: ./.env
-    image: killiankopp/sake-etl:2.0
+    image: belwen/sake-etl:2.0
     container_name: etl-service
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - ocr-service
@@ -84,7 +84,7 @@ services:
     # image: killiankopp/sake-orchestrator:2.0
     image: killiankopp/sake-orchestrator:2.1
     container_name: predict-orchestrator-service
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on:
       - etl-service
       - predict-service
     ports:
@@ -109,13 +109,13 @@ services:
     profiles: ["training"]
     env_file:
       - path: ./.env
-    image: belwen/sake-admin-backend:2.1 
+    image: abenayoub/sake-admin-backend:2.2 
     container_name: admin-backend-service
     ports:
       - "${ADMIN_BACKEND_PORT}:80"
     networks:
       - sake
-
+      
   # Streamlit d'administration, envoi des requêtes vers admin-backend-service
   admin-frontend-service:
     profiles: ["training"]
@@ -131,46 +131,23 @@ services:
   # Prometheus Service
   prometheus-service:
     profiles: ["training", "prediction"]
-    build:
-      context: .
-      dockerfile: docker/prometheus/Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/prometheus
-    image: prometheus-service:1.0
+    image: belwen/sake-prometheus:2.0
     container_name: prometheus-service
     ports:
       - "9090:9090"
     networks:
       - sake
 
-  alertmanager:
-    profiles: ["training", "prediction"]
-    build:
-      context: .
-      dockerfile: docker/alertmanager/Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/alertmanager
-    image: alertmanager:1.0
-    container_name: alertmanager
-    ports:
-      - "9093:9093"
-    networks:
-      - sake
 
   # Grafana Service
   grafana-service:
     profiles: ["training", "prediction"]
-    build:
-      context: docker/grafana/
-      dockerfile: Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/grafana
-    image: grafana-service:1.0
+    image: belwen/sake-grafana:2.0
     container_name: grafana-service
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Set the admin password
     ports:
-      - "3000:3000"
+      - "3000:80"
     networks:
       - sake
   
@@ -184,12 +161,23 @@ services:
     ports:
       - "9100:9100"
 
+  
+  # Alert Service
+  alertmanager-service:
+    profiles: ["training", "prediction"]
+    image: belwen/sake-alertmanager:1.1
+    container_name: alertmanager-service
+    ports:
+      - "9093:9093"
+    networks:
+      - sake
+
   frontend-service:
     profiles: ["prediction"]
     env_file:
       - path: ./.env
     image: killiankopp/sake-frontend:2.1.2  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-frontend
+    container_name: frontend-service
     ports:
       - "${FRONTEND_PORT_PREDICT}:80"
     networks:
@@ -200,7 +188,7 @@ services:
     env_file:
       - path: ./.env
     image: killiankopp/sake-file:2.0  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-file
+    container_name: file-service
     ports:
       - "${FILE_PORT_PREDICT}:80"
     networks:
@@ -208,4 +196,4 @@ services:
 
 networks:
   sake:
-    driver: bridge  
+    driver: bridge 
