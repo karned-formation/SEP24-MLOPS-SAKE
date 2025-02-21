@@ -15,6 +15,10 @@ dvc remote modify origin --local access_key_id "$DAGSHUB_ACCESS_KEY_ID"
 dvc remote modify origin --local secret_access_key "$DAGSHUB_SECRET_ACCESS_KEY"
 dvc pull --force || true
 
+git init 
+git branch -m prod 
+git remote add origin "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_OWNER/$GITHUB_REPO.git"
+git pull origin prod
 
 # Execute the given command (uvicorn)
 exec "$@"

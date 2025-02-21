@@ -12,17 +12,16 @@ WORKDIR /app
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install -y python3 python3-pip python3-venv git openssh-server libmagic1 libmagic-dev
 
-# Install the SSH key for GitHub in root/.ssh
-RUN mkdir -p /root/.ssh && chmod -R 600 /root/.ssh
-COPY id_rsa /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/id_rsa && ssh-keyscan github.com >> /root/.ssh/known_hosts
-
-# Clone GitHub repository
-RUN GIT_SSH_COMMAND="ssh -i /root/.ssh/id_rsa" git clone git@github.com:karned-formation/SEP24-MLOPS-SAKE.git
+RUN --mount=type=secret,id=secrets \
+    eval "$(cat /run/secrets/secrets | xargs -I {} echo export {})" && \
+    mkdir -p "$GITHUB_REPO" && \
+    cd "$GITHUB_REPO" && \
+    git init && \
+    git branch -m prod && \
+    git remote add origin "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_OWNER/$GITHUB_REPO.git" && \
+    git pull origin prod
 
 WORKDIR /app/SEP24-MLOPS-SAKE
-
-RUN git pull && git switch -f prod 
 
 # Create and set up virtual environment
 RUN python3 -m venv .venv && \

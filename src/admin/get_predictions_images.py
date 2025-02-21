@@ -21,7 +21,7 @@ CLASS_MAPPING = {
 }
 
 
-def get_images():
+def get_images_pred():
 
     # Initialize S3 client
     s3 = boto3.client("s3")
