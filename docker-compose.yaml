@@ -84,7 +84,7 @@ services:
     # image: killiankopp/sake-orchestrator:2.0
     image: killiankopp/sake-orchestrator:2.1
     container_name: predict-orchestrator-service
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on:
       - etl-service
       - predict-service
     ports:
@@ -109,20 +109,12 @@ services:
     profiles: ["training"]
     env_file:
       - path: ./.env
-    image: belwen/sake-admin-backend:2.2 
+    image: abenayoub/sake-admin-backend:2.2 
     container_name: admin-backend-service
     ports:
       - "${ADMIN_BACKEND_PORT}:80"
     networks:
       - sake
-    environment:
-      AWS_BUCKET_NAME: "${AWS_BUCKET_NAME}"
-      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-
-      DAGSHUB_TOKEN: "${DAGSHUB_TOKEN}"
-      DAGSHUB_ACCESS_KEY_ID: "${DAGSHUB_ACCESS_KEY_ID}"
-      DAGSHUB_SECRET_ACCESS_KEY: "${DAGSHUB_SECRET_ACCESS_KEY}"
       
   # Streamlit d'administration, envoi des requêtes vers admin-backend-service
   admin-frontend-service:
@@ -185,7 +177,7 @@ services:
     env_file:
       - path: ./.env
     image: killiankopp/sake-frontend:2.1.2  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-frontend
+    container_name: frontend-service
     ports:
       - "${FRONTEND_PORT_PREDICT}:80"
     networks:
@@ -196,7 +188,7 @@ services:
     env_file:
       - path: ./.env
     image: killiankopp/sake-file:2.0  # Utilisation de l'image Docker spécifique
-    container_name: ms-sake-file
+    container_name: file-service
     ports:
       - "${FILE_PORT_PREDICT}:80"
     networks:
