@@ -82,7 +82,7 @@ services:
     env_file:
     - path: ./.env
     # image: killiankopp/sake-orchestrator:2.0
-    image: abenayoub/orchestrator-no-background:latest
+    image: killiankopp/sake-orchestrator:2.1
     container_name: predict-orchestrator-service
     depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
       - etl-service
@@ -161,8 +161,8 @@ services:
   grafana-service:
     profiles: ["training", "prediction"]
     build:
-      context: .
-      dockerfile: docker/grafana/Dockerfile
+      context: docker/grafana/
+      dockerfile: Dockerfile
       args: 
         DOCKERFILE_DIR: docker/grafana
     image: grafana-service:1.0
@@ -188,7 +188,7 @@ services:
     profiles: ["prediction"]
     env_file:
       - path: ./.env
-    image: killiankopp/sake-frontend:2.0  # Utilisation de l'image Docker spécifique
+    image: killiankopp/sake-frontend:2.1.2  # Utilisation de l'image Docker spécifique
     container_name: ms-sake-frontend
     ports:
       - "${FRONTEND_PORT_PREDICT}:80"
