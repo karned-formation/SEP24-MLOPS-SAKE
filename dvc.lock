@@ -58,6 +58,7 @@ stages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
 =======
@@ -72,6 +73,10 @@ stages:
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
 >>>>>>> a41be65 (Training completed.)
+=======
+      md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
+      size: 113025
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
@@ -81,6 +86,7 @@ stages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
 =======
@@ -95,6 +101,10 @@ stages:
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
 >>>>>>> a41be65 (Training completed.)
+=======
+      md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
+      size: 113025
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       nfiles: 3
     outs:
     - path: data/processed
@@ -102,6 +112,9 @@ stages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       md5: ac212a470081479c729c29ed6b89cd22.dir
       size: 3125866
       nfiles: 4
@@ -109,6 +122,7 @@ stages:
       hash: md5
       md5: 24818352072964ffc9d145f86d9ad55d.dir
       size: 2528663
+<<<<<<< HEAD
 =======
       md5: bbc20a58fd35740a5f877834ced68be7.dir
       size: 3125642
@@ -136,12 +150,15 @@ stages:
       md5: 24818352072964ffc9d145f86d9ad55d.dir
       size: 2528663
 >>>>>>> a41be65 (Training completed.)
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -159,10 +176,15 @@ stages:
       md5: 925d344fb35a2ffed400b45b3a49cf58.dir
       size: 2670621
 >>>>>>> a41be65 (Training completed.)
+=======
+      md5: 925d344fb35a2ffed400b45b3a49cf58.dir
+      size: 2670621
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -176,6 +198,9 @@ stages:
 =======
       md5: 2fd290395d7c9fde54c6301782fd12e6.dir
 >>>>>>> a41be65 (Training completed.)
+=======
+      md5: 2fd290395d7c9fde54c6301782fd12e6.dir
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       size: 1682517
       nfiles: 1
   eval:
@@ -186,12 +211,16 @@ stages:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       md5: 4c29eec73294be4a8851c8ce7ff1f174.dir
       size: 455245
       nfiles: 2
     - path: models/train
       hash: md5
       md5: 2fd290395d7c9fde54c6301782fd12e6.dir
+<<<<<<< HEAD
 =======
       md5: 106ecd952fc428a1f1b491b676e7ad51.dir
       size: 455293
@@ -216,6 +245,8 @@ stages:
       hash: md5
       md5: 2fd290395d7c9fde54c6301782fd12e6.dir
 >>>>>>> a41be65 (Training completed.)
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       size: 1682517
       nfiles: 1
     outs:
@@ -223,12 +254,16 @@ stages:
       hash: md5
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
       md5: 2e4d084672b56dd6dc77c19ee4be46ad
       size: 95
     - path: metrics/scores.json
       hash: md5
       md5: 7ff6033714adb0bb1b5680ac32f2d33a
       size: 699
+<<<<<<< HEAD
 =======
       md5: a9d50232dc56cdff73908f0acbbe89dc
       size: 95
@@ -245,6 +280,8 @@ stages:
       md5: 7ff6033714adb0bb1b5680ac32f2d33a
       size: 699
 >>>>>>> a41be65 (Training completed.)
+=======
+>>>>>>> bebabb406cf8d3263594f2288e63ee3701144c96
   env_mlops_sake:
     cmd: python3 src/config_transform_as_env.py && python src/smart_merge_.env_.env_mlops_sake.py
     deps:
