@@ -109,7 +109,7 @@ services:
     profiles: ["training"]
     env_file:
       - path: ./.env
-    image: belwen/sake-admin-backend:2.1 
+    image: belwen/sake-admin-backend:2.2 
     container_name: admin-backend-service
     ports:
       - "${ADMIN_BACKEND_PORT}:80"
