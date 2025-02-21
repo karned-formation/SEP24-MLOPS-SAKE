@@ -10,27 +10,19 @@ WORKDIR /app
 
 # Install necessary packages
 RUN apt-get update -y && apt-get upgrade -y && \
-    apt-get install -y python3 python3-pip python3-venv git openssh-server 
+    apt-get install -y python3 python3-pip python3-venv git openssh-server libmagic1 libmagic-dev
 
-# install the ssh key for github in root/.ssh
-RUN mkdir -p /root/.ssh        
-RUN chmod -R 600 /root/.ssh/  
+# Install the SSH key for GitHub in root/.ssh
+RUN mkdir -p /root/.ssh && chmod -R 600 /root/.ssh
 COPY id_rsa /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/id_rsa 
-RUN ssh-keyscan github.com >>/root/.ssh/known_hosts
+RUN chmod 600 /root/.ssh/id_rsa && ssh-keyscan github.com >> /root/.ssh/known_hosts
 
-# clone github repository
+# Clone GitHub repository
 RUN GIT_SSH_COMMAND="ssh -i /root/.ssh/id_rsa" git clone git@github.com:karned-formation/SEP24-MLOPS-SAKE.git
 
 WORKDIR /app/SEP24-MLOPS-SAKE
 
-RUN git pull
-RUN git switch -f prod 
-
-# Create and set up virtual environment
-RUN python3 -m venv .venv && \
-    .venv/bin/pip install --upgrade pip && \
-    .venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN git pull && git switch -f prod 
 
 # Create and set up virtual environment
 RUN python3 -m venv .venv && \
@@ -53,18 +45,16 @@ RUN mkdir -p data/raw_per_classes/0 \
     models/train \
     models/vectorizers
 
-# Set up DVC credentials at runtime, not during build
-RUN . .venv/bin/activate && \
-    --mount=type=secret,id=secrets \
-    export $(cat /run/secrets/secrets | xargs) && \
-    dagshub login --token "$DAGSHUB_TOKEN" && \
-    dvc remote modify origin --local access_key_id "$DAGSHUB_ACCESS_KEY_ID" && \
-    dvc remote modify origin --local secret_access_key "$DAGSHUB_SECRET_ACCESS_KEY" && \
-    dvc pull --force || true
-
 RUN apt-get update && apt-get install -y libmagic1 libmagic-dev
 
-# Copy app at the root
+# Copy the application file
 COPY app.py .
 
-CMD ["/bin/sh", "-c", ". .venv/bin/activate && exec uvicorn app:app --host 0.0.0.0 --port 80 --reload"]
+# Copy entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Use entrypoint script to handle runtime secrets
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
