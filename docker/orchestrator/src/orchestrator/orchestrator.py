@@ -195,4 +195,4 @@ def treat(batch_uuid: str, files: list ):
     push_cleaned_dataset_to_bucket(batch_uuid, dataset)
     push_prediction_to_bucket(batch_uuid, prediction)
 
-    return batch_uuid, prediction
+    return prediction['model_hash'], prediction['predictions']

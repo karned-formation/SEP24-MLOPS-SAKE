@@ -41,7 +41,7 @@ class PredictionResult(BaseModel):
 def process_images(batch_uuid: str, files: list):
     logger.info("Lancement de la Background Task")
     database[batch_uuid]['status'] = 'IN_PROGRESS'
-    database[batch_uuid]['prediction'] = treat(batch_uuid, files)
+    database[batch_uuid]['metadata']['model_hash'], database[batch_uuid]['prediction'] = treat(batch_uuid, files)
     logger.info("Prediction ajoutée à la database")
     database[batch_uuid]['status'] = 'COMPLETED'
 
