@@ -55,20 +55,31 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
+<<<<<<< HEAD
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
+=======
+      md5: 9246abb3ada14f4d9748035e0e3705e4.dir
+      size: 112962
+>>>>>>> 3f84445 (Training completed.)
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
+<<<<<<< HEAD
       md5: 8d1911c0d67c5115e727ecd1ced071f4.dir
       size: 113025
+=======
+      md5: 9246abb3ada14f4d9748035e0e3705e4.dir
+      size: 112962
+>>>>>>> 3f84445 (Training completed.)
       nfiles: 3
     outs:
     - path: data/processed
       hash: md5
+<<<<<<< HEAD
       md5: ac212a470081479c729c29ed6b89cd22.dir
       size: 3125866
       nfiles: 4
@@ -76,19 +87,37 @@ stages:
       hash: md5
       md5: 24818352072964ffc9d145f86d9ad55d.dir
       size: 2528663
+=======
+      md5: bbc20a58fd35740a5f877834ced68be7.dir
+      size: 3125642
+      nfiles: 4
+    - path: models/vectorizers
+      hash: md5
+      md5: 77b38bf788111e6f26044cbea2c2e841.dir
+      size: 2528644
+>>>>>>> 3f84445 (Training completed.)
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
+<<<<<<< HEAD
       md5: 925d344fb35a2ffed400b45b3a49cf58.dir
       size: 2670621
+=======
+      md5: 285e0c51a4f9796627cf7cdade79f6a2.dir
+      size: 2670349
+>>>>>>> 3f84445 (Training completed.)
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
+<<<<<<< HEAD
       md5: 2fd290395d7c9fde54c6301782fd12e6.dir
+=======
+      md5: c6859966fe7a8bf8b02856f842c024de.dir
+>>>>>>> 3f84445 (Training completed.)
       size: 1682517
       nfiles: 1
   eval:
@@ -96,23 +125,41 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
+<<<<<<< HEAD
       md5: 4c29eec73294be4a8851c8ce7ff1f174.dir
       size: 455245
       nfiles: 2
     - path: models/train
       hash: md5
       md5: 2fd290395d7c9fde54c6301782fd12e6.dir
+=======
+      md5: 106ecd952fc428a1f1b491b676e7ad51.dir
+      size: 455293
+      nfiles: 2
+    - path: models/train
+      hash: md5
+      md5: c6859966fe7a8bf8b02856f842c024de.dir
+>>>>>>> 3f84445 (Training completed.)
       size: 1682517
       nfiles: 1
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
+<<<<<<< HEAD
       md5: 2e4d084672b56dd6dc77c19ee4be46ad
       size: 95
     - path: metrics/scores.json
       hash: md5
       md5: 7ff6033714adb0bb1b5680ac32f2d33a
       size: 699
+=======
+      md5: a9d50232dc56cdff73908f0acbbe89dc
+      size: 95
+    - path: metrics/scores.json
+      hash: md5
+      md5: 54c281332a23f566618a61ae0f9a1dbe
+      size: 716
+>>>>>>> 3f84445 (Training completed.)
   env_mlops_sake:
     cmd: python3 src/config_transform_as_env.py && python src/smart_merge_.env_.env_mlops_sake.py
     deps:
