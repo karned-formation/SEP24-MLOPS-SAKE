@@ -131,11 +131,17 @@ async def add_image(file: UploadFile = File(...), folder: str = Form(...)):
 @app.get("/get_predictions_images")
 async def get_predictions_images():
     try:
-        await get_images_pred()
-        return JSONResponse(
-            status_code=200,
-            content={"message": "Images retrieved successfully"}
-        )
+        success = get_images_pred()
+        if success:
+            return JSONResponse(
+                status_code=200,
+                content={"message": "Images retrieved successfully"}
+            )
+        else:
+            return JSONResponse(
+                status_code=500,
+                content={"message": "Error during image retrieval"}
+            )
     except Exception as e:
         return JSONResponse(
             status_code=500,
