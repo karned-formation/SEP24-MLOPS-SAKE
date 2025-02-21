@@ -21,10 +21,6 @@ services:
     build:
       context: docker/clean_text/ 
       dockerfile: Dockerfile  
-      args:
-        COMMON_DIR: src
-        SOURCE_DIR: src/data
-        DOCKERFILE_DIR: docker/clean_text  
       cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
         - clean-service:cache
     image: clean-service:1.0
@@ -42,15 +38,11 @@ services:
     build:
       context: docker/etl/ 
       dockerfile: Dockerfile  
-      args:
-        COMMON_DIR: src
-        SOURCE_DIR: src/data
-        DOCKERFILE_DIR: docker/etl  
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - etl-service:cache  
     image: etl-service:1.0
     container_name: etl-service
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on: 
       - ocr-service
       - clean-service
     ports:
@@ -66,11 +58,7 @@ services:
     build:
       context: docker/preprocessing/ 
       dockerfile: Dockerfile  
-      args:
-        COMMON_DIR: src
-        SOURCE_DIR: src/preprocessing
-        DOCKERFILE_DIR: docker/preprocessing
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - preprocessing-service:cache
     image: preprocessing-service:1.0
     container_name: preprocessing-service
@@ -87,11 +75,7 @@ services:
     build:
       context: docker/train/  
       dockerfile: Dockerfile  
-      args:
-        COMMON_DIR: src
-        SOURCE_DIR: src/train
-        DOCKERFILE_DIR: docker/train
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - train-service:cache
     image: train-service:1.0
     container_name: train-service
@@ -108,11 +92,7 @@ services:
     build:
       context: docker/eval/  
       dockerfile: Dockerfile  
-      args:
-        COMMON_DIR: src
-        SOURCE_DIR: src/eval
-        DOCKERFILE_DIR: docker/eval
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - eval-service:cache
     image: eval-service:1.0
     container_name: eval-service
@@ -126,7 +106,7 @@ services:
     profiles: ["training", "prediction"]
     env_file:
       - path: ./.env
-    image: killiankopp/sake-predict:2.1  # Utilisation de l'image Docker spécifique
+    image: killiankopp/sake-predict:2.1
     container_name: ms-sake-predict
     ports:
       - "${PREDICT_PORT_PREDICT}:80"
@@ -143,15 +123,11 @@ services:
     build:
       context: docker/orchestrator/  
       dockerfile: Dockerfile  
-      args:
-        SOURCE_DIR: src/orchestrator
-        DOCKERFILE_DIR: docker/orchestrator
-        COMMON_DIR: src
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - predict-orchestrator:cache
     image: predict-orchestrator:1.0  
     container_name: predict-orchestrator
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on: 
       - etl-service
       - predict-service
     ports:
@@ -243,8 +219,6 @@ services:
     build:
       context: docker/prometheus/
       dockerfile: Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/prometheus
     image: prometheus-service:1.0
     container_name: prometheus-service
     ports:
@@ -257,8 +231,6 @@ services:
     build:
       context: docker/alertmanager/
       dockerfile: Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/alertmanager
     image: alertmanager:1.0
     container_name: alertmanager
     ports:
@@ -272,8 +244,6 @@ services:
     build:
       context: docker/grafana/
       dockerfile: Dockerfile
-      args: 
-        DOCKERFILE_DIR: docker/grafana
     image: grafana-service:1.0
     container_name: grafana-service
     environment:
@@ -300,15 +270,11 @@ services:
     build:
       context: docker/frontend/  
       dockerfile: Dockerfile  
-      args:
-        SOURCE_DIR: src/frontend
-        DOCKERFILE_DIR: docker/frontend
-        COMMON_DIR: src
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - frontend-service:cache
     image: frontend-service:1.0  
     container_name: frontend-service
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on: 
       - predict-orchestrator-service
     ports:
       - "${FRONTEND_PORT_PREDICT}:80"
@@ -322,11 +288,7 @@ services:
     build:
       context: docker/file/  
       dockerfile: Dockerfile  
-      args:
-        SOURCE_DIR: src/file
-        DOCKERFILE_DIR: docker/file
-        COMMON_DIR: src
-      cache_from: # pour force docker-compose à regarder le cache de ce docker (quand on utilise `docker-compose up --build`)
+      cache_from: 
         - file-service:cache
     image: file-service:1.0  
     container_name: file-service
