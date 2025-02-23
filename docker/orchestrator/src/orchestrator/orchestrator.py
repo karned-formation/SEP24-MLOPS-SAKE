@@ -1,5 +1,6 @@
 import io
 import json
+import logging
 from uuid import uuid4
 import pandas as pd
 import requests
@@ -78,6 +79,9 @@ def prepare_payload_original(files: List[dict], names: Optional[List[str]] = Non
 
 
 def prepare_extract_payload( files_original: list, files_infos: list ) -> list:
+    logging.info(f"Préparation du payload pour l'extraction de texte")
+    logging.info(files_original)
+    logging.info(files_infos)
     result = []
     for p, f in zip(files_original, files_infos):
         merged = {**p, **f}
@@ -183,6 +187,9 @@ def clean_texts( files_infos: list, ocr_files: list ) -> list:
 
 
 def treat(batch_uuid: str, files: list ):
+    logging.info(f"Traitement du batch {batch_uuid}")
+    logging.info(f"Nombre de fichiers : {len(files)}")
+    logging.info(files)
 
     original_files_infos = push_original_files_to_bucket(batch_uuid, files)
     ocr_files = extract_texts(files, original_files_infos)
