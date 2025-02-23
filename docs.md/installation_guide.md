@@ -69,7 +69,6 @@ The environment may be installed either through conda or through VirtualEnv/Pip
 	dvc pull 
 	```
 # Prerequisites for Dagshub with MLflow
-In the folder docker/eval/, create a file named private_conn_dagshub.sh containing the following line:
 ```
 dagshub login --token [YOUR_PRIVATE_TOKEN] <--- Replace with your token generated in your Dagshub profile
 ```

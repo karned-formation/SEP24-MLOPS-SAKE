@@ -78,7 +78,6 @@ def load_metrics(file_path='metrics/scores.json'):
     return scores
 
 def save_to_mlflow(commit_hash: str) -> str:
-    initialize_ml_flow()
     model_path, X_train_path, y_train_path, X_test_path, y_test_path, metrics_dir, cleaned_dir, confusion_matrix_path = get_env_variables()  
     
     file_path = os.path.join(metrics_dir, "scores.json")   
@@ -105,7 +104,6 @@ def list_mlflow_runs():
     """
     Retrieve all MLflow runs
     """
-    initialize_ml_flow()
 
     experiment_name = get_env_var("MLFLOW_EXPERIMENT_ID")
 
