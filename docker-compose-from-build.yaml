@@ -201,7 +201,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Set the admin password
     ports:
-      - "3000:80"
+      - "3000:3000"
     networks:
       - sake
   
@@ -221,7 +221,7 @@ services:
       context: docker/alertmanager/
       dockerfile: Dockerfile
     image: alertmanager:1.0
-    container_name: alertmanager
+    container_name: alertmanager-service
     ports:
       - "9093:9093"
     networks:
