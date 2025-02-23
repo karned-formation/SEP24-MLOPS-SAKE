@@ -4,7 +4,7 @@ FROM grafana/grafana:latest
 COPY provisioning /etc/grafana/provisioning
 COPY dashboards /var/lib/grafana/dashboards
 
-ENV GF_SERVER_HTTP_PORT=80
-EXPOSE 80
+ENV GF_SERVER_HTTP_PORT=3000
+EXPOSE 3000
 
 CMD [ "grafana-reporter" ]
