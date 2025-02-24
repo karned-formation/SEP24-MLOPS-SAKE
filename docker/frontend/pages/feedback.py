@@ -116,7 +116,13 @@ if reference:  # Vérifie si une référence est entrée
     endpoint_url = f'http://predict-orchestrator-service/predict/{reference}'
 
     with st.spinner("Récupération des prédictions..."):
-        response = requests.get(endpoint_url)
+        headers = {
+            'Authorization': f'Bearer {st.session_state.access_token}'
+        }
+        response = requests.post(
+            url=endpoint_url,
+            headers=headers
+        )
 
     if response.status_code != 200:
         st.error(f"Erreur {response.status_code} : {response.text}")
