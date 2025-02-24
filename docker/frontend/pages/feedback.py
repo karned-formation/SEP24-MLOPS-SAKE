@@ -116,10 +116,14 @@ if reference:  # Vérifie si une référence est entrée
     endpoint_url = f'http://predict-orchestrator-service/predict/{reference}'
 
     with st.spinner("Récupération des prédictions..."):
+        if "access_token" not in st.session_state or st.session_state.access_token is None:
+            st.error("Vous devez vous connecter depuis la page principale.")
+            st.stop()
+
         headers = {
             'Authorization': f'Bearer {st.session_state.access_token}'
         }
-        response = requests.post(
+        response = requests.get(
             url=endpoint_url,
             headers=headers
         )
