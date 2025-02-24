@@ -74,4 +74,6 @@ In the folder docker/eval/, create a file named private_conn_dagshub.sh containi
 dagshub login --token [YOUR_PRIVATE_TOKEN] <--- Replace with your token generated in your Dagshub profile
 ```
 
+# Set up the secret locally
+- [Local deployement: secret management](Deployement_guide_Local_Secret_Management.md) 
 
