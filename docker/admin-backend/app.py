@@ -59,7 +59,7 @@ async def train_model():
             }
         )
     except Exception as e:
-
+        print(e)
         logger.error(str(e))
         return JSONResponse(
             status_code=500,
