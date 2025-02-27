@@ -55,40 +55,40 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 653fd77d314d6cac0bebcf52e90fd4cc.dir
-      size: 113016
+      md5: 79cab8af0fa45a04c0211c219d7c70aa.dir
+      size: 112957
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 653fd77d314d6cac0bebcf52e90fd4cc.dir
-      size: 113016
+      md5: 79cab8af0fa45a04c0211c219d7c70aa.dir
+      size: 112957
       nfiles: 3
     outs:
     - path: data/processed
       hash: md5
-      md5: c983e810a659e9c61f7a21aafe6e36f3.dir
-      size: 3143858
+      md5: c6ab3c90423b9a3a39bc067bd0a492e1.dir
+      size: 3135506
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: a8e34dffaae5363b334f46e7cbdbca87.dir
-      size: 2527817
+      md5: 1d5cef0d972dd0430a4ad9b3576f5aaa.dir
+      size: 2529693
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
-      md5: a6dc4a2b8ada6e0decd36fa81f96a476.dir
-      size: 2555613
+      md5: 4fcf243ebb54cbed33303d7bee46f321.dir
+      size: 2579125
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
-      md5: 45e09a0aeb9ef785087b3431f6746740.dir
+      md5: e7c13a0ba06acd0b775e27a04bae3163.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -96,23 +96,23 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: 39bed34b4323de411695a5ba01e5d5fa.dir
-      size: 588245
+      md5: 28088a3d4ab5198f418f9df2ca63cd91.dir
+      size: 556381
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: 45e09a0aeb9ef785087b3431f6746740.dir
+      md5: e7c13a0ba06acd0b775e27a04bae3163.dir
       size: 1682517
       nfiles: 1
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
-      md5: a276e57c22dd25544664a5ef4916da90
+      md5: 91789d40c4f8b0442e1283fb91f79a26
       size: 95
     - path: metrics/scores.json
       hash: md5
-      md5: 9af7f22b0d6481d6e93d78b06737c1c3
-      size: 399
+      md5: c3df0d3c14741d5f5123319e97da35ca
+      size: 639
   env_mlops_sake:
     cmd: python3 src/config_transform_as_env.py && python src/smart_merge_.env_.env_mlops_sake.py
     deps:
