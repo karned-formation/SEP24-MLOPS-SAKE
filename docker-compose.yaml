@@ -84,7 +84,7 @@ services:
     # image: killiankopp/sake-orchestrator:2.0
     image: killiankopp/sake-orchestrator:2.1
     container_name: predict-orchestrator-service
-    depends_on: # pour indiquer la dépendance des dockers (Lance ces dockers /!\ ça ne vérifie pas qu'ils soient prêts)
+    depends_on:
       - etl-service
       - predict-service
     ports:

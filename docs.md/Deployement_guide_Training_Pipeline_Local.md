@@ -16,15 +16,19 @@ See [Admin Training Pipeline Steps](../docs.md/Admin_Training_Pipeline_Steps.md)
 2) Launch **Docker Compose** from the root of the project to launch microservices (Windows or Linux)
 
     ```sh
-    docker-compose up --build
+    docker-compose --profile training up --build -d
     ```
-    To access to the docker through FastAPI, please open the following links :
-    - ms-sake-ETL : http://localhost:8907/docs
-        - ms-OCR : http://localhost:8901/docs
-        - ms-sake-clean_text (remove stop words, small words, etc...) : http://localhost:8903/docs
-    - ms-sake-preprocessing (vectorize): http://localhost:8904/docs
-    - ms-sake-train : http://localhost:8905/docs
-    - ms-sake-eval : http://localhost:8906/docs
+    To access to the frontend of the Training please open the following links :
+    - Training-Admin-Frontend : http://localhost:8501
+
+    To access to the other dockers through FastAPI, please open the following links :
+    - Training-Admin-Backend : http://localhost:8940/docs
+    - ETL : http://localhost:8907/docs
+        - OCR : http://localhost:8901/docs
+        - Clean_text (remove stop words, small words, etc...) : http://localhost:8903/docs
+    - Preprocessing (vectorize): http://localhost:8904/docs
+    - Train : http://localhost:8905/docs
+    - Eval : http://localhost:8906/docs
 
 # Run Training pipeline
 
