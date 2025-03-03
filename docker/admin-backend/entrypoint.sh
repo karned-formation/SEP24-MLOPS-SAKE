@@ -17,6 +17,9 @@ dvc pull --force || true
  
 git remote set-url origin "https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_OWNER/$GITHUB_REPO.git"
 git pull origin prod
+git push --set-upstream origin prod
+git config --global user.email "sarah@git.hub"
+git config --global user.name "Sarah"
 
 # Execute the given command (uvicorn)
 exec "$@"

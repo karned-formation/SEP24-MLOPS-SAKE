@@ -9,6 +9,7 @@ import dagshub
 import os 
 from src.s3handler import S3Handler
 
+
 def get_env_var(name):
     value = os.getenv(name)
     if not value:
@@ -21,8 +22,11 @@ def extract_relevant_metrics(metrics):
 
 def initialize_ml_flow():
     # Run the script to set up the private connection to Dagshub - To be deleted when we'll use our own MLflow server
-    subprocess.run('./private_conn_dagshub.sh', shell=True, executable='/bin/bash')
     logger.info(f"Initalizing Dagshub for MLflow tracking.")
+    dagshub_token = os.getenv("DAGSHUB_TOKEN")
+    if dagshub_token:
+        command = ["dagshub", "login", "--token", dagshub_token]
+        result = subprocess.run(command, capture_output=True, text=True)
     dagshub.init(repo_owner='Belwen', repo_name='SEP24-MLOPS-SAKE', mlflow=True)
 
 def get_env_variables():
@@ -106,7 +110,6 @@ def list_mlflow_runs():
     Retrieve all MLflow runs
     """
     initialize_ml_flow()
-
     experiment_name = get_env_var("MLFLOW_EXPERIMENT_ID")
 
     # Fetch runs

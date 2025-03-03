@@ -13,7 +13,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install -y python3 python3-pip python3-venv git openssh-server libmagic1 libmagic-dev
 
 RUN --mount=type=secret,id=secrets \
-    eval "$(cat /run/secrets/secrets | xargs -I {} echo export {})" && \
+    export $(cat /run/secrets/secrets | xargs) && \
     mkdir -p "$GITHUB_REPO" && \
     cd "$GITHUB_REPO" && \
     git init && \
@@ -56,4 +56,4 @@ RUN chmod +x /entrypoint.sh
 # Use entrypoint script to handle runtime secrets
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
