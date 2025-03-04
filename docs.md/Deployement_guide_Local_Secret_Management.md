@@ -23,7 +23,7 @@ Génération du Github token:
 7) Copier le token et coller le dans le fichier **.env_original**
 
 ## 2nd step : generate and update the file "**.env**"
-Ce programme réaliser 2 choses
+Ce programme **config_transform_as_env.py** réalise 2 choses
 1) génère 2 fichiers **.env_mlops_sake** et **.env_plantUML** à partir du fichier de paramètres de notre application [params.yaml](../params.yaml) exprimé en YAML
 2) créée les répertoires nécessaires dans le répertoire /data pour permettre l'exécution de la pipeline DVC Training
 ```
@@ -35,7 +35,7 @@ Explications:
 - Le fichier [params.yaml](../params.yaml) permet donc de centraliser en 1 point unique tous les paramétrage
     - Ce fichier **params.yaml** sert aussi à paramètrer l'exécution de la pipeline DVC Training via [dvc.yaml](../dvc.yaml)
 
-Ce programme réalise la fusion de **.env_mlops_sake** et **.env_original** dans **.env**
+Ce programme **smart_merge_.env_.env_mlops_sake.py** réalise la fusion de **.env_mlops_sake** et **.env_original** dans **.env**
 ```
 python src/smart_merge_.env_.env_mlops_sake.py
 ```
