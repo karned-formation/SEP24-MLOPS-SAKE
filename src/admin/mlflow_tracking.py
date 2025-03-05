@@ -155,7 +155,7 @@ def git_revert_to_commit(commit_hash):
     """
     try:
         logger.info(f"REVERTING TO {commit_hash}")
-        run_command(f"git resert --hard {commit_hash}")
+        run_command(f"git reset --hard {commit_hash}")
 
         logger.info(f"CALLING DVC PULL FORCE")
         dvc_pull_result = run_command("dvc pull --force")
