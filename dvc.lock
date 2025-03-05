@@ -35,60 +35,60 @@ stages:
     deps:
     - path: data/raw_per_classes/
       hash: md5
-      md5: 684fc86c878ae4e440a208863e6a1d70.dir
-      size: 36251171
-      nfiles: 198
+      md5: 8173b00074cb509dea7289bddaa8ae63.dir
+      size: 33553194
+      nfiles: 192
     outs:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: dd1471b6e024322dea5b973e80d9b7d5.dir
-      size: 183674
-      nfiles: 198
+      md5: 7bc725a6c4863207cb2e6ca843a7635e.dir
+      size: 180090
+      nfiles: 192
   clean:
     cmd: python3 src/dvc_steps/clean.py
     deps:
     - path: data/ocr_raw_per_classes/
       hash: md5
-      md5: dd1471b6e024322dea5b973e80d9b7d5.dir
-      size: 183674
-      nfiles: 198
+      md5: 7bc725a6c4863207cb2e6ca843a7635e.dir
+      size: 180090
+      nfiles: 192
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 709f9a5741c986acce4f20f48def8ced.dir
-      size: 119663
+      md5: a4f45cbf4c771ba0732988b21532b407.dir
+      size: 117248
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 709f9a5741c986acce4f20f48def8ced.dir
-      size: 119663
+      md5: a4f45cbf4c771ba0732988b21532b407.dir
+      size: 117248
       nfiles: 3
     outs:
     - path: data/processed
       hash: md5
-      md5: d1c22b0dc6328fe4a9e64e0c547ed8a4.dir
-      size: 3294794
+      md5: abc07aa4ff78b657936a00954db49f4e.dir
+      size: 3224026
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: 67744c79b6793a14aa93e79b916aa370.dir
-      size: 2528512
+      md5: d78b6999a3245ebbe26f10942a469883.dir
+      size: 2527896
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
-      md5: e332296727dd341871022ed6354e0df7.dir
-      size: 2706101
+      md5: 4fed6fa5c7c842ece01ac0e195c1a6a8.dir
+      size: 2633733
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
-      md5: a0c8350acc38178a3f5f928c52f51cad.dir
+      md5: a8e7d19e21514dfdfe1b4d453d687be3.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -96,23 +96,23 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: fc0ec9fb4c36e5b910eae517d6003682.dir
-      size: 588693
+      md5: e49913fc0d53f8faa4252358afab8ef5.dir
+      size: 590293
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: a0c8350acc38178a3f5f928c52f51cad.dir
+      md5: a8e7d19e21514dfdfe1b4d453d687be3.dir
       size: 1682517
       nfiles: 1
     outs:
     - path: metrics/confusion_matrix.json
       hash: md5
-      md5: 47e3ff9c5384e7cd46a27683cb183517
+      md5: f5c7d1945c4ec954440338bc78876bf1
       size: 95
     - path: metrics/scores.json
       hash: md5
-      md5: a5a6095f82efe78c2a6858c1d4e5184a
-      size: 570
+      md5: 33db90ae58aed028ae4369b03320c6b0
+      size: 648
   env_mlops_sake:
     cmd: python3 src/config_transform_as_env.py && python src/smart_merge_.env_.env_mlops_sake.py
     deps:
