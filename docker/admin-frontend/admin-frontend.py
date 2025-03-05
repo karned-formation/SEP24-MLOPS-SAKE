@@ -135,6 +135,14 @@ def show_version_management():
     
     if st.session_state.mlflow_runs is not None:
         st.session_state.selected_runs = display_mlflow_runs(st.session_state.mlflow_runs)
+    
+    if st.button("Register Current Model to S3"):
+        with st.spinner("Registering model..."):
+            response = requests.post(f"{BACKEND_URL}/registermodel")
+            if response.status_code == 200:
+                st.success("Model registered successfully!")
+            else:
+                st.error("Model registration failed!")
 
 def display_mlflow_runs(runs_df):
     runs_df['start_time'] = pd.to_datetime(runs_df['start_time'], unit='ms')

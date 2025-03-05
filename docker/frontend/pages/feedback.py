@@ -49,7 +49,7 @@ def process_prediction_dataframe(prediction):
     return df
 
 def process_new_prediction(prediction_response):
-    predictions = prediction_response[1]
+    predictions = prediction_response
     
     # Create a list of dictionaries for DataFrame creation
     data = []
@@ -116,7 +116,17 @@ if reference:  # Vérifie si une référence est entrée
     endpoint_url = f'http://predict-orchestrator-service/predict/{reference}'
 
     with st.spinner("Récupération des prédictions..."):
-        response = requests.get(endpoint_url)
+        if "access_token" not in st.session_state or st.session_state.access_token is None:
+            st.error("Vous devez vous connecter depuis la page principale.")
+            st.stop()
+
+        headers = {
+            'Authorization': f'Bearer {st.session_state.access_token}'
+        }
+        response = requests.get(
+            url=endpoint_url,
+            headers=headers
+        )
 
     if response.status_code != 200:
         st.error(f"Erreur {response.status_code} : {response.text}")
@@ -143,6 +153,7 @@ if reference:  # Vérifie si une référence est entrée
                     if prediction is not None:
                         filenames = prediction.index 
                         predicted_classes = prediction.idxmax(axis=1)  # Classe prédite (colonne avec probabilité max)
+                        predicted_probs = prediction.max(axis=1) # Max Confidence value
                         class_labels = {
                             "Prob_class_0": "Facture",
                             "Prob_class_1": "ID_Piece",
@@ -162,7 +173,7 @@ if reference:  # Vérifie si une référence est entrée
                             col_names = ["Image", "Classe Prédite", "Classe Réelle"]
 
                             for filename, pred_class in zip(filenames, predicted_classes):
-                                predicted_label = class_labels.get(pred_class, "Inconnu")
+                                predicted_label = f"{class_labels.get(pred_class, 'Inconnu')}"
                                 image_path = f"img/{uuid}/original_raw/{filename}"
 
                                 cols = st.columns([3, 2, 2])  # Ajustez les largeurs des colonnes
@@ -174,6 +185,7 @@ if reference:  # Vérifie si une référence est entrée
 
                                 with cols[1]:
                                     st.markdown(f"**Classe Prédite :** {predicted_label}")
+                                    st.markdown(f"**Confidence :** {predicted_probs[filename] * 100:.2f} %")
 
                                 with cols[2]:
                                     # ✅ Met à jour `st.session_state` AVANT d'ajouter à `table_data`

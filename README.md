@@ -8,4 +8,9 @@
 - [Deployment guide](docs.md/Deployement_guide_overview.md) : How to deploy the dockers of the project
 - [Project folder structure](docs.md/project_structure.md) : Description of the project folders and files
 
+## Access to remote interface (deployed on Kubernetes)
+- User interface for Prediction is accessible at - [https://sake.karned.bzh](https://sake.karned.bzh/) 
+    - access with "toto" / "tutu"
+- Admin interface for Grafana is accessible at - [https://grafana.sake.karned.bzh](https://grafana.sake.karned.bzh/d/cecfzm0ju4v0ga/mlops?orgId=1&from=now-15m&to=now&timezone=browser&refresh=10s)
+- Admin interface for Training is accessible at - [https://admin.sake.karned.bzh](https://admin.sake.karned.bzh/)
 
