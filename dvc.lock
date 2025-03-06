@@ -55,40 +55,40 @@ stages:
     outs:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 9e94dab5819845976cc75211821cef91.dir
-      size: 117307
+      md5: 46f002a0ed5bff5c02cfb5a92780894a.dir
+      size: 117250
       nfiles: 3
   preprocessing:
     cmd: python3 src/dvc_steps/preprocess.py
     deps:
     - path: data/cleaned_per_classes/
       hash: md5
-      md5: 9e94dab5819845976cc75211821cef91.dir
-      size: 117307
+      md5: 46f002a0ed5bff5c02cfb5a92780894a.dir
+      size: 117250
       nfiles: 3
     outs:
     - path: data/processed
       hash: md5
-      md5: a5612eda582eb787bdec17b163c75738.dir
-      size: 3224586
+      md5: 2041aae201e2fbd33882bf94bbfaf743.dir
+      size: 3224138
       nfiles: 4
     - path: models/vectorizers
       hash: md5
-      md5: c8ef3bb6571076b025266ce6af9d878c.dir
-      size: 2527842
+      md5: d78b6999a3245ebbe26f10942a469883.dir
+      size: 2527896
       nfiles: 1
   train:
     cmd: python3 src/dvc_steps/train.py
     deps:
     - path: data/processed/train
       hash: md5
-      md5: a1cd9295405089700e3e6337007a42da.dir
-      size: 2634221
+      md5: 4fed6fa5c7c842ece01ac0e195c1a6a8.dir
+      size: 2633733
       nfiles: 2
     outs:
     - path: models/train
       hash: md5
-      md5: 0c9d72e7976b09d86f8601fac0a4e2f9.dir
+      md5: a8e7d19e21514dfdfe1b4d453d687be3.dir
       size: 1682517
       nfiles: 1
   eval:
@@ -96,12 +96,12 @@ stages:
     deps:
     - path: data/processed/test
       hash: md5
-      md5: 76754d7e4d3c9cd34e6a1964b87b1833.dir
-      size: 590365
+      md5: 735def6ea3dc19ac88745dec90b34bf8.dir
+      size: 590405
       nfiles: 2
     - path: models/train
       hash: md5
-      md5: 0c9d72e7976b09d86f8601fac0a4e2f9.dir
+      md5: a8e7d19e21514dfdfe1b4d453d687be3.dir
       size: 1682517
       nfiles: 1
     outs:
